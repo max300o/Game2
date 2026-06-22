@@ -1,91 +1,106 @@
+/* استفاده از فونت تایپ‌رایتری برای حس پرونده */
 @import url('https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&display=swap');
 
 :root {
-    --bg: #050505;
-    --text: #d1d1d1;
-    --accent: #ff3e3e; /* قرمز نوآر */
-    --glow: rgba(255, 62, 62, 0.3);
+    --bg-color: #0a0a0a;
+    --text-color: #d1d1d1;
+    --border-color: #2a2a2a;
+    --accent-red: #8b0000;
 }
 
 body {
-    background: var(--bg);
-    color: var(--text);
+    background-color: var(--bg-color);
+    color: var(--text-color);
     font-family: 'Courier Prime', monospace;
     margin: 0;
-    height: 100vh;
+    min-height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
-    overflow: hidden;
+    transition: all 0.5s ease;
 }
 
-/* افکت مانیتور قدیمی (Scanlines) */
-.scanlines {
-    position: fixed;
-    top: 0; left: 0; width: 100%; height: 100%;
-    background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), 
-                linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
-    background-size: 100% 4px, 6px 100%;
-    pointer-events: none;
-    z-index: 100;
+/* ==========================================
+   تم نوآر (پیش‌فرض)
+   ========================================== */
+body.theme-noir {
+    background-color: #0a0a0a;
+    color: #c5c5c5;
 }
 
-/* کانتینر اصلی */
-.terminal-container {
-    width: 85%;
+/* ==========================================
+   تم رترو (سبز کلاسیک)
+   ========================================== */
+body.theme-retro {
+    background-color: #001100;
+    color: #33ff33;
+    text-shadow: 0 0 5px rgba(51, 255, 51, 0.5);
+}
+
+/* کانتینر اصلی بازی */
+#game-container {
+    width: 90%;
     max-width: 700px;
-    background: rgba(15, 15, 15, 0.95);
-    border: 1px solid #333;
+    background: rgba(20, 20, 20, 0.9);
     padding: 30px;
+    border: 1px solid var(--border-color);
     box-shadow: 0 0 20px rgba(0,0,0,0.5);
-    position: relative;
+    border-radius: 4px;
 }
 
-.terminal-header {
-    border-bottom: 1px solid var(--accent);
-    padding-bottom: 10px;
+/* هدر بازی */
+header {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
     margin-bottom: 20px;
-    display: flex;
-    justify-content: space-between;
-    font-size: 0.8rem;
-    color: var(--accent);
-    text-transform: uppercase;
-    letter-spacing: 2px;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 15px;
 }
 
-/* حل مشکل یک خط شدن متن: استفاده از flex-direction و wrap */
+/* متن داستان */
 #story-text {
-    font-size: 1.2rem;
+    font-size: 1.3rem;
     line-height: 1.8;
-    color: #eee;
-    white-space: pre-wrap; /* متن‌ها رو می‌شکنه تا به خط بعدی بره */
-    min-height: 250px;
+    margin-bottom: 30px;
+    min-height: 200px;
 }
 
-.choices-box {
-    margin-top: 30px;
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-}
-
-/* استایل دکمه‌های بازی */
+/* دکمه‌های کنترل */
 button {
     background: transparent;
     border: 1px solid #444;
-    color: #bbb;
-    padding: 12px 20px;
-    text-align: right;
+    color: #888;
+    padding: 8px 15px;
     cursor: pointer;
     font-family: inherit;
-    transition: all 0.3s ease;
-    border-left: 3px solid #444;
+    transition: 0.3s;
 }
 
 button:hover {
-    background: rgba(255, 62, 62, 0.05);
-    border-color: var(--accent);
+    border-color: #fff;
     color: #fff;
-    padding-right: 30px;
-    box-shadow: 5px 0 10px var(--glow);
+}
+
+/* دکمه‌های انتخاب (Choice Buttons) */
+#choices-container {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+#choices-container button {
+    text-align: right;
+    padding: 15px;
+    border-left: 4px solid var(--accent-red);
+    background: rgba(255, 255, 255, 0.03);
+}
+
+body.theme-retro #choices-container button {
+    border-left: 4px solid #33ff33;
+}
+
+#choices-container button:hover {
+    background: rgba(255, 255, 255, 0.1);
+    padding-right: 25px;
 }
