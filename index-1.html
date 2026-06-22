@@ -1,0 +1,1641 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>پرونده‌ی سقوط فرشته‌ها</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
+
+  *{margin:0; padding:0; box-sizing:border-box;}
+  html,body{
+    width:100%;
+    min-height:100vh;
+    font-family:'Vazirmatn', Tahoma, sans-serif;
+  }
+  body{
+    background:#1a1a1a;
+    color:#222;
+    overflow-x:hidden;
+  }
+  ::selection{background:#7a1f1f; color:#fff;}
+
+  /* =========================================================
+     SHARED STAT VALUES (used inside both themes)
+  ========================================================= */
+  .stat-row{
+    display:grid;
+    grid-template-columns:repeat(5,1fr);
+    gap:8px;
+  }
+  .stat-cell{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:4px;
+  }
+  .stat-label{
+    font-size:10px;
+    white-space:nowrap;
+  }
+  .stat-bar{
+    width:100%;
+    height:6px;
+    border-radius:3px;
+    overflow:hidden;
+  }
+  .stat-fill{
+    height:100%;
+    transition:width .5s ease;
+  }
+  .stat-num{
+    font-size:10px;
+    font-variant-numeric:tabular-nums;
+  }
+
+  /* =========================================================
+     THEME TOGGLE BUTTON (always visible, top corner)
+  ========================================================= */
+  #theme-toggle{
+    position:fixed;
+    top:18px;
+    left:18px;
+    z-index:999;
+    background:rgba(0,0,0,0.55);
+    color:#e8e0c8;
+    border:1px solid rgba(255,255,255,0.25);
+    border-radius:20px;
+    padding:8px 16px;
+    font-family:'Vazirmatn',sans-serif;
+    font-size:12px;
+    cursor:pointer;
+    backdrop-filter:blur(4px);
+    transition:background .2s;
+  }
+  #theme-toggle:hover{background:rgba(0,0,0,0.8);}
+
+  /* =========================================================
+     THEME 1 — تخته‌ی مدارک (Evidence Board / Cork)
+  ========================================================= */
+  body.theme-board{
+    width:100vw;
+    height:100vh;
+    overflow:hidden;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:#1a1a1a;
+  }
+
+  .evidence-board{
+    width:95vw;
+    height:95vh;
+    border:18px solid #4a2d16;
+    border-radius:12px;
+    background:repeating-linear-gradient(
+      90deg,
+      #7a4f2b 0px, #7a4f2b 40px,
+      #704726 40px, #704726 80px
+    );
+    box-shadow:0 0 80px rgba(0,0,0,.6);
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    position:relative;
+  }
+  .evidence-board::before{
+    content:"";
+    position:absolute;
+    width:16px; height:16px;
+    background:#d6d6d6;
+    border-radius:50%;
+    top:20px; left:20px;
+    box-shadow:
+      calc(95vw - 90px) 0 #d6d6d6,
+      0 calc(95vh - 90px) #d6d6d6,
+      calc(95vw - 90px) calc(95vh - 90px) #d6d6d6;
+  }
+
+  /* yarn pinned across the board, decorative */
+  .evidence-board::after{
+    content:"";
+    position:absolute;
+    inset:0;
+    pointer-events:none;
+    background:
+      linear-gradient(105deg, transparent 39%, rgba(180,20,20,.5) 39.3%, transparent 39.6%),
+      linear-gradient(70deg, transparent 64%, rgba(180,20,20,.4) 64.3%, transparent 64.6%);
+    opacity:.6;
+  }
+
+  .board-hud{
+    position:absolute;
+    top:24px;
+    right:50%;
+    transform:translateX(50%);
+    background:rgba(20,12,6,0.55);
+    border:1px solid rgba(255,255,255,0.15);
+    border-radius:10px;
+    padding:8px 18px;
+    backdrop-filter:blur(3px);
+    z-index:5;
+    width:min(560px, 80%);
+  }
+  .board-hud .stat-label{color:#e8d9b8;}
+  .board-hud .stat-num{color:#f3e7c9;}
+  .board-hud .stat-bar{background:rgba(0,0,0,0.4);}
+
+  .story-panel{
+    width:75%;
+    height:75%;
+    background:#f3eedf;
+    background-image:
+      repeating-linear-gradient(0deg, transparent 0 38px, rgba(0,0,0,.025) 38px 39px);
+    border-radius:8px;
+    padding:48px 44px 36px;
+    overflow-y:auto;
+    box-shadow:0 10px 30px rgba(0,0,0,.35);
+    position:relative;
+  }
+  /* a pin on top of the paper */
+  .story-panel::before{
+    content:"";
+    position:absolute;
+    top:-10px;
+    left:50%;
+    transform:translateX(-50%);
+    width:20px; height:20px;
+    border-radius:50%;
+    background:radial-gradient(circle at 35% 35%, #ff6b5e, #a31f14 70%);
+    box-shadow:0 3px 6px rgba(0,0,0,.4);
+  }
+
+  .board-loc{
+    display:inline-block;
+    font-size:12px;
+    letter-spacing:1px;
+    color:#8a4f1f;
+    border:1px solid #c9a86a;
+    padding:3px 12px;
+    border-radius:14px;
+    margin-bottom:18px;
+    background:rgba(201,168,106,0.12);
+  }
+
+  .board-divider{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin:28px 0 18px;
+    color:#8a7a5e;
+    font-size:11px;
+  }
+  .board-divider::before,.board-divider::after{
+    content:'';
+    flex:1;
+    height:1px;
+    background:linear-gradient(90deg, transparent, #c9b896, transparent);
+  }
+
+  .board-narration{
+    color:#5a4f3c;
+    font-size:16px;
+    margin-bottom:16px;
+    font-style:italic;
+    direction:rtl;
+    text-align:right;
+    line-height:2.1;
+  }
+
+  .board-dialogue{
+    background:rgba(74,45,22,0.06);
+    border-right:3px solid #7a1f1f;
+    border-radius:6px;
+    padding:14px 16px;
+    margin-bottom:12px;
+  }
+  .board-speaker{
+    color:#7a1f1f;
+    font-size:13px;
+    font-weight:700;
+    margin-bottom:4px;
+  }
+  .board-line{
+    font-size:18px;
+    color:#2a2118;
+    direction:rtl;
+    text-align:right;
+    line-height:2.1;
+  }
+
+  .board-evidence{
+    background:repeating-linear-gradient(0deg,#fdf8e8,#fdf8e8 27px,#f0e6c8 28px);
+    border:1px solid #c9a86a;
+    border-radius:2px;
+    padding:14px 16px;
+    margin:16px 0;
+    font-size:15px;
+    color:#4a3f2a;
+    box-shadow:2px 4px 10px rgba(0,0,0,.15);
+    direction:rtl; text-align:right; line-height:2;
+  }
+  .board-evidence::before{
+    content:'⚷ گزارش پزشکی قانونی';
+    display:block;
+    font-size:11px;
+    color:#7a1f1f;
+    letter-spacing:.5px;
+    margin-bottom:8px;
+    font-weight:700;
+  }
+
+  .board-letter{
+    background:#ece1c2;
+    border:1px dashed #8a6f3f;
+    border-radius:2px;
+    padding:20px;
+    margin:18px 0;
+    font-size:16px;
+    color:#3a2f1a;
+    font-style:italic;
+    line-height:2.2;
+    direction:rtl; text-align:right;
+  }
+
+  .board-choices{
+    margin-top:24px;
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+  }
+  .board-choice{
+    border:none;
+    background:#e6dfcf;
+    padding:14px 18px;
+    border-radius:6px;
+    cursor:pointer;
+    font-family:'Vazirmatn',sans-serif;
+    font-size:17px;
+    text-align:right;
+    direction:rtl;
+    color:#2a2118;
+    transition:background .15s, transform .1s;
+    line-height:1.8;
+  }
+  .board-choice:hover{background:#d9d1bf; transform:translateX(-3px);}
+  .board-choice:active{transform:scale(.98);}
+
+  .board-restart{
+    border:1px solid #8a6f3f;
+    background:transparent;
+    color:#6a5a3f;
+    padding:10px 18px;
+    border-radius:6px;
+    cursor:pointer;
+    font-family:'Vazirmatn',sans-serif;
+    font-size:13px;
+    margin-top:16px;
+    width:100%;
+  }
+
+  .board-title{
+    text-align:center;
+    direction:rtl;
+  }
+  .board-title-eyebrow{color:#7a1f1f; font-size:13px; letter-spacing:3px; margin-bottom:10px;}
+  .board-title-main{font-size:34px; font-weight:800; color:#2a2118; margin-bottom:10px;}
+  .board-title-sub{color:#5a4f3c; font-size:14px; max-width:440px; margin:0 auto 28px; line-height:1.9;}
+  .board-start{
+    background:#7a1f1f;
+    color:#fdf8e8;
+    border:none;
+    padding:14px 40px;
+    border-radius:24px;
+    font-size:15px;
+    font-family:'Vazirmatn',sans-serif;
+    cursor:pointer;
+  }
+  .board-start:hover{background:#9c2a2a;}
+
+  /* =========================================================
+     THEME 2 — مانیتور قدیمی (CRT Monitor)
+  ========================================================= */
+  body.theme-monitor{
+    width:100vw;
+    height:100vh;
+    overflow:hidden;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:
+      radial-gradient(ellipse at center, #2b2b2b 0%, #0a0a0a 100%);
+  }
+
+  .monitor{
+    width:min(94vw, 980px);
+    height:min(92vh, 720px);
+  }
+
+  .monitor-frame{
+    width:100%;
+    height:100%;
+    background:linear-gradient(160deg, #d8d2c2, #b8b09a 55%, #a39c84);
+    border-radius:28px;
+    padding:26px;
+    box-shadow:
+      0 25px 60px rgba(0,0,0,.6),
+      inset 0 2px 4px rgba(255,255,255,.4),
+      inset 0 -6px 10px rgba(0,0,0,.25);
+    display:flex;
+    flex-direction:column;
+    position:relative;
+  }
+  .monitor-frame::before{
+    /* brand label + power dot, like an old CRT */
+    content:"PALADIN — CRT 1991";
+    position:absolute;
+    bottom:8px;
+    left:50%;
+    transform:translateX(-50%);
+    font-family:'VT323',monospace;
+    font-size:13px;
+    color:#5a5444;
+    letter-spacing:2px;
+  }
+
+  .screen{
+    flex:1;
+    background:#0c1410;
+    border-radius:14px;
+    padding:30px 34px;
+    overflow-y:auto;
+    position:relative;
+    box-shadow:
+      inset 0 0 60px rgba(0,0,0,.85),
+      inset 0 0 12px rgba(0,0,0,1);
+    color:#9be89b;
+  }
+  /* scanlines + glow */
+  .screen::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:repeating-linear-gradient(
+      0deg,
+      rgba(0,0,0,0) 0px,
+      rgba(0,0,0,0) 2px,
+      rgba(0,0,0,.18) 3px
+    );
+    pointer-events:none;
+    border-radius:14px;
+  }
+  .screen::after{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:radial-gradient(ellipse at center, rgba(120,255,160,.05), transparent 70%);
+    pointer-events:none;
+    border-radius:14px;
+  }
+
+  .monitor-hud{
+    background:rgba(0,0,0,0.4);
+    border:1px solid rgba(155,232,155,0.3);
+    border-radius:6px;
+    padding:8px 14px;
+    margin-bottom:18px;
+    font-family:'VT323',monospace;
+  }
+  .monitor-hud .stat-label{color:#7fd98a; font-family:'VT323',monospace; font-size:13px;}
+  .monitor-hud .stat-num{color:#bdf5bd; font-family:'VT323',monospace; font-size:13px;}
+  .monitor-hud .stat-bar{background:rgba(0,0,0,0.5); border:1px solid rgba(155,232,155,0.25);}
+
+  .crt-loc{
+    display:inline-block;
+    font-family:'VT323',monospace;
+    font-size:15px;
+    color:#0c1410;
+    background:#9be89b;
+    padding:2px 12px;
+    margin-bottom:16px;
+    letter-spacing:1px;
+  }
+  .crt-loc::before{content:'> ';}
+
+  .crt-divider{
+    font-family:'VT323',monospace;
+    color:#5fae68;
+    font-size:14px;
+    margin:22px 0 14px;
+    border-top:1px dashed rgba(155,232,155,.3);
+    padding-top:10px;
+  }
+
+  .crt-narration{
+    font-family:'VT323',monospace;
+    color:#7fd98a;
+    font-size:18px;
+    line-height:1.8;
+    margin-bottom:14px;
+    direction:rtl;
+    text-align:right;
+  }
+
+  .crt-dialogue{
+    margin-bottom:14px;
+    direction:rtl;
+    text-align:right;
+  }
+  .crt-speaker{
+    font-family:'VT323',monospace;
+    color:#e8e879;
+    font-size:16px;
+    margin-bottom:2px;
+  }
+  .crt-speaker::before{content:'◆ ';}
+  .crt-line{
+    font-family:'Vazirmatn',sans-serif;
+    color:#bdf5bd;
+    font-size:18px;
+    line-height:2;
+  }
+
+  .crt-evidence{
+    border:1px solid #9be89b;
+    background:rgba(155,232,155,0.06);
+    padding:14px 16px;
+    margin:16px 0;
+    font-family:'Vazirmatn',sans-serif;
+    color:#bdf5bd;
+    font-size:15px;
+    direction:rtl; text-align:right; line-height:1.95;
+  }
+  .crt-evidence::before{
+    content:'[ گزارش پزشکی قانونی ]';
+    display:block;
+    font-family:'VT323',monospace;
+    color:#e8e879;
+    font-size:14px;
+    margin-bottom:8px;
+    letter-spacing:1px;
+  }
+
+  .crt-letter{
+    border:1px dashed #e8e879;
+    background:rgba(232,232,121,0.06);
+    padding:18px;
+    margin:18px 0;
+    font-family:'Vazirmatn',sans-serif;
+    color:#f2efc0;
+    font-size:16px;
+    font-style:italic;
+    line-height:2.1;
+    direction:rtl; text-align:right;
+  }
+
+  .crt-choices{
+    margin-top:22px;
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+  }
+  .crt-choice{
+    background:rgba(155,232,155,0.08);
+    border:1px solid #5fae68;
+    color:#bdf5bd;
+    text-align:right;
+    direction:rtl;
+    padding:13px 16px;
+    font-family:'Vazirmatn',sans-serif;
+    font-size:16px;
+    cursor:pointer;
+    transition:background .15s, border-color .15s;
+    line-height:1.8;
+  }
+  .crt-choice::before{
+    content:'▸ ';
+    color:#e8e879;
+  }
+  .crt-choice:hover{background:rgba(155,232,155,0.18); border-color:#9be89b;}
+  .crt-choice:active{transform:scale(.99);}
+
+  .crt-restart{
+    border:1px solid #5fae68;
+    background:transparent;
+    color:#7fd98a;
+    padding:10px 18px;
+    font-family:'VT323',monospace;
+    font-size:15px;
+    cursor:pointer;
+    margin-top:16px;
+    width:100%;
+  }
+
+  .crt-title{
+    text-align:center;
+    direction:rtl;
+  }
+  .crt-title-eyebrow{font-family:'VT323',monospace; color:#e8e879; font-size:15px; letter-spacing:3px; margin-bottom:10px;}
+  .crt-title-main{font-family:'Vazirmatn',sans-serif; font-weight:800; font-size:30px; color:#bdf5bd; margin-bottom:12px;}
+  .crt-title-sub{font-family:'Vazirmatn',sans-serif; color:#7fd98a; font-size:14px; max-width:440px; margin:0 auto 26px; line-height:1.9;}
+  .crt-start{
+    background:#9be89b;
+    color:#0c1410;
+    border:none;
+    padding:13px 38px;
+    font-family:'VT323',monospace;
+    font-size:18px;
+    letter-spacing:1px;
+    cursor:pointer;
+  }
+  .crt-start:hover{background:#bdf5bd;}
+
+  /* end card shared tweaks per theme */
+  .end-card{text-align:center; padding:30px 10px; direction:rtl;}
+  .board-end-title{font-size:26px; color:#7a1f1f; margin-bottom:14px;}
+  .crt-end-title{font-family:'VT323',monospace; font-size:26px; color:#e8e879; margin-bottom:14px;}
+
+  /* utility: hide whichever theme isn't active */
+  .theme-screen{display:none;}
+  body.theme-board .board-screen{display:flex;}
+  body.theme-monitor .monitor-screen{display:flex;}
+
+  /* mobile fallback: shrink paddings */
+  @media (max-width:640px){
+    .story-panel{padding:30px 22px;}
+    .board-line, .crt-line{font-size:16px;}
+    .monitor-frame{padding:14px; border-radius:18px;}
+    .screen{padding:20px 18px;}
+  }
+</style>
+</head>
+<body class="theme-board">
+
+<button id="theme-toggle" onclick="toggleTheme()">🖥 تغییر به تم مانیتور</button>
+
+<!-- ============ THEME: BOARD ============ -->
+<div class="evidence-board board-screen">
+
+  <div id="title-screen-board" class="story-panel board-title">
+    <div class="board-title-eyebrow">یک داستان پلیسی تعاملی</div>
+    <h1 class="board-title-main">پرونده‌ی سقوط فرشته‌ها</h1>
+    <p class="board-title-sub">شهر فریمانت، جایی که درها هرگز قفل نمی‌شدند... تا روزی که جسدی در جنگل پیدا شد. تو کاراگاه بلیک هستی. هر انتخاب، یک نفر را نجات می‌دهد یا یک نفر را می‌بلعد.</p>
+    <button class="board-start" onclick="startGame()">ورود به پرونده</button>
+  </div>
+
+  <div id="board-hud" class="board-hud" style="display:none;">
+    <div class="stat-row" id="stats-row-board"></div>
+  </div>
+
+  <div id="story-panel-board" class="story-panel" style="display:none;">
+    <div id="scene-container-board"></div>
+  </div>
+
+</div>
+
+<!-- ============ THEME: MONITOR ============ -->
+<div class="monitor monitor-screen">
+  <div class="monitor-frame">
+
+    <div id="screen-content" class="screen">
+
+      <div id="title-screen-crt" class="crt-title">
+        <div class="crt-title-eyebrow">[ یک داستان پلیسی تعاملی ]</div>
+        <h1 class="crt-title-main">پرونده‌ی سقوط فرشته‌ها</h1>
+        <p class="crt-title-sub">شهر فریمانت، جایی که درها هرگز قفل نمی‌شدند... تا روزی که جسدی در جنگل پیدا شد. تو کاراگاه بلیک هستی. هر انتخاب، یک نفر را نجات می‌دهد یا یک نفر را می‌بلعد.</p>
+        <button class="crt-start" onclick="startGame()">[ ورود به پرونده ]</button>
+      </div>
+
+      <div id="monitor-hud" class="monitor-hud" style="display:none;">
+        <div class="stat-row" id="stats-row-monitor"></div>
+      </div>
+
+      <div id="scene-container-monitor" style="display:none;"></div>
+
+    </div>
+
+  </div>
+</div>
+
+<script>
+/* =========================================================
+   PARAMETERS
+========================================================= */
+const stats = {
+  trust:   { label:"اعتماد عمومی",   value:60, color:"#c9a86a" },
+  sanity:  { label:"روان بلیک",      value:80, color:"#5d8a6a" },
+  morals:  { label:"اخلاق‌مداری",    value:70, color:"#6a8fc9" },
+  evidence:{ label:"دقت پرونده",     value:50, color:"#a17a47" },
+  bond:    { label:"رابطه با ویلیام", value:75, color:"#a14747" }
+};
+
+function clamp(v){ return Math.max(0, Math.min(100, v)); }
+
+function applyEffects(effects){
+  if(!effects) return;
+  for(const k in effects){
+    if(stats[k]) stats[k].value = clamp(stats[k].value + effects[k]);
+  }
+  renderHUD();
+}
+
+function renderHUD(){
+  const row = document.getElementById('stats-row');
+  row.innerHTML = '';
+  for(const key in stats){
+    const s = stats[key];
+    row.innerHTML += `
+      <div class="stat">
+        <div class="stat-label">${s.label}</div>
+        <div class="stat-bar"><div class="stat-fill" style="width:${s.value}%; background:${s.color};"></div></div>
+        <div class="stat-num">${s.value}</div>
+      </div>`;
+  }
+}
+
+/* =========================================================
+   STORY DATA
+   type: "dialogue" (auto-continue) | "choice" (branching)
+========================================================= */
+const story = {
+
+start: {
+  loc:"جنگل نزدیکی شهر فریمانت",
+  blocks:[
+    {type:"speaker", who:"بلیک", text:"دیر اومدی. چند ساعت پیش منتظرت بودم، کجا بودی؟"}
+  ],
+  choice:{
+    prompt:null,
+    options:[
+      { text:"یه کار شخصی داشتم", effects:{bond:-2}, next:"crimeScene" },
+      { text:"مهم نیست، بهم بگو چی شده", effects:{bond:+2}, next:"crimeScene" }
+    ]
+  }
+},
+
+crimeScene: {
+  loc:"جنگل نزدیکی شهر فریمانت",
+  blocks:[
+    {type:"evidence", text:"جسد خفه شده، دور گردنش کبود است. بدجور کتک خورده و به وحشیانه‌ترین شکل ممکن به او حمله شده. احتمالا کار کسی است که می‌شناختش. صورتش داغان شده، انگار دنبال انتقام بوده."}
+  ],
+  choice:{
+    options:[
+      { text:"احتمالا حق با توئه، این کار یه غریبه نیست", effects:{evidence:-3}, next:"morgue1" },
+      { text:"مطمئن نیستم، انگار یه روانی بهش حمله کرد", effects:{evidence:+3}, next:"morgue1" }
+    ]
+  }
+},
+
+morgue1:{
+  loc:"اداره‌ی پزشکی قانونی",
+  blocks:[
+    {type:"speaker", who:"دکتر", text:"هویتش لانی مارک است، بیست سالشه. چند روز از مرگش می‌گذرد. هیچ چیزی پیدا نکردیم به‌جز چندتا تار مو. دادمش آزمایشگاه ولی بعید است به جایی برسد، روش زیاد حساب باز نکنید. هیچ خونی توی صحنه پیدا نکردیم، احتمالش هست جای دیگری کشته شده باشد."}
+  ],
+  choice:{
+    options:[
+      { text:"باید به خانواده‌اش خبر بدم، حق دارن بدونن چی شده", effects:{trust:+3, sanity:-2}, next:"familyVisit" },
+      { text:"باید برم به محل جرم، شاید محل قتل رو پیدا کنم", effects:{evidence:+3}, next:"crimeSceneSearch" }
+    ]
+  }
+},
+
+familyVisit:{
+  loc:"خانه‌ی لانی و همسرش متیو",
+  blocks:[
+    {type:"speaker", who:"بلیک", text:"ویلیام، فکر کنم قاتلمونو پیدا کردیم. وقتی رفتم به شوهرش خبر بدم، رفتارش خیلی مشکوک بود. از خبر مرگش تعجب نکرد و خیلی طبیعی رفتار کرد. لباساشم برای صبح زود خیلی رسمی بود، انگار می‌خواست بره مراسم ختم."},
+    {type:"speaker", who:"ویلیام", text:"تسلیت می‌گم. ببخشید، می‌دونم الان وقت مناسبی نیست. می‌تونم بپرسم چرا گزارش گم‌شدن همسرتون رو ندادید؟ همسرتون چند روز پیش به قتل رسیده ولی ما اطلاعی از گم‌شدنش نداشتیم."},
+    {type:"speaker", who:"متیو", text:"چند روز پیش دعوامون شد، عصبانی شد و از خونه رفت بیرون. وقتی ناراحت می‌شد می‌رفت خونه‌ی دوستاش، چند روزی می‌ماند بعد برمی‌گشت. فکر کردم اونجاست، واسه همین دنبالش نگشتم. اون قوی‌ترین زنی بود که می‌شد دید، فکر نمی‌کرد هیچ‌کس بتونه بهش آسیب بزند. هنوزم باورم نمی‌شود."}
+  ],
+  choice:{
+    options:[
+      { text:"می‌تونی بگی چهار روز پیش دقیقا کجا بودی؟", effects:{evidence:+3}, next:"matthewAlibi" },
+      { text:"درکتون می‌کنم، فعلا سوالی ندارم ولی لطفا شهر را ترک نکنید", effects:{morals:+2, evidence:-2}, next:"twoWeeksLater" }
+    ]
+  }
+},
+
+matthewAlibi:{
+  loc:"خانه‌ی لانی و همسرش متیو",
+  blocks:[
+    {type:"speaker", who:"متیو", text:"رفتم پیش یه مشاور خانواده، می‌خواستم اوضاع رو درست کنم، از وضعمون خسته شده بودم. فکر کردم با این کار همه چی درست می‌شه. بعدش رفتم یه هتل و شب رو اونجا ماندم، نمی‌خواستم با لانی رو‌به‌رو بشم. دکتر وینسون می‌تونه حرفمو تایید کند."}
+  ],
+  choice:{
+    options:[
+      { text:"ممنون بابت همکاریتون، نگران نباشید، همه چی درست می‌شه", effects:{morals:+2, evidence:-2}, next:"twoWeeksLater" },
+      { text:"لطفا رسید هتل و معاینه پزشکی رو ایمیل کنید، و به هیچ وجه از شهر خارج نشید", effects:{evidence:+3, morals:-1}, next:"twoWeeksLater" }
+    ]
+  }
+},
+
+crimeSceneSearch:{
+  loc:"جنگل نزدیکی شهر فریمانت",
+  blocks:[
+    {type:"speaker", who:"بلیک", text:"هی ویلیام، گشتن اینجا بی‌فایده‌ست. توی این همه گل‌و‌لای و علف حتی چیزی هم باشه نمی‌شه پیداش کرد. ولی لانی ماشین نداشته، اینجا خیلی دور از شهره، پس قاتل باید با ماشین آورده باشدش. اون پسره که پیداش کرد، توماس، دیدمش که با ماشین رفت. به‌نظرم باید بررسیش کنیم."},
+    {type:"speaker", who:"توماس", text:"داشتم تو جنگل قدم می‌زدم که یه تپه‌ی کوچک از شاخ‌و‌برگ دیدم. نزدیکش یه چیز طلایی‌رنگ برق می‌زد. رفتم جلو که ببینم چیه، که یه چشم دیدم که بهم خیره شده. اولش حالم بد شد، یکم بعد که به خودم آمدم رفتم و برگ‌ها را کنار زدم، یه دختر بود که یه صلیب رو محکم تو دستش گرفته بود. بعدش با شما تماس گرفتم."}
+  ],
+  choice:{
+    options:[
+      { text:"می‌دونی که من می‌تونم دروغ رو از چشمات بخونم، مگه نه؟", effects:{morals:-1}, next:"thomasContinue" },
+      { text:"اگه قراره بهم دروغ تحویل بدی، پس بهتره خفه شی", effects:{morals:-3, bond:-1}, next:"thomasContinue" }
+    ]
+  }
+},
+
+thomasContinue:{
+  loc:"کلانتری",
+  blocks:[
+    {type:"speaker", who:"توماس", text:"من واقعا کاری نکردم. مدرک می‌خواید؟ باشه، من یه شاهد دارم؛ وقتی جسد را پیدا کردم، اون هم باهام بود."}
+  ],
+  choice:{
+    options:[
+      { text:"شاید همدستته، اگه نبود چرا صبر نکرده ما برسیم؟", effects:{morals:-2}, next:"thomasReveal" },
+      { text:"امیدوارم منو احمق فرض نکرده باشی، وگرنه خیلی برات بد می‌شه", effects:{morals:-3, bond:-1}, next:"thomasReveal" }
+    ]
+  }
+},
+
+thomasReveal:{
+  loc:"کلانتری",
+  blocks:[
+    {type:"speaker", who:"توماس", text:"منو رفیق، فقط داشتیم شوخی می‌کردیم و یکم ماری‌جوانا کشیدیم. همین. من از همه‌چی فیلم گرفتم، می‌تونم نشونتون بدم، قسم می‌خورم تنها دلیلی که فرار کرد این بود که ما را با ماری‌جوانا نگیرند."},
+    {type:"narration", text:"دو هفته بعد از اولین قتل..."},
+    {type:"speaker", who:"بلیک", text:"گزارش پزشک قانونی بالاخره رسیده. یکی از موهایی که در صحنه‌ی جرم پیدا شد و مورد آزمایش قرار گرفت، متعلق به یک فرد سابقه‌دار به اسم برایان آلونوا است. یه راننده تاکسی خط شهریه، احتمالا توی شهر قربانی رو سوار کرده. توی محله‌ی ساوانا، پایین شهر، با زن و بچه‌ی تازه به‌دنیا آمده‌اش زندگی می‌کند و سابقه‌ی دزدی و عضویت در گروه‌های خلافکار را دارد. آخرین سابقش مال ده سال پیش است، انگار دوباره برگشته به مسیر جرم و جنایت."}
+  ],
+  choice:{
+    options:[
+      { text:"مو به‌تنهایی کافی نیست، باید اعترافشو بگیریم", effects:{morals:+2, evidence:-1}, next:"bryanInterrogation" },
+      { text:"آزمایش هیچ‌وقت اشتباه نمی‌کند، احتمالا کار خودشه", effects:{morals:-2, evidence:+1}, next:"bryanInterrogation" }
+    ]
+  }
+},
+
+twoWeeksLater:{
+  loc:"کلانتری",
+  blocks:[
+    {type:"narration", text:"دو هفته بعد از اولین قتل..."},
+    {type:"speaker", who:"بلیک", text:"گزارش پزشک قانونی بالاخره رسیده. یکی از موهایی که در صحنه‌ی جرم پیدا شد و مورد آزمایش قرار گرفت، متعلق به یک فرد سابقه‌دار به اسم برایان آلونوا است. یه راننده تاکسی خط شهریه، احتمالا توی شهر قربانی رو سوار کرده. توی محله‌ی ساوانا، پایین شهر، با زن و بچه‌ی تازه به‌دنیا آمده‌اش زندگی می‌کند و سابقه‌ی دزدی و عضویت در گروه‌های خلافکار را دارد. آخرین سابقش مال ده سال پیش است، انگار دوباره برگشته به مسیر جرم و جنایت."}
+  ],
+  choice:{
+    options:[
+      { text:"مو به‌تنهایی کافی نیست، باید اعترافشو بگیریم", effects:{morals:+2, evidence:-1}, next:"bryanInterrogation" },
+      { text:"آزمایش هیچ‌وقت اشتباه نمی‌کند، احتمالا کار خودشه", effects:{morals:-2, evidence:+1}, next:"bryanInterrogation" }
+    ]
+  }
+},
+
+bryanInterrogation:{
+  loc:"اتاق بازجویی",
+  blocks:[
+    {type:"speaker", who:"ویلیام", text:"می‌دونی، ما همین الان هم مدارک کافی برای دستگیریت داریم. فقط می‌خوایم کمکت کنیم که اعدام نشی."},
+    {type:"speaker", who:"برایان", text:"قسم می‌خورم حتی نمی‌دانم دارین راجع‌به چی حرف می‌زنید. من بی‌خبرم. سرم تو کار خودمه، یه راننده تاکسی سادم. از کجا بدونم چی ازم می‌خواید؟"}
+  ],
+  choice:{
+    options:[
+      { text:"قبلا از این بازی‌ها زیاد دیدم، فقط حقیقتو بگو، بعدش همه‌چی درست می‌شه", effects:{morals:+2}, next:"bryanDenial" },
+      { text:"ما دی‌ان‌ای تورو دو هفته پیش توی صحنه‌ی یه قتل پیدا کردیم", effects:{evidence:+2}, next:"bryanDenial" }
+    ]
+  }
+},
+
+bryanDenial:{
+  loc:"اتاق بازجویی",
+  blocks:[
+    {type:"speaker", who:"برایان", text:"ببینید، من یه راننده‌ی سادم. هرروز می‌رم سرکار و شب برمی‌گردم خونه. من خیلی‌وقته هیچ جرمی نکردم. می‌تونید دوربین ماشینم رو چک کنید و از همسرم و همسایه‌هام بپرسید، من هیچ جرمی نکردم."}
+  ],
+  choice:{
+    options:[
+      { text:"جالبه، اما فکر می‌کنی واقعا چرا اینجایی؟", effects:{morals:+1}, next:"bryanWife" },
+      { text:"همسرت قبلا همه‌چیزو گفته، قبل از دروغ گفتن باید باهاش هماهنگ می‌کردی", effects:{morals:-3}, next:"bryanWife" }
+    ]
+  }
+},
+
+bryanWife:{
+  loc:"اتاق بازجویی",
+  blocks:[
+    {type:"speaker", who:"برایان", text:"منظورت چیه که همه‌چیزو گفته؟ من هیچ‌کاری نکردم، قسم می‌خورم. شما باید به حرفم گوش بدید."},
+    {type:"speaker", who:"بلیک", text:"یک ساعت پیش با همسرت حرف زدم. بهم گفت دو هفته پیش تمام شب رو بیرون بودی و اصلا خونه نرفتی. حتی گفت وقتی داشته لباسات رو می‌شسته، چند لکه‌ی خون روی لباست بوده. حرفی برای گفتن داری؟"},
+    {type:"speaker", who:"برایان", text:"خواهش می‌کنم، می‌شه فقط به همسرم بگید که دوسش دارم؟"}
+  ],
+  choice:{
+    options:[
+      { text:"متاسفم، نمی‌تونم همچین کاری بکنم، برخلاف قانونه", effects:{morals:+2}, next:"secondMurder" },
+      { text:"در موردش فکر می‌کنم", effects:{morals:-1, bond:+1}, next:"secondMurder" }
+    ]
+  }
+},
+
+secondMurder:{
+  loc:"اداره‌ی پزشکی قانونی",
+  blocks:[
+    {type:"narration", text:"دو هفته بعد، جسدی در یک کارخانه‌ی متروکه در اطراف شهر پیدا شد."},
+    {type:"speaker", who:"دکتر", text:"مقتول دقیقا شبیه قربانی قبلی کشته شده، با یه طناب ضخیم. این‌بار قاتل خشونت جسمی کمتری به خرج داده؛ کبودی‌ها نشان می‌دهد چندین بار خفه‌اش کرده، بعد از هر بار خفه‌کردن دوباره احیایش کرده و دوباره شروع کرده به خفه‌کردن. همچنین قاتل لباس‌های مقتول رو با خودش برده، چیزی نتوانستیم پیدا کنیم. قاتل تلاش کرده با آب محل را تمیز کند، که نشان می‌دهد قتل همان‌جا اتفاق افتاده. هویت مقتول مشخص نیست، کسی گم‌شدنش رو گزارش نداده، شاید یه توریست بوده."}
+  ],
+  choice:{
+    options:[
+      { text:"اگه دقیقا شبیه قتل قبلیه، پس ممکنه متهم قبلی بی‌گناه باشه", effects:{morals:+3, evidence:-2}, next:"jailNews" },
+      { text:"این دیگه یه قتل معمولی نیست، یه شکنجه‌ی کامله", effects:{sanity:-3}, next:"jailNews" }
+    ]
+  }
+},
+
+jailNews:{
+  loc:"بازداشتگاه مرکزی",
+  blocks:[
+    {type:"narration", text:"فردای روز قتل دوم..."},
+    {type:"speaker", who:"نگهبان", text:"بزارید چک کنم... اوه، یکم دیر اومدید. دو روز پیش هم‌سلولیش بهش حمله کرده و خفه‌اش کرده. دیر رسیدیم، نشد نجاتش بدیم. البته بد نشد، یه قاتل کثیف بیشتر نبود."},
+    {type:"speaker", who:"بلیک", text:"ویلیام... ما گند زدیم، درسته؟"}
+  ],
+  choice:{
+    options:[
+      { text:"ما فقط کارمونو انجام دادیم، راه برگشتی نیست", effects:{sanity:+2, morals:-2}, next:"brianWidow" },
+      { text:"باید بیشتر بهش گوش می‌دادیم، الان به‌خاطر برایانم که شده باید قاتل را بگیریم", effects:{sanity:-2, morals:+3}, next:"brianWidow" }
+    ]
+  }
+},
+
+brianWidow:{
+  loc:"اداره‌ی پلیس، پنج روز بعد از قتل دوم",
+  blocks:[
+    {type:"speaker", who:"همسر برایان", text:"باید یه واقعیتی رو اعتراف کنم، من بهتون درباره‌ی برایان دروغ گفتم. من فقط می‌خواستم ازش دور باشم. همیشه مراقبم بود و نمی‌گذاشت جایی برم. تو خونه مثل یه زندانی بودم برایش. هر روز زندگی‌کردن باهاش برام یه شکنجه‌ی روحی بود ولی او این را درک نمی‌کرد که من هم یه انسانم. واقعا نمی‌دانم، شاید از دوست‌داشتن زیاد بود، نمی‌خواستم بمیرد، فقط می‌خواستم بفهمد من در این سال‌ها چه حسی داشتم. می‌خواستم بالاخره درکم کند. اومدم اینجا چون نمی‌خوام بچه‌ام توی شهری بزرگ شود که همه پدرشو یه قاتل می‌دانند، می‌خوام حقیقت روشن شود."}
+  ],
+  choice:{
+    options:[
+      { text:"درکتون می‌کنم، اما شما قانون و پلیس را به بازی گرفتید، من چاره‌ای جز دستگیر کردنتون ندارم", effects:{morals:+3, trust:+2}, next:"lawrenceShooting" },
+      { text:"فقط برگردید خونه و همه‌چیز رو فراموش کنید، زمان همه‌چیزو درست می‌کند", effects:{morals:-3, trust:-2}, next:"lawrenceShooting" }
+    ]
+  }
+},
+
+lawrenceShooting:{
+  loc:"منطقه‌ی لارنس — صحنه‌ی تیراندازی",
+  blocks:[
+    {type:"narration", text:"یک مرد نفس‌نفس‌زنان وارد اداره می‌شود: «کمک کنید، همین الان توی خیابون لارنس یه نفر به یه زن و بچه شلیک کرده!»"},
+    {type:"speaker", who:"بلیک", text:"این دیگه چیه؟ تا حالا همچین چیزی ندیده بودم، همه‌جا پر خونه. پرسنل اورژانس گفت مادر بچه را بغل کرده بود که گلوله بهش نخورد ولی گلوله‌ها از بدنش رد شدن و به بچه خوردند، هر دوشون همون لحظه تمام کردند. من دیگه تحمل این شغل لعنتی رو ندارم، می‌خوام بزارم برم. ادامه‌دادن واسم هرروز سخت‌تر و سخت‌تر می‌شه."}
+  ],
+  choice:{
+    options:[
+      { text:"اگه ما هم بریم، پس کی باید انجامش بده؟ بالاخره یکی باید فداکاری کند", effects:{sanity:-3, bond:+1}, next:"lawrenceAccept" },
+      { text:"اگه می‌خوای بری جلوتو نمی‌گیرم، ولی قبلش باید کمکم کنی این قاتل رو بگیرم", effects:{bond:+2, sanity:+1}, next:"lawrenceAccept" }
+    ]
+  }
+},
+
+lawrenceAccept:{
+  loc:"منطقه‌ی لارنس",
+  blocks:[
+    {type:"speaker", who:"بلیک", text:"توی این شهر هیچ‌وقت همچین چیزی اتفاق نیفتاده. حتما کار همون بی‌شرفه‌ست، داره باهامون بازی می‌کند. باید پرونده را قبول کنیم."}
+  ],
+  choice:{
+    options:[
+      { text:"باشه، ولی بعد از یکم بررسی باید برگردیم سر پرونده‌ی خودمون", effects:{evidence:-1}, next:"lawrenceWitness" },
+      { text:"ارزش بررسی داره، پرونده رو قبول کن", effects:{evidence:+2, sanity:-1}, next:"lawrenceWitness" }
+    ]
+  }
+},
+
+lawrenceWitness:{
+  loc:"منطقه‌ی لارنس",
+  blocks:[
+    {type:"speaker", who:"بلیک", text:"چندتا شاهد هستن که قاتل رو از نزدیک دیدن. چندتا بچه که توی پارک بازی می‌کردن یه مردو دیدن که از وسط بوته‌ها پریده و با سرعت زیاد داشته می‌رفته سمت خیابون استون. کمی چاق، با لباس قرمز. احتمالا همونی‌ست که دنبالشیم."}
+  ],
+  choice:{
+    options:[
+      { text:"همین الان به تمام نیروها بگو برای گشت جمع شن، باید دوربین‌ها رو هم چک کنیم", effects:{evidence:+2}, next:"lawrenceForensics" },
+      { text:"توی صحنه پوکه‌ی اسلحه داریم، باید اسلحه و نوع گلوله رو بررسی کنیم، شاید روش اثر انگشت باشه", effects:{evidence:+2}, next:"lawrenceForensics" }
+    ]
+  }
+},
+
+lawrenceForensics:{
+  loc:"منطقه‌ی لارنس",
+  blocks:[
+    {type:"evidence", text:"گلوله از کالیبر ۲۲ است و روی پوکه اثر انگشت یک نفر دیده نمی‌شود، اما با آزمایش، اگه اثر انگشت روی اسلحه پیدا شود، می‌توانیم از آن به‌عنوان مدرک استفاده کنیم."},
+    {type:"speaker", who:"بلیک", text:"لعنت بهش، انگار آب شده رفته توی زمین، هیچی نداریم. چند دقیقه پیش رئیس زنگ زد گفت خبرنگارها دم ساختمون جمع شدن، دنبال جوابن. ویلیام، باید یه کاری بکنیم."}
+  ],
+  choice:{
+    options:[
+      { text:"دوربین ماشین‌های عبوری رو چک نکردیم، هنوزم دیر نشده، می‌توانیم بگیریمش", effects:{evidence:+2}, next:"lawrenceCamera" },
+      { text:"باید با خانواده‌شون صحبت کنیم، شاید چیزی بدونن", effects:{trust:+1}, next:"lawrenceFamily" }
+    ]
+  }
+},
+
+lawrenceCamera:{
+  loc:"خانه‌ی شاهد",
+  blocks:[
+    {type:"speaker", who:"بلیک", text:"اطلاعیه دادن توی روزنامه جواب داد، یه نفر زنگ زد گفت که توی اون ساعت داشته از روبه‌روی پارک رد می‌شده، یه مرد با لباس قرمز را دیده که داشته با سرعت فرار می‌کرده. ماشینش دوربین دارد، باید بریم سراغش."},
+    {type:"speaker", who:"بلیک", text:"باهاش حرف زدم، گفت مرده چاق بود و یه لباس قرمز پوشیده بود با یه شلوار جین آبی. توی دوربین چی پیدا کردی؟"},
+    {type:"speaker", who:"ویلیام", text:"دوربین خرابه، چیزی ضبط نشده. بی‌شرف خوش‌شانس."},
+    {type:"speaker", who:"بلیک", text:"مطمئنی؟ ولی راننده گفت دوربین رو تازه خریده... لعنت بهش، باید بازم بگردیم."}
+  ],
+  choice:{
+    options:[
+      { text:"یه چیز عجیب توی حرف ویلیام بود، ولی الان وقتش نیست", effects:{bond:-1}, next:"robinsonHouse" },
+      { text:"باید پرونده رو ادامه بدیم", effects:{}, next:"robinsonHouse" }
+    ]
+  }
+},
+
+lawrenceFamily:{
+  loc:"خانه‌ی خانواده‌ی رابینسون",
+  blocks:[
+    {type:"speaker", who:"بلیک", text:"تسلیت می‌گم، واقعا دلمون نمی‌خواد این کار را بکنیم ولی مجبوریم چندتا سوال بپرسیم. آیا کسی بوده که با شما یا همسرتون مشکل داشته باشد و بخواد شما را آزار بدهد؟"},
+    {type:"speaker", who:"راجر رابینسون", text:"قاتل همسرم اون بیرونه و شما اینجایید؟ فکر می‌کنی اگه می‌دانستم کی این کار رو کرده اینجا نشسته بودم؟ شماها نمی‌فهمید. ما فقط داشتیم زندگیمونو می‌کردیم. من یه کارگر ساختمانم که تا حالا حتی با کسی بحث نکردم، چه برسه کاری کنم که بخواد خانواده‌ام را بکشد. همسرم یه زن سادہ بود که همه دوستش داشتند، همه‌ی زندگیش را صرف من و دختردم می‌کرد. دختردم، سانی، همه او را سانی صدا می‌کردند چون هرروز وقتی خورشید بیرون می‌آمد می‌توانستی صداشو توی محله بشنوی، پرانرژی‌ترین دختری بود که می‌توانستم داشته باشم. خواهش می‌کنم پیداش کنید، من باید بدونم چرا خانواده‌ی منو انتخاب کرد."}
+  ],
+  choice:{
+    options:[
+      { text:"حرف‌هاش رو یادداشت می‌کنم، شاید بعدا به دردمون بخوره", effects:{trust:+1}, next:"robinsonHouse" }
+    ]
+  }
+},
+
+robinsonHouse:{
+  loc:"بیمارستان ویلیرا",
+  blocks:[
+    {type:"narration", text:"رئیس از پشت تلفن فریاد می‌زند: «کجایین پسرا؟ سریع خودتون رو برسونید بیمارستان همین حالا!»"},
+    {type:"speaker", who:"دکتر", text:"چند ساعت پیش به یه زن توریست سی‌و‌دو ساله حمله شده و توانسته از دست طرف فرار کند. روی گردن و بدنش اثار کبودی است، می‌خواسته خفه‌اش کند. در حال حاضر زیاد حالش خوب نیست، شوکه شده، متاسفانه فعلا نمی‌توانم اجازه بدهم باهاش حرف بزنید."}
+  ],
+  choice:{
+    options:[
+      { text:"چه بخوای چه نخوای، ما همین حالا باید ببینیمش دکتر", effects:{morals:-1}, next:"touristVictim" },
+      { text:"درک می‌کنیم دکتر، منتظر می‌مانیم، بهمون اطلاع بدید", effects:{morals:+1}, next:"touristVictim" }
+    ]
+  }
+},
+
+touristVictim:{
+  loc:"بیمارستان ویلیرا",
+  blocks:[
+    {type:"speaker", who:"قربانی", text:"یه مرد تقریبا سی‌و‌سه‌ساله از من خواست کمک کنم وسایلش را بگذارم توی ماشینش، دستش شکسته بود. وقتی رفتم طرف ماشین، دیگه چیزی یادم نیست. وقتی بیدار شدم توی یه زیرزمین بودم. مدتی آنجا بودم، بعدش مرد برگشت، عصبانی بود، رفت پشت سرم و یه طناب انداخت دور گردنم و شروع کرد به خفه‌کردنم. وقتی به‌هوش آمدم دیگه کسی آنجا نبود، احتمالا فکر کرده بود که مردم. توانستم در را باز کنم و بروم بیرون و کمک بخواهم. خواهش می‌کنم بگیرینش، اگه کاری نکنید او دوباره می‌آید سراغم."}
+  ],
+  choice:{
+    options:[
+      { text:"استراحت کن، نگران نباش، پیداش می‌کنیم، همه‌چیزو بسپار به ما", effects:{trust:+2, evidence:-2}, next:"greenPalm" },
+      { text:"می‌دونم سخته، ولی به کمکت نیاز داریم، می‌تونی کمکمون کنی خونه‌اش رو پیدا کنیم؟", effects:{evidence:+3}, next:"greenPalm" }
+    ]
+  }
+},
+
+greenPalm:{
+  loc:"محله‌ی گرین پالم",
+  blocks:[
+    {type:"narration", text:"از راننده‌ی آمبولانس می‌پرسند که جسد، یا قربانی، کجا پیدا شده. محله‌ی گرین پالم، محله‌ی بزرگی نیست، راحت پیدایش می‌کنند. یه تابلو بود، محله‌ی گرین پالم، در خانه‌ای آبی‌رنگ."},
+    {type:"narration", text:"پاول راکس در خانه‌اش در محله‌ی گرین دستگیر شد."},
+    {type:"speaker", who:"ویلیام", text:"ما یه قربانی داریم که می‌گه توسط تو دزدیده شده و می‌خواستی بکشیش. حتی همسایه‌هات هم شهادت دادن که از خونه‌ی تو بیرون آمده در حالی که داشته جیغ می‌کشیده. حرفی برای گفتن داری؟"},
+    {type:"speaker", who:"پاول", text:"آره، وکیل می‌خوام، شماره‌اش توی کیفمه."}
+  ],
+  choice:{
+    options:[
+      { text:"اگه اعتراف کنی شاید بتونیم در مجازاتت تخفیف بگیریم", effects:{morals:+1}, next:"paulSilence" },
+      { text:"می‌دونی اینطوری ما بیشتر بهت شک می‌کنیم، مگه نه؟", effects:{morals:-1}, next:"paulSilence" }
+    ]
+  }
+},
+
+paulSilence:{
+  loc:"کلانتری",
+  blocks:[
+    {type:"speaker", who:"پاول", text:"من بازی سکوت رو خیلی دوست دارم، تا هروقت که شما دلتون بخواد می‌توانم سکوت کنم. فقط به وکیلم بگید بیاد."},
+    {type:"speaker", who:"بلیک", text:"مطمئنم یه چیزی را قایم می‌کند، احتمالا قتل‌های قبلی کار خودشه، باید حکم بگیریم برای گشتن خونه و ماشینش."},
+    {type:"narration", text:"هشت ساعت بعد، قاضی بالاخره حکم صادر می‌کند."},
+    {type:"speaker", who:"بلیک", text:"این دیگه چجور خونه‌ایه؟ با این بو نمی‌توانم حتی نفس بکشم. تمام خونه‌اش را با مواد شوینده شسته، همه‌ی وسایل دارند برق می‌زنند."}
+  ],
+  choice:{
+    options:[
+      { text:"می‌خواسته مدارک رو پاک کنه، امکان ندارد چیزی پیدا کنیم", effects:{sanity:-1}, next:"paulHouseSearch" },
+      { text:"می‌دانسته داریم می‌آییم، بازم شاید یه مدرک جا مانده باشد", effects:{evidence:+1}, next:"paulHouseSearch" }
+    ]
+  }
+},
+
+paulHouseSearch:{
+  loc:"خانه‌ی پاول",
+  blocks:[
+    {type:"speaker", who:"بلیک", text:"نه طنابی هست و نه مدرکی که به دردمون بخورد."}
+  ],
+  choice:{
+    options:[
+      { text:"پزشک قانونی رو خبر کن، نمی‌تونه همه‌چیزو پاک کنه، قطعا ردی از قربانی مانده", effects:{evidence:+2}, next:"paulEvidenceResult" },
+      { text:"اطراف خونه‌اش، سطل آشغال‌ها رو باید بگردیم، وقت نداشته وسایل رو جای دوری ببرد", effects:{evidence:-1}, next:"paulEvidenceResult" }
+    ]
+  }
+},
+
+paulEvidenceResult:{
+  loc:"اداره‌ی پزشکی قانونی",
+  blocks:[
+    {type:"evidence", text:"همه‌ی مدارک توسط مواد شوینده از بین رفته، فقط چند تار موی زنانه و مقداری خون پیدا کردیم، ولی مدارک به‌شدت آسیب دیده‌اند و قابل استناد نیستند. (یا: سطل‌های آشغال چند ساعت پیش توسط شهرداری خالی شده‌اند و رفته‌اند محل تجمع زباله، حتی اگر چیزی هم بوده، پیدا کردنش دیگر ممکن نیست.)"},
+    {type:"speaker", who:"بلیک", text:"دیگه کاری از دستمون برنمی‌آید، باید بفرستیمش دادگاه. هنوز شهادت قربانی و همسایه‌هاش رو داریم، نمی‌تونه از زیرش در برود."}
+  ],
+  choice:{
+    options:[
+      { text:"موافقم، منتقلش کن به بازداشتگاه", effects:{}, next:"weeksLaterRelease" },
+      { text:"آره، ولی قبلش باید باهاش حرف بزنم", effects:{bond:+1}, next:"weeksLaterRelease" }
+    ]
+  }
+},
+
+weeksLaterRelease:{
+  loc:"کلانتری",
+  blocks:[
+    {type:"narration", text:"بیست‌و‌دو روز بعد..."},
+    {type:"speaker", who:"بلیک", text:"ویلیام، خبر داری اون یارو که به توریست حمله کرده بود را آزادش کردند؟ زنه نرفت دادگاه شهادت بدهد، مدارک هم کافی نبوده. شنیدم وکیلش هم خیلی حرفه‌ای‌ست. معلوم نیست قاضی‌ها دارند چی‌کار می‌کنند، هنوز بوی گند خونه‌اش توی دماغمه، نمی‌دانم چطور گذاشتند برود. الان واقعا حالم بده، دوست داری بریم یه قهوه بخوریم؟"}
+  ],
+  choice:{
+    options:[
+      { text:"آره چرا که نه، منم واقعا بهش نیاز دارم", effects:{bond:+2, sanity:+1}, next:"cafeScene" },
+      { text:"ببخشید ولی باید تنها بری، باید مدارک رو دوباره بررسی کنم", effects:{evidence:+1, bond:-2}, next:"saraDisappears" }
+    ]
+  }
+},
+
+cafeScene:{
+  loc:"کافه",
+  blocks:[
+    {type:"speaker", who:"بلیک", text:"می‌دانی ویلیام، الان که به گذشته نگاه می‌کنم حس می‌کنم همه‌چیز عالی بود، ولی واقعیت ندارد، قبلا هم همه‌چیز مزخرف بود. خستم از این‌همه تکرار، از این‌همه درد لعنتی. انگار قرار نیست تموم بشه. فقط می‌خوام یه روز ذهنم خالی بشه، این افکار لعنتی از سرم بیرون بیایند، فقط سکوت توی سرم بماند."}
+  ],
+  choice:{
+    options:[
+      { text:"اگه راهی پیدا کردی به منم بگو، واقعا نیازش دارم", effects:{sanity:-1, bond:+2}, next:"rogerCafe" },
+      { text:"نوستالژی همینه، چند سال بعد از این روزها هم لذت می‌بری", effects:{sanity:+1}, next:"rogerCafe" }
+    ]
+  }
+},
+
+rogerCafe:{
+  loc:"کافه",
+  blocks:[
+    {type:"narration", text:"در کافه باز می‌شود و راجر رابینسون وارد می‌شود."},
+    {type:"speaker", who:"راجر رابینسون", text:"بهتون خوش می‌گذرد، مگه نه؟ وقتی زن و بچه‌ام مردند و زندگیم برام با مرگ فرقی نداره، وقتی چیزی از گلوم پایین نمی‌رود. شما واقعا انسانید، چطور می‌توانید اینجا بنشینید قهوه بخورید وقتی قاتل خانواده‌ام آزاده و من دارم توی آتش جهنم می‌سوزم."}
+  ],
+  choice:{
+    options:[
+      { text:"باشه، بعدا می‌بینمت. خوب بگرد، بهترین کاراگاه دنیا", effects:{morals:-2, sanity:-1}, next:"saraDisappears" }
+    ]
+  }
+},
+
+saraDisappears:{
+  loc:"خیابان گرین، پلاک ۱۱",
+  blocks:[
+    {type:"narration", text:"هشت روز بعد، رئیس پلیس خبر می‌دهد: یه دختربچه دیشب گم شده. خانوادہ‌اش می‌گویند عادت نداشته بی‌خبر جایی برود. توی اتاقش یه طناب بلند و یه پوکه‌ی گلوله پیدا شده."},
+    {type:"speaker", who:"ویلیام", text:"می‌شه بگید دیشب دقیقا چه اتفاقی افتاد؟"},
+    {type:"speaker", who:"مادر سارا", text:"من عادت دارم هرروز صبح زود بلند شوم تا برای مدرسه‌ی سارا تغذیه آماده کنم. وقتی رفتم بیدارش کنم که بره به مدرسه، دیدم نیست. امکان ندارد تنها برود بیرون، او همچین دختری نیست، حتما اتفاقی افتاده."}
+  ],
+  choice:{
+    options:[
+      { text:"درکتون می‌کنم، مأمورها همین الان هم دارند دنبالش می‌گردند", effects:{}, next:"saraRopeClue" },
+      { text:"ما اطلاعات بیشتری نیاز داریم، لطفا بیشتر فکر کنید", effects:{evidence:+2}, next:"saraRopeClue" }
+    ]
+  }
+},
+
+saraRopeClue:{
+  loc:"خیابان گرین، پلاک ۱۱",
+  blocks:[
+    {type:"speaker", who:"مادر سارا", text:"دیشب یه صدایی آمد، خواستم بروم اتاق سارا تا بدونم حالش خوبه یا نه، ولی خیلی خسته بودم، چند لحظه بعد دوباره خوابم برد. همه‌اش تقصیر منه، اگه این‌قدر آدم بی‌دردنخوری نبودم..."}
+  ],
+  choice:{
+    options:[
+      { text:"همه‌چی درست می‌شه، لازم نیست نگران باشید", effects:{}, next:"letterArrives" },
+      { text:"طناب چی؟ از قبل توی خونه‌تون بوده؟", effects:{evidence:+2}, next:"saraRopeNo" }
+    ]
+  }
+},
+
+saraRopeNo:{
+  loc:"خیابان گرین، پلاک ۱۱",
+  blocks:[
+    {type:"speaker", who:"مادر سارا", text:"نه، هرگز، اولین باره که می‌بینمش، حتما یه نفر آن را آنجا گذاشته."}
+  ],
+  choice:{
+    options:[
+      { text:"باید ادامه بدیم، شاید زمان مهم‌تر از حرف‌زدنه", effects:{}, next:"letterArrives" }
+    ]
+  }
+},
+
+letterArrives:{
+  loc:"اداره‌ی پلیس",
+  blocks:[
+    {type:"narration", text:"یازده ساعت پس از ناپدید شدن سارا، یک نوجوان با یه نامه وارد کلانتری می‌شود."},
+    {type:"speaker", who:"مأمور جکی", text:"چیه این؟ ... مگه نمی‌بینی نامه‌ست؟ ... چجور نامه‌ایه؟"},
+    {type:"speaker", who:"دنیل", text:"نمی‌دانم، واقعا یه نفر بهم سیصد دلار داد گفت اینو بیارم اینجا."},
+    {type:"letter", text:"من کسی‌ام که سارا را دزدیده. وقتی گریه‌های مادرش را شنیدم، قلب سنگی‌ام به لرزه افتاد، یاد مادرم افتادم. او تنها کسی بود که بهم اهمیت می‌داد، تنها نور زندگی‌ام. شاید وقتی که رفت همه‌چی شروع شد و من تبدیل شدم به چیزی که الان هستم. من تا چند روز دیگر خودم را تسلیم می‌کنم و مجازاتم را می‌پذیرم و سارا را به شما تحویل می‌دهم. وقتشه اشتباهاتم را جبران کنم. خواهش می‌کنم از خانواده‌ی قربانیانم بخواید مرا ببخشند. موقعیت مکانی: ۳۳.۱۱.۶۹۶.۱۱"}
+  ],
+  choice:{
+    options:[
+      { text:"اگه چیزی پیدا شد باهام تماس بگیر دکتر، این خیلی مهمه", effects:{evidence:+2}, next:"massGrave" },
+      { text:"دکتر رو پیدا کن، روی خانواده‌ها تمرکز کن، سال‌های سختی را گذرانده‌اند", effects:{trust:+2}, next:"massGrave" }
+    ]
+  }
+},
+
+massGrave:{
+  loc:"اتوبان شرقی — قبر دسته‌جمعی",
+  blocks:[
+    {type:"narration", text:"در نزدیکی جاده‌ی فرعی اتوبان شرقی، اولین قربانی پیدا شد، در یک قبر کم‌عمق دفن شده بود، ولی این فقط اولی‌اش بود؛ بعد از چند ساعت کندن، سه جسد دیگر هم پیدا شد. چیزی به‌جز استخوان باقی نمانده بود."},
+    {type:"evidence", text:"مدت زیادی از دفن اجساد می‌گذرد. توانستیم هویت یکی از اجساد را با استفاده از سوابق دندان‌پزشکی شناسایی کنیم؛ یازده سال پیش خانواده‌اش گزارش گم‌شدنش را به پلیس داده بودند. بقیه اجساد با فاصله‌های زمانی متعدد به قتل رسیدند، احتمالا قاتل به مدت یازده سال فعال بوده است."},
+    {type:"speaker", who:"ویلیام", text:"قاتل گفته خودش را تسلیم می‌کند، ولی اعتمادی به حرفش نیست. حتی اگر خودش را تسلیم کند هم باید مدرک داشته باشیم. پسری که نامه را آورد، بهترین گزینه‌مان برای گرفتن قاتل است."}
+  ],
+  choice:{
+    options:[
+      { text:"اگه دوباره ببینیش می‌تونی تشخیصش بدی؟", effects:{evidence:+1}, next:"danielInterview" },
+      { text:"جزئیات بیشتری می‌تونی بهم بدی؟", effects:{evidence:+2}, next:"danielInterview" }
+    ]
+  }
+},
+
+danielInterview:{
+  loc:"کلانتری",
+  blocks:[
+    {type:"speaker", who:"دنیل", text:"یه مرد با ماسک سیصد دلار بهم داد، گفت نامه را بدهم به پلیس، چهره‌اش را ندیدم، ماسک داشت. فقط می‌دانم سفیدپوست بود و حدودا سی‌ساله. ابروهای پرپشتی داشت، دماغش یکم گنده بود، تند‌تند هم دماغش را می‌خاراند. لباس قرمز هم پوشیده بود، با شلوار جین آبی."},
+    {type:"speaker", who:"ویلیام", text:"هی بلیک، من این پسر را می‌شناسم. او یکی از اعضای گروه «شبح سفید»ه، هر چند وقت یکبار توی کوچه‌های خلوت دردسر درست می‌کنند. ممکنه قاتل را بشناسد و داره بازیمون می‌دهد. برو دنبالش، هرکجا که می‌رود بهم اطلاع بده، مراقب باش چیزی نفهمد."}
+  ],
+  choice:{
+    options:[
+      { text:"باشه، تنهایی دنبالش می‌کنم", effects:{evidence:+1, sanity:-1}, next:"blakeShooting" }
+    ]
+  }
+},
+
+blakeShooting:{
+  loc:"محل نامعلوم",
+  blocks:[
+    {type:"narration", text:"شش ساعت بعد..."},
+    {type:"speaker", who:"بلیک", text:"ویلیام، به کمکت نیاز دارم همین الان."},
+    {type:"speaker", who:"ویلیام", text:"لعنتی، اینجا چه خبره؟ من فقط بهت گفتم مراقبش باش. چه غلطی کردی؟"},
+    {type:"speaker", who:"بلیک", text:"چیزی یادم نمی‌آید، فقط کنارش بیدار شدم، همین. قسم می‌خورم من کاریش نداشتم."},
+    {type:"speaker", who:"ویلیام", text:"ببین، درسته که یه بچه‌ست ولی اسلحه دستشه، تو مجبور بودی بهش شلیک کنی."},
+    {type:"speaker", who:"بلیک", text:"من بهش شلیک نکردم، نمی‌دانم چی شده، باید به بقیه خبر بدیم."},
+    {type:"speaker", who:"ویلیام", text:"بلیک، تو نمی‌دانی چی‌کار کردی، تو فقط از خودت دفاع کردی. اگه بقیه بیایند شاید قانون آزادت کند، اما شغلت و زندگیت فدا می‌شه. حتی اگه قانون تو را ببخشد، مردم تورو نمی‌بخشند، توی چشم آن‌ها تو یه بچه‌کشی. الان وقت حرف‌زدن نیست، فقط از اینجا برو، بقیه‌اش را من درست می‌کنم. برو خونه و چند روز مرخصی بگیر، فقط همین."},
+    {type:"speaker", who:"بلیک", text:"ولی من نمی‌توانم، مغزم کار نمی‌کند، کمک کن، خواهش می‌کنم."}
+  ],
+  choice:{
+    options:[
+      { text:"تو فقط شوکه شدی، همه‌چی درست می‌شه، فقط از اینجا برو", effects:{bond:+1, morals:-3, sanity:-2}, next:"saraLetter2" },
+      { text:"دهنتو ببند و کاری که می‌گم را بکن، این تنها راهه", effects:{bond:-1, morals:-4, sanity:-3}, next:"saraLetter2" }
+    ]
+  }
+},
+
+saraLetter2:{
+  loc:"خانه‌ی بلیک",
+  blocks:[
+    {type:"narration", text:"سه روز بعد..."},
+    {type:"speaker", who:"ویلیام", text:"حالت خوبه؟ توانستی با قضیه کنار بیایی؟ من واقعا بهت نیاز دارم، قرار بود قاتل سارا را تحویل بدهد ولی هنوز این کار را نکرده، باید بیشتر بگردیم."},
+    {type:"speaker", who:"بلیک", text:"تا حالا شده تو آینه نگاه کنی ولی خودت را نشناسی؟ فکر می‌کردم اگه یه روزی همچین کاری بکنم دیگر نتوانم به زندگیم ادامه بدهم، ولی الان هیچ حسی ندارم. نمی‌دانم چه مرگمه، حس می‌کنم آن پسر تنها کسی نبود که گلوله خورد، منم بودم، ولی توی سرم، چون هیچی یادم نمی‌آید، ذهنم خالی‌ست."}
+  ],
+  choice:{
+    options:[
+      { text:"ذهنت دارد کمکت می‌کند، اگه این کار را نکند دیوانه می‌شی", effects:{sanity:+1, bond:+1}, next:"saraFound" },
+      { text:"هر کاری که داری می‌کنی را ادامه بده، باید برگردی سرکار", effects:{sanity:-2}, next:"saraFound" }
+    ]
+  }
+},
+
+saraFound:{
+  loc:"محل نامعلوم",
+  blocks:[
+    {type:"narration", text:"نوزده ساعت بعد، نامه‌ی دوم می‌رسد، همراه با جسد سارا که در میان یک پتوی پر از گل‌های سرخ پیچیده شده بود؛ دختری که یازده ضربه چاقو خورده بود. قتل احتمالا در همان روز ناپدید‌شدن سارا صورت گرفته بود."},
+    {type:"letter", text:"حتی نزدیک به جایی که می‌خوام نیستم. اما از جایی که همه‌چی شروع شد خیلی دورم. و همین برای ادامه‌دادن کافی‌ست. بهشت همین‌جاست، فقط بدون آدم‌هاش، من دارم بهشت را می‌سازم. من گفته بودم که تحویلش می‌دهم و این کار را کردم. یه خدا هرگز زیر قولش نمی‌زند."}
+  ],
+  choice:{
+    options:[
+      { text:"سارا از همان روز اول مرده بود، ما از اولش هم باخته بودیم", effects:{sanity:-3}, next:"blakeRevenge" },
+      { text:"فقط می‌خواسته با سارا و خانواده‌اش بازی کند، شک دارم همچین آشغالی یه قلب داشته باشد", effects:{sanity:-1, morals:+1}, next:"blakeRevenge" }
+    ]
+  }
+},
+
+blakeRevenge:{
+  loc:"اداره‌ی پلیس",
+  blocks:[
+    {type:"speaker", who:"بلیک", text:"ویلیام، من دیگر نمی‌خوام دستگیرش کنم، می‌خوام به بدترین شکل ممکن بمیرد. حاضرم تمام عواقبش را گردن بگیرم. دیگر چیزی برای از دست‌دادن ندارم، بقیه‌اش فقط پوچی مطلقه."}
+  ],
+  choice:{
+    options:[
+      { text:"من می‌خوام دستگیر بشه، ولی نمی‌توانم بگم که قرار است جلوتو بگیرم", effects:{morals:+2, bond:+1}, next:"chiefRetires" },
+      { text:"ارزش ندارد، او به‌هر‌حال قرار است بمیرد، تو نمی‌توانی یه نفرو دوبار بکشی", effects:{morals:-2, sanity:-2}, next:"chiefRetires" }
+    ]
+  }
+},
+
+chiefRetires:{
+  loc:"اداره‌ی پلیس",
+  blocks:[
+    {type:"narration", text:"دو روز بعد..."},
+    {type:"speaker", who:"رئیس", text:"بعد از همه‌ی این اتفاقات، مردم و رسانه‌ها فکر می‌کنند پلیس بی‌کفایته، ولی من می‌دانم تک‌تک شما چقدر از خودگذشتگی کردید. اما مردم فقط نتیجه می‌خوان، آن‌ها شما را قهرمان می‌دانند نه انسان، پس واقعا یه قهرمان باشید برایشان. ماندن من دیگر برای هیچ‌کس سودی ندارد، اما نبودنم شاید به دستگیری قاتل کمک کند، یا حداقل مردم را آرام کند. ویلیام جایگزین من خواهد بود، او تنها کسی‌ست که می‌تواند این قاتل را بگیرد."}
+  ],
+  choice:{
+    options:[
+      { text:"بریم سراغ پرونده‌ی بعدی", effects:{}, next:"cemeteryVictim" }
+    ]
+  }
+},
+
+cemeteryVictim:{
+  loc:"قبرستان شهر",
+  blocks:[
+    {type:"narration", text:"چهار روز بعد، جسد زنی چهل‌ساله در قبرستان شهر پیدا می‌شود. جسد روی یکی از سنگ‌قبرها گذاشته شده بود، دستانش جفت شده و روی شکمش قرار گرفته، لباس‌های زیبا و گران پوشیده، و دورش پر از گلبرگ‌های گل بود."},
+    {type:"speaker", who:"بلیک", text:"روی بدنش جای چاقو و گلوله نیست، خفه هم نشده. قاتلمان بازم روشش را تغییر داده؟"}
+  ],
+  choice:{
+    options:[
+      { text:"ازش بعید نیست", effects:{}, next:"forensicLincey" },
+      { text:"نمی‌تونه کار اون باشه، این قتل زیادی شخصی‌ست", effects:{evidence:+1}, next:"forensicLincey" }
+    ]
+  }
+},
+
+forensicLincey:{
+  loc:"اداره‌ی پزشکی قانونی",
+  blocks:[
+    {type:"evidence", text:"جسد متعلق به لینسی بنکید است، مجرد و تنها زندگی می‌کرده. قبل از قتل رابطه داشته و توانستیم دی‌ان‌ای پیدا کنیم. زیر ناخن‌هایش پرزهای مخمل پیدا کردیم. مقتول ابتدا ضربه خورده به سرش، اما ضربه کشنده نبوده؛ در اصل مرگ به دلیل خفگی اتفاق افتاده، قاتل او را در یک فضای بسته قرار داده. مقتول تا آخرین لحظه تلاش می‌کرده بیرون بیاید، تمام ناخن‌هایش شکسته بودند."}
+  ],
+  choice:{
+    options:[
+      { text:"گزارش دی‌ان‌ای را سریع‌تر آماده کن و برام بفرست", effects:{evidence:+2}, next:"roadCameras" },
+      { text:"دنبال ارتباط قتل‌ها بگرد، باید بدونم خودشه یا نه", effects:{evidence:+1}, next:"roadCameras" }
+    ]
+  }
+},
+
+roadCameras:{
+  loc:"کلانتری",
+  blocks:[
+    {type:"speaker", who:"ویلیام", text:"بلیک، تمام نیروها را جمع کن، تمام دوربین‌های جاده‌ای را چک کن، باید تمام ماشین‌هایی که از آنجا گذشتند را چک کنیم، این‌بار نباید از دستمان فرار کند."},
+    {type:"narration", text:"سه ساعت بعد..."},
+    {type:"speaker", who:"بلیک", text:"الو رئیس، یه چیزی پیدا کردیم. یه روز قبل از پیدا‌شدن جسد، یه ماشین کنار جاده پارک می‌کند، یک ساعت توی ماشین می‌نشیند و بعد پیاده می‌شود، از توی گاوصندوق یه چمدان درمی‌آرد و به‌طرف قبرستان می‌رود. موقع رفتن چمدان خیلی سنگین است، اما موقع برگشت راحت حملش می‌کند. فکر کنم قاتل را گرفتیم."}
+  ],
+  choice:{
+    options:[
+      { text:"به قاضی زنگ بزن و حکم دستگیری بگیر، باید سریع باشیم", effects:{evidence:+2}, next:"jonathanArrest" },
+      { text:"بیشتر بررسی کن، نباید دوباره اشتباه کنیم، وقتی مطمئن شدی دستگیرش کن", effects:{morals:+2, evidence:+1}, next:"jonathanArrest" }
+    ]
+  }
+},
+
+jonathanArrest:{
+  loc:"اتاق بازجویی",
+  blocks:[
+    {type:"narration", text:"دو روز بعد، جاناتان فارین در فرودگاه دستگیر شد."},
+    {type:"speaker", who:"ویلیام", text:"جواب آزمایش دی‌ان‌ای رسیده، و چمدانی که مقتول توش خفه شده را توی خونه‌ی تو پیدا کردیم. سوال این‌جاست که چرا باید می‌مرد؟"},
+    {type:"speaker", who:"جاناتان", text:"چون لیوان مورد علاقه‌ام را شکست. می‌دانی، سال‌ها باهاش زندگی کردم، تمام این مدت او فقط زجر می‌داد، تحقیرم می‌کرد و هرچیزی که داشتم را مال خودش کرده بود. هیچ راه فراری نداشتم، هرچی که توی زندگی داشتم، الان دیگر مال او بود. شاید مسخره باشد ولی بعد از سال‌ها تحمل، یه روزی به جایی می‌رسی که حتی کوچک‌ترین چیز هم می‌تواند یه جهنم بشه. آن روز دعوامان شد، شروع کرد به پرت‌کردن چیزها طرفم، بعد لیوانم را پرت کرد. حتی آن لیوان را هم دوست نداشتم، اما او تنها چیزی بود که مال من بود. رفتم توی اتاقم، چوب بیسبال را برداشتم و یه ضربه زدم توی سرش. فکر کردم مرده، گذاشتمش توی چمدان، اما او نمرده بود، بعد شروع کرد به صدا‌کردنم، می‌خواست بگذارم از چمدان بیاید بیرون. راستش را بخوای، من نکشتمش، فقط کمکش نکردم، همان‌طور که او در این سال‌ها بهم کمک نکرده بود."}
+  ],
+  choice:{
+    options:[
+      { text:"ویلیام، قتل‌های دیگری که توی شهر افتاده هم کار توئه؟", effects:{evidence:+1}, next:"wandaVictim" },
+      { text:"از کاری که کردی پشیمونی؟", effects:{}, next:"wandaVictim" }
+    ]
+  }
+},
+
+wandaVictim:{
+  loc:"کلانتری",
+  blocks:[
+    {type:"narration", text:"سه روز بعد..."},
+    {type:"speaker", who:"بلیک", text:"یه قربانی جدید داریم، واندا سیدا. پدر و مادرش او را توی حیاط خانه پیدا کردند؛ خفه شده و یازده ضربه چاقو خورده، و صورتش با اسید سوزانده شده. مسئله‌ی اصلی این است که واندا قرار نبوده نزدیک خونه باشد، او توی شهر میری‌تاون درس می‌خوانده و شاهدها می‌گویند چند ساعت قبل از قتل توی دانشگاه بوده."},
+    {type:"speaker", who:"بلیک", text:"جسد کاملا شسته شده، اما چندتا تار مو پیدا کردیم. چند وقتیه دارم بهش فکر می‌کنم، احتمالا حدسم درست باشه؛ قاتل دارد مدرک می‌کارد. موهایی که پیدا کردیم متعلق به یک زندانی‌ست که زمان قتل توی زندان بوده، مثل برایان که بی‌گناه بود. قاتل مدرکی نمی‌گذارد مگر این‌که جعلی باشد."}
+  ],
+  choice:{
+    options:[
+      { text:"نباید بگذاریم بازیمان بدهد، تمام مدارک را چک کن، حتی اگه جعلی باشند", effects:{evidence:+3}, next:"jimmyShooting" },
+      { text:"بررسی کن ببین محل مشترکی بین افرادی که موهاشون پیدا شده هست یا نه", effects:{evidence:+2}, next:"jimmyShooting" }
+    ]
+  }
+},
+
+jimmyShooting:{
+  loc:"خیابان هرینسون، بخش غربی",
+  blocks:[
+    {type:"narration", text:"یازده روز بعد، تماسی می‌رسد: یه مورد تیراندازی در خیابان هرینسون، بخش غربی، یه نفر به یه بچه شلیک کرده."},
+    {type:"speaker", who:"بلیک", text:"می‌دانی ویلیام، مردم این شهر زیادی ساده‌اند که به ما امید بسته‌اند. ما هرگز نمی‌توانیم قاتل را بگیریم؛ اگر از قاتل کمک می‌خواستند شاید زودتر به نتیجه می‌رسیدند. ما باید آدم‌ها را نجات بدهیم ولی در اصل هیچ غلطی نمی‌کنیم."},
+    {type:"speaker", who:"ویلیام", text:"تمومش کن. ما راهی برای نجاتش نداشتیم، قبل از رسیدن ما و آمبولانس تمام کرده بود. ولی ما یه شاهد داریم، هنوز برای درست‌کردن اوضاع دیر نشده."}
+  ],
+  choice:{
+    options:[
+      { text:"بریم سراغ شاهد", effects:{}, next:"witnessJimmy" }
+    ]
+  }
+},
+
+witnessJimmy:{
+  loc:"کلانتری",
+  blocks:[
+    {type:"speaker", who:"شاهد", text:"من و جیمی داشتیم از مدرسه برمی‌گشتیم خونه، یه مرد آمد جلومان، بهمان گفت که حاضره چند دلار بابت جابه‌جاکردن جعبه‌هاش بدهد. من می‌خواستم قبول کنم اما جیمی گفت که باید برویم. یهو مرد برگشت و پرسید چند سالتونه، من گفتم نه سال، و جیم گفت که یازده سالشه، و او اسلحه‌اش را درآورد و شروع کرد به شلیک‌کردن. صدایش هنوز توی سرم است، یازده تا گلوله بهش شلیک کرد، و قاتل تمام گلوله‌ها را می‌شمرد. صدایش را خوب می‌شناسم."}
+  ],
+  choice:{
+    options:[
+      { text:"چیزی از چهره یا لباساش یادته؟", effects:{evidence:+2}, next:"rogerSuicide" },
+      { text:"جیمی واقعا چندسالشه؟", effects:{}, next:"rogerSuicide" }
+    ]
+  }
+},
+
+rogerSuicide:{
+  loc:"کلانتری",
+  blocks:[
+    {type:"narration", text:"سه روز بعد..."},
+    {type:"speaker", who:"بلیک", text:"راجر رابینسون خودکشی کرده، از پنجره‌ی خونه‌اش پایین پرید."},
+    {type:"speaker", who:"ویلیام", text:"حالت چطوره؟"},
+    {type:"speaker", who:"بلیک", text:"مگه مهمه؟ راستش را بخوای، خوبم، دیگر برام عادی شده. اگه قرار است فردا بمیرند، چرا امروز نه؟ اگه گناهکار باشند می‌روند جهنم و اگه نباشند می‌روند بهشت، این مسیری‌ست که همه باید بروند، راه فراری نیست."}
+  ],
+  choice:{
+    options:[
+      { text:"می‌دانم که این فکر برات یه راه فرار از درده، اما این مسیری نیست که تو بخواهی بروی", effects:{sanity:+2, bond:+1}, next:"numberEleven" },
+      { text:"امیدوارم همه‌ی قربانی‌ها آدم‌های خوبی بوده باشند، آن‌ها لایق یه رستگاری‌اند", effects:{sanity:-2}, next:"numberEleven" }
+    ]
+  }
+},
+
+numberEleven:{
+  loc:"کلانتری",
+  blocks:[
+    {type:"narration", text:"دو روز بعد..."},
+    {type:"speaker", who:"بلیک", text:"فکر می‌کنم ما کور بودیم، قاتل همیشه جلوی چشممان بود، ما ندیدیمش. پرونده را بررسی کردم، توی کل پرونده عدد یازده تکرار شده. این عدد همان امضای قاتل است، تنها سرنخی که شاید بتواند ما را بهش برساند."},
+    {type:"speaker", who:"ویلیام", text:"معنی‌اش چیه؟ یه عدد خاص برای قاتل؟"},
+    {type:"speaker", who:"بلیک", text:"عدد یازده فقط به خودش بخش‌پذیره، نشان‌دهنده‌ی خودکامگی و غروره؛ این عدد نماد نبوغ و شهود و روشن‌بینی‌ست، در اصل مرز بین پیامبری و دیوانگی."}
+  ],
+  choice:{
+    options:[
+      { text:"این عدد کمکی به ما نمی‌کند، فقط یه بی‌راهه‌ست", effects:{evidence:-2}, next:"barFight" },
+      { text:"از تیم کمک بگیر، بگذار ببینم چی می‌توانیم دربارش بفهمیم", effects:{evidence:+2}, next:"barFight" }
+    ]
+  }
+},
+
+barFight:{
+  loc:"بار ونتام",
+  blocks:[
+    {type:"narration", text:"هفت روز بعد، گزارش درگیری در بار ونتام می‌رسد: یه نفر می‌خواسته یه زن را خفه کند."},
+    {type:"speaker", who:"بلیک", text:"دستگیرش کردیم، او همان پاوله، کسی که به زن توریست حمله کرده بود و دادگاه آزادش کرد. ساعت یازده می‌رود توی بار و زن بارتندر را کتک می‌زند و شروع می‌کند به خفه‌کردنش با یه طناب، اما یه نفر می‌رسد و سریع جلوش را می‌گیرد. فکر می‌کنم این همان قاتلمان است، همه‌چی جور درمی‌آید، طناب و عدد یازده."},
+    {type:"speaker", who:"ویلیام", text:"الان وقت خوبی برای گشتن خونه‌اش است، او وقت نداشته خونه‌اش را تمیز کند. برو و یه مدرک واقعی برام پیدا کن."}
+  ],
+  choice:{
+    options:[
+      { text:"با این مدارک به جایی نمی‌رسیم", effects:{}, next:"mariFound" },
+      { text:"یک‌بار فرار کرده، اگه اشتباه کنیم بازم می‌رود", effects:{morals:+1}, next:"mariFound" }
+    ]
+  }
+},
+
+mariFound:{
+  loc:"خانه‌ی پاول",
+  blocks:[
+    {type:"evidence", text:"او می‌دانسته قرار است دستگیر شود، تمام خانه‌اش را تمیز کرده بود، حتی خونه‌ی والدینش و ماشینش را هم گشتیم، چیزی پیدا نکردیم؛ به‌جز چیزی که خودش برایمان گذاشته بود: یه گلوله و یه طناب، دقیقا مثل خانه‌ی سارا. روی طناب لکه‌ی خون و تکه‌های ریز پوست است، احتمالا برای مقتوله."},
+    {type:"speaker", who:"ویلیام", text:"تنها بازمانده‌ی زن توریست را پیدا کن، او تنها راه نجات‌مان است."},
+    {type:"narration", text:"چند ساعت بعد..."},
+    {type:"speaker", who:"بلیک", text:"بالاخره پیداش کردم، اسم توریست ماری بلاست. بعد از بررسی متوجه شدم که او در شهر کناری دستگیر شده، می‌خواسته یه زن را خفه کند که زن مقاومت کرده و توانسته فرار کند."},
+    {type:"speaker", who:"ویلیام", text:"یعنی ممکن است همدست پاول بوده باشد، نه یه قربانی."}
+  ],
+  choice:{
+    options:[
+      { text:"هر چیزی توی این پرونده ممکنه، بریم سراغش", effects:{}, next:"mariConfession" }
+    ]
+  }
+},
+
+mariConfession:{
+  loc:"اتاق بازجویی",
+  blocks:[
+    {type:"speaker", who:"ویلیام", text:"تو به قتل‌هایی که در فریمانت افتاده مرتبطی، مگه نه؟ ارتباطت با پاول چیه؟ ما او را دستگیر کردیم، دیگر راه فراری نداری."},
+    {type:"speaker", who:"ماری", text:"یازده ماه پیش یه آگهی کار دیدم توی شهر شما، حقوق و مزایای خوب، هرچیزی که می‌خواستم. واسه همین آمدم به فریمانت. کسی که آگهی را گذاشته بود پاول بود، قرار بود مرا ببرد به محل کار، اما از زیرزمین خانه‌اش سر درآوردم؛ یه اتاق خالی که فقط یه تخت و یه ساعت دیواری داشت. چند ساعتی جیغ زدم اما کسی نیامد، تا این‌که ساعت زنگ خورد، سرساعت یازده پاول آمد سراغم، می‌خواست باهام رابطه داشته باشد، وقتی مقاومت کردم شروع کرد به کتک‌زدنم تا از حال رفتم. وقتی به‌هوش آمدم گفت: می‌دانی چرا اینجایی؟ تو یه گناه بزرگ کردی، من می‌خوام آزادت کنم اما قبلش باید به گناهت اعتراف کنی. یازده ماه تمام او هر شب سرساعت می‌آمد و هرکاری دوست داشت می‌کرد، و من به تمام رازها و گناهانی که کرده بودم اعتراف کردم، حتی دزدیدن یه آب‌نبات چوبی در بچگی‌ام، همش دنبال دلیلی بودم که چرا دارم مجازات می‌شوم.\n\nبالاخره یه روز قبل از آزادی‌ام، وقتی پاول آمد یه دختر همراهش بود، بی‌هوش بود. پاول بهم گفت که این جایگزین توعه، تو دیگر بدردم نمی‌خوری و فردا تو قرار است بمیری. پاول رفت و من با دختر تنها ماندم. دختر آنجا بود، تکان نمی‌خورد، فقط آرام نفس می‌کشید، ساعت‌ها بهش خیره شدم، چهره‌اش زیبا بود، دقیقا مثل یه فرشته. دنبال یه جواب بودم، حق کیست که زنده بماند، من یا او؟ واقعا جوابش زیادم سخت نبود. دستم را دور گردنش انداختم و شروع کردم به خفه‌کردنش، چندین بار خفه‌اش کردم، باید مطمئن می‌شدم که مرده.\n\nپاول ساعت یازده برگشت، لبخند می‌زد، ازم پرسید چه گناهی کردی که لایق اینجا بودنی؟ گفتم: قتل. گفت که آزادی، اما باید برایم یه کاری کنی. شما بازیگرهای خوبی هستید اما داستان از قبل نوشته شده، گفتید دستگیرش کردید؟ او فقط دارد خودنمایی می‌کند، شما فقط دور مرکز می‌چرخید و هیچ‌وقت نمی‌توانید بهش نزدیک شوید. چند وقت پیش دوباره بهم زنگ زد، گفت که باید یه نفر دیگر را به همان شیوه بکشم تا باز بتواند پلیس را بازی بدهد، من هم مجبور بودم کاری را که خواست انجام بدهم، اما موفق نشدم؛ این تنها شانسی‌ست که شما دارید."}
+  ],
+  choice:{
+    options:[
+      { text:"می‌دانی دلم برات می‌سوزد، اما راهی برای نجاتت ندارم", effects:{morals:-2}, next:"paulTrial" },
+      { text:"می‌تونی توی دادگاه برعلیهش شهادت بدی؟", effects:{morals:+2, evidence:+2}, next:"paulTrial" }
+    ]
+  }
+},
+
+paulTrial:{
+  loc:"دادگاه",
+  blocks:[
+    {type:"narration", text:"سه ماه بعد، دادگاه پاول بعد از شهادت ماری برگزار می‌شود."},
+    {type:"speaker", who:"قاضی", text:"با شنیدن حرف‌های شاهد، آیا بازهم ادعای خدایی دارید؟"},
+    {type:"speaker", who:"پاول", text:"می‌دانی، اگه همین الان توی همین دادگاه شروع کنی به فحش‌دادن خدات، او نمی‌تواند بکشدت، ولی مطمئن باش من می‌توانم. حالا خدای تو کیست؟ ... خدا را نمی‌شه با گلوله کشت، فقط یه راه برای کشتن خدا هست: پاک‌کردنش از ذهن مردم. من با قتل‌هایم خدا را کشتم تا شما را آزاد کنم. توی این شهر دیگر کسی به خدا ایمان ندارد، آن‌ها بیشتر از خدا به من اعتقاد دارند. دادگاه من از کلیسا شلوغ‌تره."},
+    {type:"narration", text:"پاول رو به هیئت منصفه می‌کند و با لبخند شروع به شمردن می‌کند: یک، دو، سه... یازده. وقتی شمارشش تمام شد گفت: «خدا به شما ده فرمان داد، و من یازده. خدا شما را با زندگی عذاب داد، و من با مرگ آرامش.»"},
+    {type:"speaker", who:"روانشناس", text:"من هر روز به افراد زیادی مشاوره می‌دهم و تضمین می‌کنم پاول یک دیوانه به تمام معناست؛ او یازده سال تمام صرف کرده تا یازده قتل انجام بدهد تا فرمان‌های ده‌گانه‌ی خدا را نقض کند. او عمیقا باور دارد که یک منجی‌ست که زاده شده تا مردم را نجات دهد. این سطح از سردی در قاتل‌های زنجیره‌ای نادر است."},
+    {type:"narration", text:"نماینده‌ی هیئت منصفه: «با توجه به شهادت شهود و مدارک مندرج، تمامی هیئت منصفه به این نتیجه رسیدند که متهم پاول در ارتکاب یازده فقره قتل، اقدام به آدم‌ربایی و تعرض و شکنجه‌ی روحی و جسمی گناهکار شناخته می‌شود، و ادعای او مبتنی بر دیوانگی جعلی و ساختگی‌ست. ما او را به اعدام محکوم می‌کنیم.»"}
+  ],
+  choice:{
+    options:[
+      { text:"مرگ برایش مجازات نیست، یه پاداشه؛ او کاری که می‌خواست را قبل از اینکه بگیرنش انجام داده", effects:{sanity:-2}, next:"finalLetter" },
+      { text:"هنوز زنده‌ست، تا وقتی نمیرد هیچی درست نمی‌شه", effects:{sanity:-1}, next:"finalLetter" }
+    ]
+  }
+},
+
+finalLetter:{
+  loc:"اداره‌ی پلیس",
+  blocks:[
+    {type:"narration", text:"هشت ماه بعد، نامه‌ای از زندان از طرف پاول می‌رسد."},
+    {type:"speaker", who:"ویلیام", text:"بازش نکن، شاید یه بمب توش باشه، از آن روانی بعید نیست، بهتره بدهیم جکی بازش کند."},
+    {type:"speaker", who:"بلیک", text:"بی‌خیال، خودم بازش می‌کنم. برات یه کتاب فرستاده، کتاب خودش، کتاب یازده."},
+    {type:"speaker", who:"ویلیام", text:"دربارش شنیدم، همه‌ی مردم واسه خریدش صف می‌کشند، حق با او بود که یه خدا شده، فروش کتابش از انجیل هم بیشتره."},
+    {type:"speaker", who:"بلیک", text:"توی صفحه‌ی اولش برات نوشته: «تقدیم به ویلیام، آخرین فرمان من این است که هرگز از چیزی که هستید فرار نکنید.»"}
+  ],
+  choice:{
+    options:[
+      { text:"آتشش بزن، نمی‌خوام چیزی راجع‌به آن مرد بشنوم", effects:{sanity:+2}, next:"endingBurn" },
+      { text:"نگهش می‌دارم، یادگاری خوبی‌ست از یه هیولا", effects:{sanity:-1}, next:"endingKeep" }
+    ]
+  }
+},
+
+endingBurn:{
+  loc:"پایان",
+  ending:true,
+  endingTitle:"پایان: خاکستر",
+  endingText:"بلیک کتاب را آتش می‌زند. شعله‌ها صفحات «کتاب یازده» را می‌بلعند. شاید هیچ‌وقت کاملا فراموش نکند، اما حداقل اجازه نمی‌دهد پاول آخرین کلام را داشته باشد. پرونده بسته می‌شود، اما زخم‌هایش هرگز کاملا التیام نمی‌یابند."
+},
+
+endingKeep:{
+  loc:"پایان",
+  ending:true,
+  endingTitle:"پایان: یادگاری",
+  endingText:"کتاب روی قفسه‌ی بلیک می‌ماند، گردگیری‌نشده. شانزده سال بعد، در سلولی در زندان مرکزی، دو روز پیش از اعدام پاول، ویلیام به دیدنش می‌رود. «فکر نمی‌کردم دوباره ببینمت»، پاول می‌گوید. «به‌زودی می‌میری، مرده‌ها نمی‌توانند حرف بزنند»، ویلیام پاسخ می‌دهد. اما در نگاه ویلیام، چیزی هست که او خودش هنوز نامش را نمی‌داند... یا نمی‌خواهد بداند."
+}
+
+};
+
+/* =========================================================
+   ENGINE
+========================================================= */
+let currentKey = "start";
+let history = [];
+let activeTheme = "board"; // "board" | "monitor"
+
+function toggleTheme(){
+  activeTheme = (activeTheme === "board") ? "monitor" : "board";
+  document.body.classList.remove('theme-board','theme-monitor');
+  document.body.classList.add('theme-' + activeTheme);
+  document.getElementById('theme-toggle').innerText =
+    activeTheme === "board" ? "🖥 تغییر به تم مانیتور" : "📌 تغییر به تخته‌ی مدارک";
+  renderHUD();
+  if(document.getElementById('story-panel-board').style.display !== 'none' ||
+     document.getElementById('scene-container-monitor').style.display !== 'none'){
+    renderScene(currentKey);
+  }
+}
+
+function startGame(){
+  document.getElementById('title-screen-board').style.display = 'none';
+  document.getElementById('title-screen-crt').style.display = 'none';
+  document.getElementById('board-hud').style.display = 'block';
+  document.getElementById('monitor-hud').style.display = 'block';
+  document.getElementById('story-panel-board').style.display = 'block';
+  document.getElementById('scene-container-monitor').style.display = 'block';
+  renderHUD();
+  renderScene('start');
+}
+
+function renderHUD(){
+  const rowBoard = document.getElementById('stats-row-board');
+  const rowMonitor = document.getElementById('stats-row-monitor');
+  let htmlOut = '';
+  for(const key in stats){
+    const s = stats[key];
+    htmlOut += `
+      <div class="stat-cell">
+        <div class="stat-label">${s.label}</div>
+        <div class="stat-bar"><div class="stat-fill" style="width:${s.value}%; background:${s.color};"></div></div>
+        <div class="stat-num">${s.value}</div>
+      </div>`;
+  }
+  if(rowBoard) rowBoard.innerHTML = htmlOut;
+  if(rowMonitor) rowMonitor.innerHTML = htmlOut;
+}
+
+function renderScene(key){
+  currentKey = key;
+  const node = story[key];
+
+  const boardTarget = document.getElementById('scene-container-board');
+  const monitorTarget = document.getElementById('scene-container-monitor');
+
+  if(node.ending){
+    const endStatsHtml = `
+      <div class="end-stats" style="background:rgba(0,0,0,0.05); border-radius:8px; padding:16px; margin:20px 0;">
+        ${Object.keys(stats).map(k=>`
+          <div style="display:flex; justify-content:space-between; margin-bottom:8px; font-size:14px;">
+            <span>${stats[k].label}</span>
+            <span>${stats[k].value}</span>
+          </div>`).join('')}
+      </div>`;
+
+    boardTarget.innerHTML = `
+      <div class="end-card">
+        <div class="board-loc">${node.loc}</div>
+        <h2 class="board-end-title">${node.endingTitle}</h2>
+        <p class="board-narration">${node.endingText}</p>
+        ${endStatsHtml}
+        <button class="board-restart" onclick="restartGame()">شروع دوباره‌ی پرونده</button>
+      </div>`;
+
+    monitorTarget.innerHTML = `
+      <div class="end-card">
+        <div class="crt-loc">${node.loc}</div>
+        <h2 class="crt-end-title">${node.endingTitle}</h2>
+        <p class="crt-narration">${node.endingText}</p>
+        ${endStatsHtml}
+        <button class="crt-restart" onclick="restartGame()">[ شروع دوباره‌ی پرونده ]</button>
+      </div>`;
+
+    scrollActiveToTop();
+    return;
+  }
+
+  // ---- Board theme markup ----
+  let boardHtml = `<div class="board-loc">${node.loc}</div>`;
+  node.blocks.forEach(b=>{
+    if(b.type === 'narration'){
+      boardHtml += `<div class="board-divider">گذر زمان</div><p class="board-narration">${b.text}</p>`;
+    } else if(b.type === 'evidence'){
+      boardHtml += `<div class="board-evidence">${b.text}</div>`;
+    } else if(b.type === 'letter'){
+      boardHtml += `<div class="board-letter">${b.text.replace(/\n\n/g,'<br><br>')}</div>`;
+    } else if(b.type === 'speaker'){
+      boardHtml += `<div class="board-dialogue"><div class="board-speaker">${b.who}</div><div class="board-line">${b.text}</div></div>`;
+    }
+  });
+  boardTarget.innerHTML = boardHtml;
+
+  // ---- Monitor theme markup ----
+  let crtHtml = `<div class="crt-loc">${node.loc}</div>`;
+  node.blocks.forEach(b=>{
+    if(b.type === 'narration'){
+      crtHtml += `<div class="crt-divider">// گذر زمان</div><p class="crt-narration">${b.text}</p>`;
+    } else if(b.type === 'evidence'){
+      crtHtml += `<div class="crt-evidence">${b.text}</div>`;
+    } else if(b.type === 'letter'){
+      crtHtml += `<div class="crt-letter">${b.text.replace(/\n\n/g,'<br><br>')}</div>`;
+    } else if(b.type === 'speaker'){
+      crtHtml += `<div class="crt-dialogue"><div class="crt-speaker">${b.who}</div><div class="crt-line">${b.text}</div></div>`;
+    }
+  });
+  monitorTarget.innerHTML = crtHtml;
+
+  if(node.choice){
+    const boardChoiceWrap = document.createElement('div');
+    boardChoiceWrap.className = 'board-choices';
+    const crtChoiceWrap = document.createElement('div');
+    crtChoiceWrap.className = 'crt-choices';
+
+    node.choice.options.forEach(opt=>{
+      const bBtn = document.createElement('button');
+      bBtn.className = 'board-choice';
+      bBtn.innerText = opt.text;
+      bBtn.onclick = ()=>{
+        applyEffects(opt.effects);
+        history.push(key);
+        renderScene(opt.next);
+      };
+      boardChoiceWrap.appendChild(bBtn);
+
+      const cBtn = document.createElement('button');
+      cBtn.className = 'crt-choice';
+      cBtn.innerText = opt.text;
+      cBtn.onclick = ()=>{
+        applyEffects(opt.effects);
+        history.push(key);
+        renderScene(opt.next);
+      };
+      crtChoiceWrap.appendChild(cBtn);
+    });
+
+    boardTarget.appendChild(boardChoiceWrap);
+    monitorTarget.appendChild(crtChoiceWrap);
+  }
+
+  scrollActiveToTop();
+}
+
+function scrollActiveToTop(){
+  const panel = document.querySelector('.story-panel');
+  const screen = document.querySelector('.screen');
+  if(panel) panel.scrollTop = 0;
+  if(screen) screen.scrollTop = 0;
+}
+
+function restartGame(){
+  for(const k in stats){
+    stats[k].value = {trust:60, sanity:80, morals:70, evidence:50, bond:75}[k];
+  }
+  history = [];
+  renderHUD();
+  document.getElementById('title-screen-board').style.display = 'flex';
+  document.getElementById('title-screen-crt').style.display = 'block';
+  document.getElementById('board-hud').style.display = 'none';
+  document.getElementById('monitor-hud').style.display = 'none';
+  document.getElementById('story-panel-board').style.display = 'none';
+  document.getElementById('scene-container-monitor').style.display = 'none';
+}
+</script>
+</body>
+</html>
