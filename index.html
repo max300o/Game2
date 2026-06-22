@@ -2,25 +2,23 @@
 <html lang="fa" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <title>S.F. Case File | سقوط فرشته‌ها</title>
+    <title>پرونده‌ی سقوط فرشته‌ها</title>
     <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body class="theme-noir">
 
-    <div class="scanlines"></div>
-    <div class="vignette"></div>
-
-    <div class="terminal-container">
-        <header class="terminal-header">
-            <div class="status-badge">SYSTEM: ONLINE</div>
-            <div class="title"> پرونده‌ی فریمانت // بخش ۱۶ </div>
+    <div id="game-container">
+        
+        <header>
+            <button id="reset-btn">شروع مجدد</button>
+            <button id="theme-retro-btn">RETRO</button>
+            <button id="theme-noir-btn">NOIR</button>
         </header>
 
-        <main id="story-text" class="content-box">
-            </main>
+        <main id="story-text"></main>
 
-        <div id="choices-container" class="choices-box">
-            </div>
+        <div id="choices-container"></div>
+
     </div>
 
     <script src="story.js"></script>
