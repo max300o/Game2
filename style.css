@@ -1,0 +1,86 @@
+@import url('https://fonts.googleapis.com/css2?family=Courier+Prime&display=swap');
+
+:root {
+    --bg-color: #0b0b0b;
+    --card-bg: #141414;
+    --text-color: #d4d4d4;
+    --accent-red: #8b0000;
+    --neon-glow: #e50914;
+    --border-color: #2a2a2a;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    font-family: 'Courier Prime', 'Tahoma', monospace;
+    margin: 0; padding: 0;
+    display: flex; justify-content: center; align-items: center;
+    min-height: 100vh; overflow: hidden;
+}
+
+/* افکت نویز سینمایی */
+.noir-overlay {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: radial-gradient(circle, transparent 60%, rgba(0,0,0,0.9)),
+                url('https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=2564&auto=format&fit=crop') repeat;
+    opacity: 0.04;
+    pointer-events: none; z-index: 999;
+}
+
+.game-container {
+    width: 90%; max-width: 750px;
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-color);
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.9);
+    padding: 25px; border-radius: 4px;
+    display: flex; flex-direction: column; gap: 20px;
+}
+
+.game-header {
+    display: flex; justify-content: space-between; align-items: center;
+    border-bottom: 1px double var(--border-color); padding-bottom: 12px;
+    font-size: 0.9rem; color: #888;
+}
+
+/* دکمه‌های کنترل بالا */
+.control-btn {
+    background: none; border: 1px solid var(--border-color);
+    color: #888; padding: 5px 10px; font-family: inherit;
+    font-size: 0.8rem; cursor: pointer; border-radius: 3px; margin-right: 5px;
+    transition: all 0.2s;
+}
+.control-btn:hover {
+    color: #fff; border-color: #555; background-color: #222;
+}
+.control-btn.reset:hover {
+    background-color: var(--accent-red); color: #fff; border-color: var(--neon-glow);
+}
+
+.story-box {
+    min-height: 220px; max-height: 400px; overflow-y: auto;
+    line-height: 1.8; font-size: 1.1rem; padding: 10px; text-align: justify;
+}
+
+.choices-box { display: flex; flex-direction: column; gap: 12px; margin-top: 20px; }
+
+.choice-btn {
+    background-color: #1a1a1a; color: var(--text-color);
+    border: 1px solid var(--border-color); padding: 14px 20px;
+    text-align: right; cursor: pointer; font-family: inherit; font-size: 1rem;
+    transition: all 0.2s ease; border-radius: 3px;
+}
+.choice-btn:hover {
+    background-color: var(--accent-red); color: #fff;
+    border-color: var(--neon-glow); transform: translateX(-5px);
+    box-shadow: 0 0 10px rgba(229, 9, 20, 0.3);
+}
+
+.game-footer {
+    text-align: center; border-top: 1px solid var(--border-color);
+    padding-top: 10px; font-size: 0.8rem; color: #444;
+}
+
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: #111; }
+::-webkit-scrollbar-thumb { background: var(--border-color); }
