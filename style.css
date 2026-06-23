@@ -1,645 +1,574 @@
-/* ================================================================
-   FONTS & RESET
-   ================================================================ */
+/* =============================================================
+   FONTS
+   ============================================================= */
 @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Special+Elite&display=swap');
 
 * {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
 body {
-  font-family: 'Share Tech Mono', 'Courier New', monospace;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  transition: background 0.6s ease, color 0.6s ease;
-  overflow-x: hidden;
+    font-family: 'Share Tech Mono', 'Courier New', monospace;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    transition: background 0.6s ease, color 0.6s ease;
+    background: #0a0a0a;
+    color: #d4c5a0;
+    overflow-x: hidden;
 }
 
-/* ================================================================
-   تم‌ها (6 تم)
-   ================================================================ */
-
-/* 1. NOIR – تیره و جنایی (پیش‌فرض) */
+/* =============================================================
+   THEMES (6 تم جدا)
+   ============================================================= */
+/* 1. Noir */
 body.theme-noir {
-  background: radial-gradient(ellipse at 30% 40%, #1a0a0a 0%, #0a0a0a 100%);
-  color: #d4c5a0;
+    background: radial-gradient(ellipse at 30% 40%, #1a0a0a 0%, #0a0a0a 100%);
+    color: #d4c5a0;
 }
-body.theme-noir .crime-header { background: rgba(10, 10, 10, 0.92); border-bottom: 2px solid #8b0000; }
-body.theme-noir .scene { background: rgba(10, 10, 10, 0.88); border: 1px solid #8b0000; box-shadow: 0 0 50px rgba(139, 0, 0, 0.15); }
+body.theme-noir .game-header { background: rgba(10, 10, 10, 0.92); border-bottom: 2px solid #8b0000; }
+body.theme-noir .scene-box { background: rgba(10, 10, 10, 0.88); border: 1px solid #8b0000; box-shadow: 0 0 50px rgba(139, 0, 0, 0.15); }
 body.theme-noir .choice-btn { background: rgba(26, 26, 26, 0.85); border: 1px solid #3a3a3a; color: #d4c5a0; }
 body.theme-noir .choice-btn:hover { background: rgba(139, 0, 0, 0.15); border-color: #8b0000; }
 body.theme-noir .profile-card { background: rgba(20, 10, 10, 0.9); border: 2px solid #8b0000; }
-body.theme-noir .main-menu { background: radial-gradient(ellipse at 30% 40%, #1a0a0a 0%, #0a0a0a 100%); }
+body.theme-noir .menu-panel { background: rgba(10, 10, 10, 0.9); border: 1px solid rgba(139, 0, 0, 0.3); }
+body.theme-noir .settings-content { background: rgba(20, 10, 10, 0.95); border: 1px solid #333; }
 
-/* 2. BLOOD – خونین */
+/* 2. Blood */
 body.theme-blood {
-  background: radial-gradient(ellipse at 30% 40%, #2a0505 0%, #0a0000 100%);
-  color: #e8d0d0;
+    background: radial-gradient(ellipse at 30% 40%, #2a0505 0%, #0a0000 100%);
+    color: #e8d0d0;
 }
-body.theme-blood .crime-header { background: rgba(20, 0, 0, 0.95); border-bottom: 3px solid #cc0000; }
-body.theme-blood .scene { background: rgba(20, 5, 5, 0.92); border: 2px solid #cc0000; box-shadow: 0 0 60px rgba(204, 0, 0, 0.2); }
+body.theme-blood .game-header { background: rgba(20, 0, 0, 0.95); border-bottom: 3px solid #cc0000; }
+body.theme-blood .scene-box { background: rgba(20, 5, 5, 0.92); border: 2px solid #cc0000; box-shadow: 0 0 60px rgba(204, 0, 0, 0.2); }
 body.theme-blood .choice-btn { background: rgba(40, 10, 10, 0.9); border: 1px solid #660000; color: #e8d0d0; }
 body.theme-blood .choice-btn:hover { background: rgba(204, 0, 0, 0.2); border-color: #cc0000; }
 body.theme-blood .profile-card { background: rgba(30, 5, 5, 0.95); border: 2px solid #cc0000; }
-body.theme-blood .status-dot { background: #cc0000; box-shadow: 0 0 20px rgba(204, 0, 0, 0.6); }
-body.theme-blood .main-menu { background: radial-gradient(ellipse at 30% 40%, #2a0505 0%, #0a0000 100%); }
+body.theme-blood .menu-panel { background: rgba(20, 5, 5, 0.95); border: 1px solid rgba(204, 0, 0, 0.3); }
+body.theme-blood .settings-content { background: rgba(30, 5, 5, 0.95); border: 1px solid #660000; }
 
-/* 3. RETRO – قدیمی */
+/* 3. Retro */
 body.theme-retro {
-  background: radial-gradient(ellipse at 30% 40%, #3d2b1f 0%, #1a120e 100%);
-  color: #d4c5a0;
+    background: radial-gradient(ellipse at 30% 40%, #3d2b1f 0%, #1a120e 100%);
+    color: #d4c5a0;
 }
-body.theme-retro .crime-header { background: rgba(30, 20, 15, 0.95); border-bottom: 3px solid #b8860b; }
-body.theme-retro .scene { background: rgba(40, 30, 20, 0.92); border: 2px solid #b8860b; box-shadow: 0 0 50px rgba(184, 134, 11, 0.15); }
+body.theme-retro .game-header { background: rgba(30, 20, 15, 0.95); border-bottom: 3px solid #b8860b; }
+body.theme-retro .scene-box { background: rgba(40, 30, 20, 0.92); border: 2px solid #b8860b; box-shadow: 0 0 50px rgba(184, 134, 11, 0.15); }
 body.theme-retro .choice-btn { background: rgba(50, 35, 25, 0.9); border: 1px solid #8b7355; color: #d4c5a0; }
 body.theme-retro .choice-btn:hover { background: rgba(184, 134, 11, 0.15); border-color: #b8860b; }
 body.theme-retro .profile-card { background: rgba(40, 30, 20, 0.95); border: 2px solid #b8860b; }
-body.theme-retro .status-dot { background: #b8860b; box-shadow: 0 0 20px rgba(184, 134, 11, 0.4); }
-body.theme-retro .main-menu { background: radial-gradient(ellipse at 30% 40%, #3d2b1f 0%, #1a120e 100%); }
+body.theme-retro .menu-panel { background: rgba(30, 20, 15, 0.95); border: 1px solid rgba(184, 134, 11, 0.3); }
+body.theme-retro .settings-content { background: rgba(40, 30, 20, 0.95); border: 1px solid #8b7355; }
 
-/* 4. ICE – سرد و مدرن */
+/* 4. Ice */
 body.theme-ice {
-  background: radial-gradient(ellipse at 30% 40%, #1a2a3a 0%, #0a0f1a 100%);
-  color: #c0d0e0;
+    background: radial-gradient(ellipse at 30% 40%, #1a2a3a 0%, #0a0f1a 100%);
+    color: #c0d0e0;
 }
-body.theme-ice .crime-header { background: rgba(10, 20, 30, 0.95); border-bottom: 2px solid #4a8cba; }
-body.theme-ice .scene { background: rgba(15, 25, 40, 0.92); border: 1px solid #4a8cba; box-shadow: 0 0 50px rgba(74, 140, 186, 0.15); }
+body.theme-ice .game-header { background: rgba(10, 20, 30, 0.95); border-bottom: 2px solid #4a8cba; }
+body.theme-ice .scene-box { background: rgba(15, 25, 40, 0.92); border: 1px solid #4a8cba; box-shadow: 0 0 50px rgba(74, 140, 186, 0.15); }
 body.theme-ice .choice-btn { background: rgba(20, 40, 60, 0.9); border: 1px solid #3a6a8a; color: #c0d0e0; }
 body.theme-ice .choice-btn:hover { background: rgba(74, 140, 186, 0.15); border-color: #4a8cba; }
 body.theme-ice .profile-card { background: rgba(15, 30, 50, 0.95); border: 2px solid #4a8cba; }
-body.theme-ice .status-dot { background: #4a8cba; box-shadow: 0 0 20px rgba(74, 140, 186, 0.4); }
-body.theme-ice .main-menu { background: radial-gradient(ellipse at 30% 40%, #1a2a3a 0%, #0a0f1a 100%); }
+body.theme-ice .menu-panel { background: rgba(10, 20, 30, 0.95); border: 1px solid rgba(74, 140, 186, 0.3); }
+body.theme-ice .settings-content { background: rgba(15, 30, 50, 0.95); border: 1px solid #3a6a8a; }
 
-/* 5. SILVER – نقره‌ای و مینیمال */
+/* 5. Silver */
 body.theme-silver {
-  background: radial-gradient(ellipse at 30% 40%, #2a2a2a 0%, #1a1a1a 100%);
-  color: #d0d0d0;
+    background: radial-gradient(ellipse at 30% 40%, #2a2a2a 0%, #1a1a1a 100%);
+    color: #d0d0d0;
 }
-body.theme-silver .crime-header { background: rgba(20, 20, 20, 0.95); border-bottom: 2px solid #a0a0a0; }
-body.theme-silver .scene { background: rgba(25, 25, 25, 0.92); border: 1px solid #888; box-shadow: 0 0 50px rgba(160, 160, 160, 0.1); }
+body.theme-silver .game-header { background: rgba(20, 20, 20, 0.95); border-bottom: 2px solid #a0a0a0; }
+body.theme-silver .scene-box { background: rgba(25, 25, 25, 0.92); border: 1px solid #888; box-shadow: 0 0 50px rgba(160, 160, 160, 0.1); }
 body.theme-silver .choice-btn { background: rgba(35, 35, 35, 0.9); border: 1px solid #666; color: #d0d0d0; }
 body.theme-silver .choice-btn:hover { background: rgba(160, 160, 160, 0.15); border-color: #a0a0a0; }
 body.theme-silver .profile-card { background: rgba(30, 30, 30, 0.95); border: 2px solid #a0a0a0; }
-body.theme-silver .status-dot { background: #a0a0a0; box-shadow: 0 0 20px rgba(160, 160, 160, 0.4); }
-body.theme-silver .main-menu { background: radial-gradient(ellipse at 30% 40%, #2a2a2a 0%, #1a1a1a 100%); }
+body.theme-silver .menu-panel { background: rgba(20, 20, 20, 0.95); border: 1px solid rgba(160, 160, 160, 0.3); }
+body.theme-silver .settings-content { background: rgba(30, 30, 30, 0.95); border: 1px solid #666; }
 
-/* 6. ROYAL – سلطنتی و مجلل */
+/* 6. Royal */
 body.theme-royal {
-  background: radial-gradient(ellipse at 30% 40%, #1a0a2a 0%, #0a0a1a 100%);
-  color: #d4b0d4;
+    background: radial-gradient(ellipse at 30% 40%, #1a0a2a 0%, #0a0a1a 100%);
+    color: #d4b0d4;
 }
-body.theme-royal .crime-header { background: rgba(20, 10, 30, 0.95); border-bottom: 2px solid #9b4d9b; }
-body.theme-royal .scene { background: rgba(20, 10, 30, 0.92); border: 1px solid #9b4d9b; box-shadow: 0 0 50px rgba(155, 77, 155, 0.15); }
+body.theme-royal .game-header { background: rgba(20, 10, 30, 0.95); border-bottom: 2px solid #9b4d9b; }
+body.theme-royal .scene-box { background: rgba(20, 10, 30, 0.92); border: 1px solid #9b4d9b; box-shadow: 0 0 50px rgba(155, 77, 155, 0.15); }
 body.theme-royal .choice-btn { background: rgba(35, 20, 45, 0.9); border: 1px solid #6a3a6a; color: #d4b0d4; }
 body.theme-royal .choice-btn:hover { background: rgba(155, 77, 155, 0.15); border-color: #9b4d9b; }
 body.theme-royal .profile-card { background: rgba(25, 15, 40, 0.95); border: 2px solid #9b4d9b; }
-body.theme-royal .status-dot { background: #9b4d9b; box-shadow: 0 0 20px rgba(155, 77, 155, 0.4); }
-body.theme-royal .main-menu { background: radial-gradient(ellipse at 30% 40%, #1a0a2a 0%, #0a0a1a 100%); }
+body.theme-royal .menu-panel { background: rgba(20, 10, 30, 0.95); border: 1px solid rgba(155, 77, 155, 0.3); }
+body.theme-royal .settings-content { background: rgba(25, 15, 40, 0.95); border: 1px solid #6a3a6a; }
 
-/* ================================================================
-   MAIN MENU
-   ================================================================ */
-.main-menu {
-  position: fixed;
-  top: 0; left: 0; right: 0; bottom: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 200;
-  transition: opacity 0.8s ease, visibility 0.8s ease;
+/* =============================================================
+   MENU OVERLAY
+   ============================================================= */
+.menu-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 200;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(12px);
+    transition: opacity 0.8s ease, visibility 0.8s ease;
+}
+.menu-overlay.hidden {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
 }
 
-.main-menu.hidden {
-  opacity: 0;
-  visibility: hidden;
-  pointer-events: none;
-}
-
-.menu-container {
-  text-align: center;
-  padding: 40px;
-  max-width: 500px;
-  width: 90%;
-  background: rgba(10, 10, 10, 0.85);
-  border: 1px solid rgba(139, 0, 0, 0.3);
-  border-radius: 12px;
-  backdrop-filter: blur(20px);
-  box-shadow: 0 0 80px rgba(0, 0, 0, 0.8);
-  animation: menuFadeIn 0.8s ease;
+.menu-panel {
+    text-align: center;
+    padding: 50px 40px;
+    max-width: 480px;
+    width: 92%;
+    border-radius: 16px;
+    backdrop-filter: blur(20px);
+    box-shadow: 0 0 80px rgba(0, 0, 0, 0.8);
+    animation: menuFadeIn 0.6s ease;
 }
 
 @keyframes menuFadeIn {
-  0% { opacity: 0; transform: scale(0.95) translateY(20px); }
-  100% { opacity: 1; transform: scale(1) translateY(0); }
+    0% { opacity: 0; transform: scale(0.92) translateY(30px); }
+    100% { opacity: 1; transform: scale(1) translateY(0); }
 }
 
 .menu-logo {
-  margin-bottom: 30px;
+    margin-bottom: 35px;
 }
-
 .logo-icon {
-  font-size: 48px;
-  display: block;
-  margin-bottom: 10px;
+    font-size: 52px;
+    display: block;
+    margin-bottom: 8px;
 }
-
 .logo-title {
-  font-family: 'Special Elite', cursive;
-  font-size: 32px;
-  letter-spacing: 4px;
-  color: #d4c5a0;
-  text-shadow: 0 0 30px rgba(139, 0, 0, 0.3);
-  margin: 0;
+    font-family: 'Special Elite', cursive;
+    font-size: 34px;
+    letter-spacing: 4px;
+    color: inherit;
+    text-shadow: 0 0 30px rgba(139, 0, 0, 0.2);
+    margin: 0;
 }
-
 .logo-sub {
-  font-size: 14px;
-  letter-spacing: 3px;
-  opacity: 0.6;
-  display: block;
-  margin-top: 5px;
+    font-size: 15px;
+    letter-spacing: 3px;
+    opacity: 0.5;
+    display: block;
+    margin-top: 4px;
 }
 
 .menu-buttons {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  margin: 30px 0;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    margin: 30px 0;
 }
 
 .menu-btn {
-  padding: 14px 30px;
-  font-family: 'Share Tech Mono', monospace;
-  font-size: 16px;
-  letter-spacing: 2px;
-  cursor: pointer;
-  border-radius: 6px;
-  transition: all 0.3s ease;
-  border: 2px solid transparent;
+    padding: 15px 30px;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 16px;
+    letter-spacing: 2px;
+    cursor: pointer;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
 }
 
 .menu-btn.primary {
-  background: #8b0000;
-  color: #fff;
-  border-color: #8b0000;
+    background: #8b0000;
+    color: #fff;
+    border-color: #8b0000;
 }
 .menu-btn.primary:hover {
-  background: #cc0000;
-  border-color: #cc0000;
-  transform: scale(1.02);
-  box-shadow: 0 0 40px rgba(139, 0, 0, 0.4);
+    background: #cc0000;
+    border-color: #cc0000;
+    transform: scale(1.02);
+    box-shadow: 0 0 40px rgba(139, 0, 0, 0.4);
 }
 
 .menu-btn.secondary {
-  background: transparent;
-  color: #d4c5a0;
-  border-color: #555;
+    background: transparent;
+    color: inherit;
+    border-color: #555;
 }
 .menu-btn.secondary:hover {
-  border-color: #8b0000;
-  background: rgba(139, 0, 0, 0.1);
+    border-color: #8b0000;
+    background: rgba(139, 0, 0, 0.08);
 }
 
 .menu-btn.tertiary {
-  background: transparent;
-  color: #888;
-  border-color: #333;
-  font-size: 14px;
+    background: transparent;
+    color: #888;
+    border-color: #333;
+    font-size: 14px;
 }
 .menu-btn.tertiary:hover {
-  color: #d4c5a0;
-  border-color: #555;
+    color: inherit;
+    border-color: #555;
 }
 
 .menu-footer {
-  margin-top: 20px;
-  font-size: 12px;
-  opacity: 0.4;
-  letter-spacing: 2px;
+    margin-top: 20px;
+    font-size: 12px;
+    opacity: 0.3;
+    letter-spacing: 2px;
 }
 
-/* ================================================================
-   SETTINGS OVERLAY
-   ================================================================ */
-.settings-overlay {
-  position: fixed;
-  top: 0; left: 0; right: 0; bottom: 0;
-  background: rgba(0, 0, 0, 0.8);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 300;
-  backdrop-filter: blur(10px);
-  animation: menuFadeIn 0.4s ease;
-}
-
+/* =============================================================
+   SETTINGS PANEL
+   ============================================================= */
 .settings-panel {
-  background: rgba(20, 20, 20, 0.95);
-  border: 1px solid #333;
-  border-radius: 12px;
-  padding: 35px;
-  max-width: 450px;
-  width: 90%;
-  max-height: 90vh;
-  overflow-y: auto;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 300;
+    background: rgba(0, 0, 0, 0.75);
+    backdrop-filter: blur(8px);
+    animation: menuFadeIn 0.3s ease;
 }
 
-.settings-panel h2 {
-  font-family: 'Special Elite', cursive;
-  text-align: center;
-  font-size: 28px;
-  color: #d4c5a0;
-  margin-bottom: 25px;
-  letter-spacing: 3px;
+.settings-content {
+    padding: 35px 40px;
+    max-width: 440px;
+    width: 92%;
+    border-radius: 14px;
+    box-shadow: 0 0 60px rgba(0, 0, 0, 0.7);
+}
+
+.settings-content h2 {
+    font-family: 'Special Elite', cursive;
+    text-align: center;
+    font-size: 28px;
+    margin-bottom: 25px;
+    letter-spacing: 3px;
 }
 
 .setting-group {
-  margin-bottom: 20px;
+    margin-bottom: 20px;
 }
-
 .setting-group label {
-  display: block;
-  font-size: 13px;
-  letter-spacing: 2px;
-  opacity: 0.6;
-  margin-bottom: 8px;
+    display: block;
+    font-size: 13px;
+    letter-spacing: 2px;
+    opacity: 0.5;
+    margin-bottom: 8px;
 }
 
-.setting-buttons {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
+.btn-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
 }
 
-.setting-btn {
-  padding: 6px 14px;
-  font-family: 'Share Tech Mono', monospace;
-  font-size: 12px;
-  background: rgba(40, 40, 40, 0.6);
-  border: 1px solid #444;
-  color: #888;
-  cursor: pointer;
-  border-radius: 4px;
-  transition: all 0.3s ease;
+.set-btn {
+    padding: 6px 14px;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 12px;
+    background: rgba(40, 40, 40, 0.5);
+    border: 1px solid #444;
+    color: #888;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: all 0.3s ease;
 }
-
-.setting-btn:hover {
-  border-color: #8b0000;
-  color: #d4c5a0;
+.set-btn:hover {
+    border-color: #8b0000;
+    color: inherit;
 }
-
-.setting-btn.active {
-  background: rgba(139, 0, 0, 0.3);
-  border-color: #8b0000;
-  color: #d4c5a0;
-  box-shadow: 0 0 20px rgba(139, 0, 0, 0.2);
+.set-btn.active {
+    background: rgba(139, 0, 0, 0.2);
+    border-color: #8b0000;
+    color: inherit;
+    box-shadow: 0 0 20px rgba(139, 0, 0, 0.1);
 }
 
 .setting-group input[type="range"] {
-  width: 100%;
-  accent-color: #8b0000;
-  background: #333;
-  height: 4px;
-  border-radius: 2px;
-  outline: none;
+    width: 100%;
+    accent-color: #8b0000;
+    background: #333;
+    height: 4px;
+    border-radius: 2px;
+    outline: none;
+}
+#speed-label {
+    display: inline-block;
+    margin-top: 5px;
+    font-size: 14px;
+    opacity: 0.6;
 }
 
-#typing-speed-label {
-  display: inline-block;
-  margin-top: 5px;
-  font-size: 14px;
-  opacity: 0.7;
-}
-
-/* ================================================================
+/* =============================================================
    HEADER
-   ================================================================ */
-.crime-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10px 20px;
-  backdrop-filter: blur(12px);
-  position: sticky;
-  top: 0;
-  z-index: 100;
-  transition: background 0.4s ease, border-color 0.4s ease;
+   ============================================================= */
+.game-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 24px;
+    backdrop-filter: blur(12px);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    transition: background 0.4s ease, border-color 0.4s ease;
 }
 
 .header-left {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 13px;
-  color: #8b0000;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    color: #8b0000;
 }
-
 .header-center {
-  text-align: center;
+    text-align: center;
 }
-
 .header-center h1 {
-  font-size: 20px;
-  letter-spacing: 4px;
-  font-family: 'Special Elite', cursive;
-  margin: 0;
+    font-size: 20px;
+    letter-spacing: 4px;
+    font-family: 'Special Elite', cursive;
+    margin: 0;
 }
-
-.header-center .subtitle {
-  font-size: 11px;
-  letter-spacing: 3px;
-  opacity: 0.6;
-  display: block;
+.header-center .header-sub {
+    font-size: 11px;
+    letter-spacing: 3px;
+    opacity: 0.4;
+    display: block;
 }
-
 .header-right {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-/* ================================================================
-   CONTROL BUTTONS
-   ================================================================ */
-.ctrl-btn {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  padding: 5px 10px;
-  background: rgba(26, 26, 26, 0.8);
-  border: 1px solid #555;
-  color: #d4c5a0;
-  font-family: 'Share Tech Mono', monospace;
-  font-size: 11px;
-  cursor: pointer;
-  border-radius: 20px;
-  transition: all 0.3s ease;
-  backdrop-filter: blur(4px);
-}
-
-.ctrl-btn:hover {
-  background: rgba(139, 0, 0, 0.2);
-  border-color: #8b0000;
-  transform: scale(1.05);
-}
-.ctrl-btn:active { transform: scale(0.95); }
-.ctrl-btn .icon { font-size: 14px; }
-.ctrl-btn .label { font-size: 10px; letter-spacing: 0.5px; }
-
-.lang-btn.switching .icon {
-  animation: spin 0.6s ease;
-}
-
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+    display: flex;
+    align-items: center;
+    gap: 10px;
 }
 
 .status-dot {
-  display: inline-block;
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  animation: pulse 1.5s ease-in-out infinite;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #8b0000;
+    animation: pulse 1.5s ease-in-out infinite;
+}
+@keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.2; transform: scale(0.8); }
 }
 .status-text {
-  font-size: 10px;
-  letter-spacing: 2px;
-  opacity: 0.7;
+    font-size: 11px;
+    letter-spacing: 2px;
+    opacity: 0.6;
 }
 
-@keyframes pulse {
-  0%, 100% { opacity: 1; transform: scale(1); }
-  50% { opacity: 0.3; transform: scale(0.8); }
-}
-
-/* ================================================================
+/* =============================================================
    GAME CONTAINER
-   ================================================================ */
+   ============================================================= */
 .game-container {
-  flex: 1;
-  max-width: 800px;
-  margin: 30px auto;
-  padding: 20px;
-  width: 100%;
-  position: relative;
-  z-index: 1;
+    flex: 1;
+    max-width: 820px;
+    margin: 30px auto;
+    padding: 20px;
+    width: 100%;
+    position: relative;
+    z-index: 1;
 }
 
-/* ================================================================
-   SCENE
-   ================================================================ */
-.scene {
-  padding: 30px 25px;
-  border-radius: 8px;
-  backdrop-filter: blur(10px);
-  position: relative;
-  animation: fadeSlideIn 0.5s ease forwards;
-  transition: background 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease;
+/* =============================================================
+   SCENE BOX
+   ============================================================= */
+.scene-box {
+    padding: 32px 28px;
+    border-radius: 10px;
+    backdrop-filter: blur(10px);
+    position: relative;
+    animation: fadeSlideIn 0.5s ease forwards;
+    transition: background 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease;
 }
 
-.scene::before,
-.scene::after {
-  content: '';
-  position: absolute;
-  left: 25px;
-  right: 25px;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, currentColor, transparent);
-  opacity: 0.15;
+.scene-box::before,
+.scene-box::after {
+    content: '';
+    position: absolute;
+    left: 28px;
+    right: 28px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, currentColor, transparent);
+    opacity: 0.08;
 }
-.scene::before { top: 12px; }
-.scene::after { bottom: 12px; }
+.scene-box::before { top: 14px; }
+.scene-box::after { bottom: 14px; }
 
 @keyframes fadeSlideIn {
-  0% { opacity: 0; transform: translateY(20px) scale(0.98); }
-  100% { opacity: 1; transform: translateY(0) scale(1); }
+    0% { opacity: 0; transform: translateY(25px) scale(0.97); }
+    100% { opacity: 1; transform: translateY(0) scale(1); }
 }
 
-.scene-exit {
-  animation: fadeSlideOut 0.3s ease forwards;
-}
-@keyframes fadeSlideOut {
-  0% { opacity: 1; transform: translateY(0) scale(1); }
-  100% { opacity: 0; transform: translateY(-20px) scale(0.98); }
-}
-
-/* ================================================================
+/* =============================================================
    NARRATIVE
-   ================================================================ */
+   ============================================================= */
 .narrative {
-  font-family: 'Special Elite', 'Courier New', monospace;
-  font-size: 17px;
-  line-height: 2;
-  white-space: pre-wrap;
-  word-wrap: break-word;
-  margin-bottom: 25px;
-  text-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    font-family: 'Special Elite', 'Courier New', monospace;
+    font-size: 18px;
+    line-height: 2.1;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    margin-bottom: 28px;
+    text-shadow: 0 0 12px rgba(0, 0, 0, 0.3);
 }
 
-.narrative .cursor-blink {
-  display: inline-block;
-  width: 2px;
-  height: 1em;
-  background: currentColor;
-  animation: blink 0.8s step-end infinite;
-  vertical-align: text-bottom;
-  margin-left: 2px;
-}
-
-@keyframes blink {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0; }
-}
-
-/* ================================================================
+/* =============================================================
    CHOICES
-   ================================================================ */
+   ============================================================= */
 .choices {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 12px;
 }
 
 .choice-btn {
-  display: block;
-  width: 100%;
-  padding: 12px 20px;
-  font-family: 'Share Tech Mono', monospace;
-  font-size: 15px;
-  text-align: right;
-  cursor: pointer;
-  border-radius: 4px;
-  transition: all 0.3s ease;
-  position: relative;
-  overflow: hidden;
+    display: block;
+    width: 100%;
+    padding: 14px 22px;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 15px;
+    text-align: right;
+    cursor: pointer;
+    border-radius: 6px;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
 }
 
 .choice-btn::before {
-  content: '';
-  position: absolute;
-  right: 0;
-  top: 0;
-  bottom: 0;
-  width: 3px;
-  background: #8b0000;
-  transition: width 0.35s ease;
+    content: '';
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    width: 4px;
+    background: #8b0000;
+    transition: width 0.35s ease;
 }
-
 .choice-btn:hover::before {
-  width: 100%;
-  opacity: 0.08;
+    width: 100%;
+    opacity: 0.06;
 }
-.choice-btn:active { transform: scale(0.98); }
+.choice-btn:active {
+    transform: scale(0.97);
+}
 
 .no-choices {
-  color: #666;
-  font-size: 14px;
-  text-align: center;
-  padding: 10px;
+    color: #666;
+    font-size: 14px;
+    text-align: center;
+    padding: 12px;
 }
 
-/* ================================================================
+/* =============================================================
    PROFILE CARD
-   ================================================================ */
+   ============================================================= */
 .profile-card {
-  border-radius: 8px;
-  padding: 25px 30px;
-  margin: 20px 0;
-  text-align: center;
-  transition: background 0.4s ease, border-color 0.4s ease;
+    border-radius: 10px;
+    padding: 28px 30px;
+    margin: 20px 0;
+    text-align: center;
+    transition: background 0.4s ease, border-color 0.4s ease;
 }
 
 .profile-title {
-  font-size: 13px;
-  letter-spacing: 4px;
-  margin: 5px 0;
-  opacity: 0.7;
+    font-size: 13px;
+    letter-spacing: 4px;
+    margin: 5px 0;
+    opacity: 0.4;
 }
 .profile-label {
-  font-family: 'Special Elite', cursive;
-  font-size: 28px;
-  margin: 15px 0 10px;
-  text-shadow: 0 0 20px rgba(139, 0, 0, 0.2);
+    font-family: 'Special Elite', cursive;
+    font-size: 30px;
+    margin: 14px 0 10px;
+    text-shadow: 0 0 20px rgba(139, 0, 0, 0.15);
 }
 .profile-text {
-  font-size: 15px;
-  line-height: 1.8;
-  opacity: 0.8;
-  padding: 10px 0;
+    font-size: 16px;
+    line-height: 1.9;
+    opacity: 0.7;
+    padding: 10px 0;
 }
 
-/* ================================================================
+/* =============================================================
    RESTART BUTTON
-   ================================================================ */
+   ============================================================= */
 .restart-btn {
-  display: inline-block;
-  padding: 10px 30px;
-  margin: 20px auto 0;
-  background: transparent;
-  border: 2px solid #8b0000;
-  color: #d4c5a0;
-  font-family: 'Share Tech Mono', monospace;
-  font-size: 15px;
-  cursor: pointer;
-  border-radius: 4px;
-  transition: all 0.3s ease;
-  letter-spacing: 2px;
+    display: inline-block;
+    padding: 12px 36px;
+    margin: 20px auto 0;
+    background: transparent;
+    border: 2px solid #8b0000;
+    color: inherit;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 15px;
+    cursor: pointer;
+    border-radius: 6px;
+    transition: all 0.3s ease;
+    letter-spacing: 2px;
 }
-
 .restart-btn:hover {
-  background: #8b0000;
-  color: #0a0a0a;
-  box-shadow: 0 0 40px rgba(139, 0, 0, 0.4);
+    background: #8b0000;
+    color: #0a0a0a;
+    box-shadow: 0 0 50px rgba(139, 0, 0, 0.3);
 }
 
-/* ================================================================
+/* =============================================================
    FOOTER
-   ================================================================ */
-.crime-footer {
-  text-align: center;
-  padding: 15px;
-  font-size: 12px;
-  letter-spacing: 2px;
-  border-top: 1px solid #1a1a1a;
-  margin-top: 20px;
-  display: flex;
-  justify-content: center;
-  gap: 15px;
-  align-items: center;
-  opacity: 0.5;
+   ============================================================= */
+.game-footer {
+    text-align: center;
+    padding: 16px;
+    font-size: 12px;
+    letter-spacing: 2px;
+    border-top: 1px solid #1a1a1a;
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    gap: 18px;
+    align-items: center;
+    opacity: 0.3;
 }
 
-/* ================================================================
+/* =============================================================
    RESPONSIVE
-   ================================================================ */
+   ============================================================= */
 @media (max-width: 768px) {
-  .crime-header { flex-wrap: wrap; gap: 5px; padding: 8px 12px; }
-  .header-center h1 { font-size: 16px; }
-  .header-center .subtitle { font-size: 10px; }
-  .header-left, .header-right { font-size: 11px; }
-  .ctrl-btn { padding: 4px 8px; font-size: 10px; }
-  .ctrl-btn .label { font-size: 9px; }
-  .scene { padding: 20px 15px; }
-  .narrative { font-size: 15px; }
-  .choice-btn { font-size: 14px; padding: 10px 16px; }
-  .profile-label { font-size: 22px; }
-  .game-container { margin: 15px auto; padding: 10px; }
-  .menu-container { padding: 25px; }
-  .logo-title { font-size: 26px; }
-  .settings-panel { padding: 25px; }
+    .game-header { flex-wrap: wrap; gap: 4px; padding: 10px 14px; }
+    .header-center h1 { font-size: 16px; }
+    .header-center .header-sub { font-size: 10px; }
+    .header-left, .header-right { font-size: 11px; }
+    .scene-box { padding: 20px 16px; }
+    .narrative { font-size: 16px; }
+    .choice-btn { font-size: 14px; padding: 12px 16px; }
+    .profile-label { font-size: 24px; }
+    .game-container { margin: 16px auto; padding: 12px; }
+    .menu-panel { padding: 30px 20px; }
+    .logo-title { font-size: 26px; }
+    .settings-content { padding: 25px 20px; }
 }
 
 @media (max-width: 480px) {
-  .header-center h1 { font-size: 14px; letter-spacing: 2px; }
-  .ctrl-btn .label { display: none; }
-  .ctrl-btn { padding: 5px 8px; }
-  .narrative { font-size: 14px; }
-  .choice-btn { font-size: 13px; padding: 8px 14px; }
-  .logo-title { font-size: 22px; }
-  .settings-panel h2 { font-size: 22px; }
+    .header-center h1 { font-size: 14px; letter-spacing: 2px; }
+    .header-left .badge-text { display: none; }
+    .status-text { display: none; }
+    .narrative { font-size: 14px; }
+    .choice-btn { font-size: 13px; padding: 10px 14px; }
+    .logo-title { font-size: 22px; }
+    .settings-content h2 { font-size: 22px; }
 }
