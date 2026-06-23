@@ -2,35 +2,39 @@
 <html lang="fa">
 <head>
 <meta charset="UTF-8">
-<title>FREEMONT POLICE TERMINAL v1.98</title>
+<title>THE FALL MACHINE – DEEP ARCHIVE TERMINAL</title>
 <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-<div class="crt-frame">
-    <div class="crt-screen">
+<div class="device">
+    <div class="device-frame">
+        <div class="device-bezel"></div>
+        <div class="device-screen">
+            <div id="crt-glass"></div>
+            <div id="crt-reflection"></div>
 
-        <!-- BOOT SCREEN -->
-        <div id="boot-sequence" class="boot">
-            <pre id="boot-text"></pre>
+            <!-- BOOT -->
+            <div id="boot" class="layer">
+                <pre id="boot-text"></pre>
+            </div>
+
+            <!-- TERMINAL -->
+            <div id="terminal" class="layer hidden">
+                <div id="output"></div>
+                <div id="choices"></div>
+            </div>
+
+            <div class="scanlines"></div>
         </div>
-
-        <!-- TERMINAL SCREEN -->
-        <div id="terminal" class="hidden">
-            <div id="output" class="terminal-output"></div>
-            <div id="choices" class="terminal-choices"></div>
-        </div>
-
     </div>
 </div>
 
 <script src="story.js"></script>
 
 <script>
-// ─────────────────────────────────────────────
-// BOOT SEQUENCE (TYPEWRITER)
-// ─────────────────────────────────────────────
+// BOOT TEXT
 const bootLines = [
 "SECURE TERMINAL SYSTEM v1.98",
 "",
@@ -43,31 +47,24 @@ const bootLines = [
 "PRESS ANY KEY TO CONTINUE_"
 ];
 
-let index = 0;
-let speed = 40;
-
-function typeLine() {
-    if (index < bootLines.length) {
-        document.getElementById("boot-text").innerText += bootLines[index] + "\n";
-        index++;
-        setTimeout(typeLine, speed);
+let i = 0;
+function typeBoot() {
+    if (i < bootLines.length) {
+        document.getElementById("boot-text").innerText += bootLines[i] + "\n";
+        i++;
+        setTimeout(typeBoot, 45);
     }
 }
+window.onload = typeBoot;
 
-window.onload = typeLine;
-
-// ─────────────────────────────────────────────
-// SWITCH TO TERMINAL AFTER KEY PRESS
-// ─────────────────────────────────────────────
+// SWITCH TO TERMINAL
 document.addEventListener("keydown", () => {
-    document.getElementById("boot-sequence").classList.add("hidden");
+    document.getElementById("boot").classList.add("hidden");
     document.getElementById("terminal").classList.remove("hidden");
     startGame();
 });
 
-// ─────────────────────────────────────────────
-// GAME ENGINE (MINIMAL VERSION)
-// ─────────────────────────────────────────────
+// GAME ENGINE
 let currentScene = STORY.intro;
 
 function startGame() {
@@ -75,23 +72,21 @@ function startGame() {
 }
 
 function renderScene(scene) {
-    const output = document.getElementById("output");
-    const choices = document.getElementById("choices");
+    const out = document.getElementById("output");
+    const ch = document.getElementById("choices");
 
-    output.innerText = scene.text.join("\n");
-    choices.innerHTML = "";
+    out.innerText = scene.text.join("\n");
+    ch.innerHTML = "";
 
     scene.choices.forEach(choice => {
         const btn = document.createElement("button");
         btn.className = "choice-btn";
-        btn.innerText = choice.label;
-
+        btn.innerText = "> " + choice.label;
         btn.onclick = () => {
             currentScene = STORY[choice.next];
             renderScene(currentScene);
         };
-
-        choices.appendChild(btn);
+        ch.appendChild(btn);
     });
 }
 </script>
