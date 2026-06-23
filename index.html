@@ -5,18 +5,747 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>سقوط فرشته‌ها | Fall of Angels</title>
     <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Special+Elite&family=Caveat:wght@400;700&family=Patrick+Hand&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="style.css" />
+    <style>
+        /* ===== تمام استایل‌های قبلی ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Patrick Hand', 'Caveat', 'Courier New', cursive;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            transition: all 0.6s ease;
+            background: #f4ece4;
+            color: #3a2a1a;
+            background-image: linear-gradient(rgba(200, 180, 160, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(200, 180, 160, 0.1) 1px, transparent 1px);
+            background-size: 30px 30px;
+        }
+        .intro-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 200;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(6px);
+            transition: opacity 0.8s ease, visibility 0.8s ease;
+        }
+        .intro-screen.hidden {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+        .intro-box {
+            max-width: 520px;
+            width: 92%;
+            padding: 45px 40px;
+            background: #f4ece4;
+            border-radius: 16px;
+            box-shadow: 0 20px 80px rgba(0, 0, 0, 0.5);
+            text-align: center;
+            position: relative;
+            border: 1px solid #d4c5a0;
+        }
+        .intro-box::before {
+            content: '';
+            position: absolute;
+            top: 8px;
+            left: 8px;
+            right: 8px;
+            bottom: 8px;
+            border: 1px dashed #d4c5a0;
+            border-radius: 12px;
+            pointer-events: none;
+        }
+        .intro-icon {
+            font-size: 48px;
+            display: block;
+            margin-bottom: 6px;
+        }
+        .intro-title {
+            font-family: 'Special Elite', cursive;
+            font-size: 34px;
+            color: #3a2a1a;
+            letter-spacing: 4px;
+            margin: 0;
+        }
+        .intro-sub {
+            font-family: 'Caveat', cursive;
+            font-size: 20px;
+            color: #8a7a6a;
+            display: block;
+            margin-top: 2px;
+        }
+        .intro-divider {
+            width: 60px;
+            height: 2px;
+            background: #b8860b;
+            margin: 18px auto;
+            opacity: 0.4;
+        }
+        .intro-text {
+            font-family: 'Patrick Hand', cursive;
+            font-size: 18px;
+            line-height: 1.9;
+            color: #5a4a3a;
+            margin: 16px 0 28px;
+        }
+        .intro-btn {
+            padding: 14px 40px;
+            font-family: 'Special Elite', cursive;
+            font-size: 20px;
+            background: #8b0000;
+            color: #f4ece4;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            letter-spacing: 2px;
+        }
+        .intro-btn:hover {
+            background: #cc0000;
+            transform: scale(1.02);
+            box-shadow: 0 0 40px rgba(139, 0, 0, 0.3);
+        }
+        .intro-footer {
+            margin-top: 20px;
+            font-size: 13px;
+            color: #a09080;
+            letter-spacing: 2px;
+        }
+        .game-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+            background: rgba(244, 236, 228, 0.92);
+            border-bottom: 2px solid #d4c5a0;
+            backdrop-filter: blur(8px);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            transition: all 0.6s ease;
+        }
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 13px;
+            color: #8a7a6a;
+        }
+        .header-left .badge-icon {
+            font-size: 16px;
+        }
+        .header-center h1 {
+            font-family: 'Special Elite', cursive;
+            font-size: 18px;
+            letter-spacing: 3px;
+            color: #3a2a1a;
+            margin: 0;
+        }
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .header-btn {
+            display: flex;
+            align-items: center;
+            gap: 3px;
+            padding: 4px 10px;
+            background: rgba(200, 180, 160, 0.3);
+            border: 1px solid #d4c5a0;
+            border-radius: 30px;
+            color: #5a4a3a;
+            font-family: 'Patrick Hand', cursive;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .header-btn:hover {
+            background: rgba(139, 0, 0, 0.08);
+            border-color: #8b0000;
+            transform: scale(1.05);
+        }
+        .header-btn:active {
+            transform: scale(0.95);
+        }
+        .header-btn-icon {
+            font-size: 16px;
+        }
+        .header-btn-label {
+            font-size: 11px;
+            letter-spacing: 0.5px;
+        }
+        .game-container {
+            flex: 1;
+            max-width: 820px;
+            margin: 25px auto;
+            padding: 16px;
+            width: 100%;
+            position: relative;
+            z-index: 1;
+        }
+        .scene-box {
+            background: rgba(244, 236, 228, 0.92);
+            border: 1px solid #d4c5a0;
+            border-radius: 12px;
+            padding: 32px 28px;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.06), inset 0 0 40px rgba(200, 180, 160, 0.1);
+            position: relative;
+            animation: fadeSlideIn 0.5s ease forwards;
+            transition: all 0.6s ease;
+        }
+        .scene-box::before {
+            content: '';
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            right: 10px;
+            bottom: 10px;
+            border: 1px dashed rgba(200, 180, 160, 0.3);
+            border-radius: 8px;
+            pointer-events: none;
+        }
+        @keyframes fadeSlideIn {
+            0% {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .narrative {
+            font-family: 'Patrick Hand', 'Caveat', cursive;
+            font-size: 20px;
+            line-height: 2.1;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            margin-bottom: 24px;
+            color: #3a2a1a;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.02);
+        }
+        .choices {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-top: 8px;
+        }
+        .choice-btn {
+            display: block;
+            width: 100%;
+            padding: 14px 20px;
+            font-family: 'Patrick Hand', cursive;
+            font-size: 18px;
+            text-align: right;
+            background: rgba(200, 180, 160, 0.15);
+            border: 1px solid #d4c5a0;
+            border-radius: 8px;
+            color: #3a2a1a;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        .choice-btn:hover {
+            background: rgba(139, 0, 0, 0.06);
+            border-color: #8b0000;
+            transform: translateX(-6px);
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.03);
+        }
+        .choice-btn:active {
+            transform: scale(0.97);
+        }
+        .profile-card {
+            background: rgba(200, 180, 160, 0.15);
+            border: 1px solid #d4c5a0;
+            border-radius: 12px;
+            padding: 25px 28px;
+            margin: 16px 0;
+            text-align: center;
+        }
+        .profile-title {
+            font-size: 13px;
+            letter-spacing: 3px;
+            color: #8a7a6a;
+            margin: 4px 0;
+        }
+        .profile-label {
+            font-family: 'Special Elite', cursive;
+            font-size: 30px;
+            color: #3a2a1a;
+            margin: 12px 0 8px;
+        }
+        .profile-text {
+            font-family: 'Patrick Hand', cursive;
+            font-size: 17px;
+            line-height: 1.8;
+            color: #5a4a3a;
+            padding: 8px 0;
+        }
+        .restart-btn {
+            display: inline-block;
+            padding: 10px 32px;
+            margin: 16px auto 0;
+            background: transparent;
+            border: 2px solid #8b0000;
+            color: #3a2a1a;
+            font-family: 'Special Elite', cursive;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            letter-spacing: 2px;
+        }
+        .restart-btn:hover {
+            background: #8b0000;
+            color: #f4ece4;
+            box-shadow: 0 0 40px rgba(139, 0, 0, 0.2);
+        }
+        .game-footer {
+            text-align: center;
+            padding: 12px;
+            font-size: 12px;
+            color: #a09080;
+            border-top: 1px solid #d4c5a0;
+            margin-top: 16px;
+            display: flex;
+            justify-content: center;
+            gap: 14px;
+            align-items: center;
+            opacity: 0.5;
+        }
+
+        /* ===== تم‌ها (همون ۶ تم قبلی) ===== */
+        body.theme-noir {
+            background: #1a0a0a;
+            color: #d4c5a0;
+        }
+        body.theme-noir .intro-box {
+            background: #1a0a0a;
+            border-color: #8b0000;
+        }
+        body.theme-noir .intro-title {
+            color: #d4c5a0;
+        }
+        body.theme-noir .intro-text {
+            color: #b0a090;
+        }
+        body.theme-noir .game-header {
+            background: rgba(10, 10, 10, 0.95);
+            border-bottom: 2px solid #8b0000;
+        }
+        body.theme-noir .header-center h1 {
+            color: #d4c5a0;
+        }
+        body.theme-noir .header-btn {
+            background: rgba(40, 40, 40, 0.6);
+            border-color: #3a3a3a;
+            color: #d4c5a0;
+        }
+        body.theme-noir .scene-box {
+            background: rgba(10, 10, 10, 0.92);
+            border-color: #8b0000;
+        }
+        body.theme-noir .narrative {
+            color: #d4c5a0;
+        }
+        body.theme-noir .choice-btn {
+            background: rgba(30, 30, 30, 0.8);
+            border-color: #3a3a3a;
+            color: #d4c5a0;
+        }
+        body.theme-noir .choice-btn:hover {
+            background: rgba(139, 0, 0, 0.15);
+            border-color: #8b0000;
+        }
+        body.theme-noir .profile-card {
+            background: rgba(20, 10, 10, 0.9);
+            border-color: #8b0000;
+        }
+        body.theme-noir .profile-label {
+            color: #d4c5a0;
+        }
+        body.theme-noir .profile-text {
+            color: #b0a090;
+        }
+        body.theme-noir .game-footer {
+            border-color: #1a1a1a;
+            color: #666;
+        }
+
+        body.theme-blood {
+            background: #2a0505;
+            color: #e8d0d0;
+        }
+        body.theme-blood .intro-box {
+            background: #1a0505;
+            border-color: #cc0000;
+        }
+        body.theme-blood .intro-title {
+            color: #e8d0d0;
+        }
+        body.theme-blood .intro-text {
+            color: #c0a0a0;
+        }
+        body.theme-blood .game-header {
+            background: rgba(20, 0, 0, 0.95);
+            border-bottom: 2px solid #cc0000;
+        }
+        body.theme-blood .header-center h1 {
+            color: #e8d0d0;
+        }
+        body.theme-blood .header-btn {
+            background: rgba(40, 10, 10, 0.6);
+            border-color: #660000;
+            color: #e8d0d0;
+        }
+        body.theme-blood .scene-box {
+            background: rgba(20, 5, 5, 0.92);
+            border-color: #cc0000;
+        }
+        body.theme-blood .narrative {
+            color: #e8d0d0;
+        }
+        body.theme-blood .choice-btn {
+            background: rgba(40, 10, 10, 0.8);
+            border-color: #660000;
+            color: #e8d0d0;
+        }
+        body.theme-blood .choice-btn:hover {
+            background: rgba(204, 0, 0, 0.15);
+            border-color: #cc0000;
+        }
+        body.theme-blood .profile-card {
+            background: rgba(30, 5, 5, 0.9);
+            border-color: #cc0000;
+        }
+        body.theme-blood .profile-label {
+            color: #e8d0d0;
+        }
+        body.theme-blood .profile-text {
+            color: #c0a0a0;
+        }
+        body.theme-blood .game-footer {
+            border-color: #1a0505;
+            color: #883333;
+        }
+
+        body.theme-retro {
+            background: #3d2b1f;
+            color: #d4c5a0;
+        }
+        body.theme-retro .intro-box {
+            background: #2a1a0f;
+            border-color: #b8860b;
+        }
+        body.theme-retro .intro-title {
+            color: #d4c5a0;
+        }
+        body.theme-retro .intro-text {
+            color: #b09070;
+        }
+        body.theme-retro .game-header {
+            background: rgba(30, 20, 15, 0.95);
+            border-bottom: 2px solid #b8860b;
+        }
+        body.theme-retro .header-center h1 {
+            color: #d4c5a0;
+        }
+        body.theme-retro .header-btn {
+            background: rgba(60, 40, 30, 0.6);
+            border-color: #8b7355;
+            color: #d4c5a0;
+        }
+        body.theme-retro .scene-box {
+            background: rgba(40, 30, 20, 0.92);
+            border-color: #b8860b;
+        }
+        body.theme-retro .narrative {
+            color: #d4c5a0;
+        }
+        body.theme-retro .choice-btn {
+            background: rgba(50, 35, 25, 0.8);
+            border-color: #8b7355;
+            color: #d4c5a0;
+        }
+        body.theme-retro .choice-btn:hover {
+            background: rgba(184, 134, 11, 0.15);
+            border-color: #b8860b;
+        }
+        body.theme-retro .profile-card {
+            background: rgba(40, 30, 20, 0.9);
+            border-color: #b8860b;
+        }
+        body.theme-retro .profile-label {
+            color: #d4c5a0;
+        }
+        body.theme-retro .profile-text {
+            color: #b09070;
+        }
+        body.theme-retro .game-footer {
+            border-color: #2a1a0f;
+            color: #886644;
+        }
+
+        body.theme-ice {
+            background: #1a2a3a;
+            color: #c0d0e0;
+        }
+        body.theme-ice .intro-box {
+            background: #0a1a2a;
+            border-color: #4a8cba;
+        }
+        body.theme-ice .intro-title {
+            color: #c0d0e0;
+        }
+        body.theme-ice .intro-text {
+            color: #8a9aaa;
+        }
+        body.theme-ice .game-header {
+            background: rgba(10, 20, 30, 0.95);
+            border-bottom: 2px solid #4a8cba;
+        }
+        body.theme-ice .header-center h1 {
+            color: #c0d0e0;
+        }
+        body.theme-ice .header-btn {
+            background: rgba(20, 40, 60, 0.6);
+            border-color: #3a6a8a;
+            color: #c0d0e0;
+        }
+        body.theme-ice .scene-box {
+            background: rgba(15, 25, 40, 0.92);
+            border-color: #4a8cba;
+        }
+        body.theme-ice .narrative {
+            color: #c0d0e0;
+        }
+        body.theme-ice .choice-btn {
+            background: rgba(20, 40, 60, 0.8);
+            border-color: #3a6a8a;
+            color: #c0d0e0;
+        }
+        body.theme-ice .choice-btn:hover {
+            background: rgba(74, 140, 186, 0.15);
+            border-color: #4a8cba;
+        }
+        body.theme-ice .profile-card {
+            background: rgba(15, 30, 50, 0.9);
+            border-color: #4a8cba;
+        }
+        body.theme-ice .profile-label {
+            color: #c0d0e0;
+        }
+        body.theme-ice .profile-text {
+            color: #8a9aaa;
+        }
+        body.theme-ice .game-footer {
+            border-color: #0a1a2a;
+            color: #446688;
+        }
+
+        body.theme-silver {
+            background: #2a2a2a;
+            color: #d0d0d0;
+        }
+        body.theme-silver .intro-box {
+            background: #1a1a1a;
+            border-color: #a0a0a0;
+        }
+        body.theme-silver .intro-title {
+            color: #d0d0d0;
+        }
+        body.theme-silver .intro-text {
+            color: #999;
+        }
+        body.theme-silver .game-header {
+            background: rgba(20, 20, 20, 0.95);
+            border-bottom: 2px solid #a0a0a0;
+        }
+        body.theme-silver .header-center h1 {
+            color: #d0d0d0;
+        }
+        body.theme-silver .header-btn {
+            background: rgba(40, 40, 40, 0.6);
+            border-color: #666;
+            color: #d0d0d0;
+        }
+        body.theme-silver .scene-box {
+            background: rgba(25, 25, 25, 0.92);
+            border-color: #888;
+        }
+        body.theme-silver .narrative {
+            color: #d0d0d0;
+        }
+        body.theme-silver .choice-btn {
+            background: rgba(35, 35, 35, 0.8);
+            border-color: #666;
+            color: #d0d0d0;
+        }
+        body.theme-silver .choice-btn:hover {
+            background: rgba(160, 160, 160, 0.1);
+            border-color: #a0a0a0;
+        }
+        body.theme-silver .profile-card {
+            background: rgba(30, 30, 30, 0.9);
+            border-color: #a0a0a0;
+        }
+        body.theme-silver .profile-label {
+            color: #d0d0d0;
+        }
+        body.theme-silver .profile-text {
+            color: #999;
+        }
+        body.theme-silver .game-footer {
+            border-color: #1a1a1a;
+            color: #666;
+        }
+
+        body.theme-royal {
+            background: #1a0a2a;
+            color: #d4b0d4;
+        }
+        body.theme-royal .intro-box {
+            background: #0a0a1a;
+            border-color: #9b4d9b;
+        }
+        body.theme-royal .intro-title {
+            color: #d4b0d4;
+        }
+        body.theme-royal .intro-text {
+            color: #a080a0;
+        }
+        body.theme-royal .game-header {
+            background: rgba(20, 10, 30, 0.95);
+            border-bottom: 2px solid #9b4d9b;
+        }
+        body.theme-royal .header-center h1 {
+            color: #d4b0d4;
+        }
+        body.theme-royal .header-btn {
+            background: rgba(40, 20, 50, 0.6);
+            border-color: #6a3a6a;
+            color: #d4b0d4;
+        }
+        body.theme-royal .scene-box {
+            background: rgba(20, 10, 30, 0.92);
+            border-color: #9b4d9b;
+        }
+        body.theme-royal .narrative {
+            color: #d4b0d4;
+        }
+        body.theme-royal .choice-btn {
+            background: rgba(35, 20, 45, 0.8);
+            border-color: #6a3a6a;
+            color: #d4b0d4;
+        }
+        body.theme-royal .choice-btn:hover {
+            background: rgba(155, 77, 155, 0.15);
+            border-color: #9b4d9b;
+        }
+        body.theme-royal .profile-card {
+            background: rgba(25, 15, 40, 0.9);
+            border-color: #9b4d9b;
+        }
+        body.theme-royal .profile-label {
+            color: #d4b0d4;
+        }
+        body.theme-royal .profile-text {
+            color: #a080a0;
+        }
+        body.theme-royal .game-footer {
+            border-color: #0a0a1a;
+            color: #664466;
+        }
+
+        @media (max-width: 768px) {
+            .game-header {
+                padding: 8px 14px;
+            }
+            .header-center h1 {
+                font-size: 15px;
+            }
+            .header-btn {
+                font-size: 11px;
+                padding: 3px 8px;
+            }
+            .header-btn-label {
+                display: none;
+            }
+            .scene-box {
+                padding: 20px 16px;
+            }
+            .narrative {
+                font-size: 18px;
+            }
+            .choice-btn {
+                font-size: 16px;
+                padding: 12px 16px;
+            }
+            .profile-label {
+                font-size: 24px;
+            }
+            .intro-box {
+                padding: 30px 20px;
+            }
+            .intro-title {
+                font-size: 28px;
+            }
+            .intro-text {
+                font-size: 16px;
+            }
+            .intro-btn {
+                font-size: 18px;
+                padding: 12px 30px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header-center h1 {
+                font-size: 13px;
+                letter-spacing: 1px;
+            }
+            .header-left .badge-text {
+                display: none;
+            }
+            .narrative {
+                font-size: 16px;
+            }
+            .choice-btn {
+                font-size: 14px;
+                padding: 10px 14px;
+            }
+            .intro-title {
+                font-size: 24px;
+            }
+            .intro-text {
+                font-size: 15px;
+            }
+            .intro-btn {
+                font-size: 16px;
+                padding: 10px 24px;
+            }
+        }
+    </style>
 </head>
 <body>
 
-    <!-- ========================================================= -->
-    <!-- صفحه معرفی (فقط یکبار در ابتدای بازی)                    -->
-    <!-- ========================================================= -->
+    <!-- ===== INTRO ===== -->
     <div id="intro-screen" class="intro-screen">
         <div class="intro-box">
-            <div class="intro-icon">🕊️</div>
+            <span class="intro-icon">🕊️</span>
             <h1 class="intro-title">سقوط فرشته‌ها</h1>
-            <p class="intro-sub">— The Fall of Angels —</p>
+            <span class="intro-sub">— The Fall of Angels —</span>
             <div class="intro-divider"></div>
             <p class="intro-text">
                 شهر فریمانت، جایی که درب خانه‌ها هرگز قفل نمی‌شود.<br />
@@ -28,24 +757,20 @@
         </div>
     </div>
 
-    <!-- ========================================================= -->
-    <!-- هدر بازی (با دو دکمه کوچیک)                              -->
-    <!-- ========================================================= -->
+    <!-- ===== HEADER ===== -->
     <header id="game-header" class="game-header" style="display:none;">
         <div class="header-left">
             <span class="badge-icon">📁</span>
-            <span class="badge-text" id="case-id">CASE #011</span>
+            <span class="badge-text" id="case-id">پرونده #۰۱۱</span>
         </div>
         <div class="header-center">
             <h1 id="header-title">سقوط فرشته‌ها</h1>
         </div>
         <div class="header-right">
-            <!-- دکمه تغییر زبان (کوچک) -->
             <button id="btn-lang" class="header-btn" title="تغییر زبان">
                 <span class="header-btn-icon">🌐</span>
                 <span class="header-btn-label" id="lang-label">فا</span>
             </button>
-            <!-- دکمه تغییر تم (کوچک) -->
             <button id="btn-theme" class="header-btn" title="تغییر تم">
                 <span class="header-btn-icon">🌙</span>
                 <span class="header-btn-label" id="theme-label">تم</span>
@@ -53,27 +778,399 @@
         </div>
     </header>
 
-    <!-- ========================================================= -->
-    <!-- محفظه بازی                                                -->
-    <!-- ========================================================= -->
-    <main id="game-container" class="game-container" style="display:none;">
-        <!-- توسط جاوااسکریپت پر می‌شود -->
-    </main>
+    <!-- ===== GAME ===== -->
+    <main id="game-container" class="game-container" style="display:none;"></main>
 
-    <!-- ========================================================= -->
-    <!-- فوتر                                                      -->
-    <!-- ========================================================= -->
+    <!-- ===== FOOTER ===== -->
     <footer id="game-footer" class="game-footer" style="display:none;">
         <span>🕵️‍♂️</span>
         <span>Fremant P.D.</span>
         <span>🔍</span>
     </footer>
 
-    <!-- ========================================================= -->
-    <!-- اسکریپت‌ها (فایل‌های استوری)                             -->
-    <!-- ========================================================= -->
+    <!-- ===== SCRIPTS ===== -->
     <script src="story_fa.js"></script>
     <script src="story_en.js"></script>
-    <script src="game.js"></script>
+    <script>
+        /**
+         * =============================================================
+         *  FALL OF ANGELS — v7 (Fixed all bugs)
+         *  رفع باگ‌های B1 تا B8
+         * =============================================================
+         */
+
+        'use strict';
+
+        console.log('🔍 Game engine v7 loaded (embedded)');
+
+        // ===== CHECK STORY FILES =====
+        let storyLoadError = false;
+        if (typeof STORY_FA === 'undefined') {
+            console.error('❌ STORY_FA is not defined!');
+            storyLoadError = true;
+        }
+        if (typeof STORY_EN === 'undefined') {
+            console.error('❌ STORY_EN is not defined!');
+            storyLoadError = true;
+        }
+        if (typeof PROFILES === 'undefined') {
+            console.error('❌ PROFILES is not defined!');
+            storyLoadError = true;
+        }
+
+        // ===== STATE =====
+        const STATE = {
+            lang: 'fa',
+            theme: 'noir',
+            gameStarted: false,
+            currentScene: 'intro',
+            params: { justice: 0, empathy: 0, pragmatism: 0, doubt: 0, resolve: 0 },
+            history: [], // فقط برای مسیرهای یکتا
+            historyFull: [], // (B4) ترتیب کامل بازدید با تایم‌استمپ
+            choicesMade: {},
+        };
+
+        // ===== DOM REFS =====
+        const $ = (id) => document.getElementById(id);
+        const DOM = {
+            intro: $('intro-screen'),
+            header: $('game-header'),
+            container: $('game-container'),
+            footer: $('game-footer'),
+            caseId: $('case-id'),
+            headerTitle: $('header-title'),
+            btnStart: $('btn-start-game'),
+            btnLang: $('btn-lang'),
+            btnTheme: $('btn-theme'),
+            langLabel: $('lang-label'),
+            themeLabel: $('theme-label'),
+        };
+
+        // ===== UTILITY =====
+        function getStory() {
+            if (storyLoadError) return null;
+            if (STATE.lang === 'en') return STORY_EN;
+            return STORY_FA;
+        }
+
+        function getProfile(params) {
+            if (storyLoadError || typeof PROFILES === 'undefined') {
+                return { label: 'Unknown', text: 'Profile not found.' };
+            }
+            for (const p of PROFILES) {
+                if (p.condition(params)) return p;
+            }
+            return PROFILES[PROFILES.length - 1];
+        }
+
+        // ===== (B5) safeHtml: جایگزین escapeHtml برای مجاز کردن تگ‌های ساده =====
+        function safeHtml(str) {
+            // فقط تگ‌های مجاز: <b>, <i>, <u>, <br>, <strong>, <em>, <span>
+            const allowedTags = ['b', 'i', 'u', 'br', 'strong', 'em', 'span'];
+            // ابتدا کاراکترهای خطرناک رو تبدیل کن
+            let safe = str
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#039;');
+            // بعد تگ‌های مجاز رو برگردون (با regex ساده)
+            allowedTags.forEach(tag => {
+                const open = new RegExp(`&lt;${tag}([^&gt;]*)&gt;`, 'g');
+                const close = new RegExp(`&lt;/${tag}&gt;`, 'g');
+                safe = safe.replace(open, `<${tag}$1>`).replace(close, `</${tag}>`);
+            });
+            return safe;
+        }
+
+        // ===== SAVE / LOAD =====
+        function saveGame() {
+            try {
+                const data = {
+                    lang: STATE.lang,
+                    theme: STATE.theme,
+                    gameStarted: STATE.gameStarted,
+                    currentScene: STATE.currentScene,
+                    params: STATE.params,
+                    history: STATE.history,
+                    historyFull: STATE.historyFull,
+                    choicesMade: STATE.choicesMade
+                };
+                localStorage.setItem('fallen_angels_v7', JSON.stringify(data));
+            } catch (e) { console.warn('Save failed:', e); }
+        }
+
+        function loadGame() {
+            try {
+                const raw = localStorage.getItem('fallen_angels_v7');
+                if (!raw) return false;
+                const data = JSON.parse(raw);
+                STATE.lang = data.lang || 'fa';
+                STATE.theme = data.theme || 'noir';
+                STATE.gameStarted = data.gameStarted || false;
+                STATE.currentScene = data.currentScene || 'intro';
+                STATE.params = data.params || { justice: 0, empathy: 0, pragmatism: 0, doubt: 0, resolve: 0 };
+                STATE.history = data.history || [];
+                STATE.historyFull = data.historyFull || [];
+                STATE.choicesMade = data.choicesMade || {};
+                return true;
+            } catch (e) { return false; }
+        }
+
+        // ===== THEME =====
+        function applyTheme(theme) {
+            const themes = ['noir', 'blood', 'retro', 'ice', 'silver', 'royal'];
+            document.body.classList.remove(...themes.map(t => `theme-${t}`));
+            document.body.classList.add(`theme-${theme}`);
+            STATE.theme = theme;
+            if (DOM.themeLabel) {
+                const labels = { noir: '🖤', blood: '🩸', retro: '📜', ice: '❄️', silver: '⚪', royal: '👑' };
+                DOM.themeLabel.textContent = labels[theme] || 'تم';
+            }
+            saveGame();
+        }
+
+        // ===== LANGUAGE =====
+        function applyLanguage(lang) {
+            STATE.lang = lang;
+            if (DOM.langLabel) DOM.langLabel.textContent = lang === 'fa' ? 'فا' : 'En';
+            if (DOM.headerTitle) DOM.headerTitle.textContent = lang === 'fa' ? 'سقوط فرشته‌ها' : 'Fall of Angels';
+            if (DOM.caseId) DOM.caseId.textContent = lang === 'fa' ? 'پرونده #۰۱۱' : 'CASE #011';
+            saveGame();
+        }
+
+        // ===== RENDER =====
+        function renderScene(sceneId) {
+            const story = getStory();
+            if (!story || storyLoadError) {
+                // (B7) Fallback: صفحه‌ی خطا با گزینه‌ی ریست
+                DOM.container.innerHTML = `
+                    <div class="scene-box">
+                        <p style="color:red;font-size:20px;">❌ خطا: فایل‌های داستان پیدا نشد.</p>
+                        <p style="color:#888;">لطفاً فایل‌های story_fa.js و story_en.js را بررسی کنید.</p>
+                        <button class="choice-btn restart-btn" id="error-restart-btn" style="margin-top:20px;">🔄 بارگذاری مجدد</button>
+                    </div>
+                `;
+                document.getElementById('error-restart-btn')?.addEventListener('click', () => location.reload());
+                return;
+            }
+
+            // (B1) اگر صحنه وجود نداشت، به intro برگرد
+            let scene = story[sceneId];
+            if (!scene) {
+                console.warn(`⚠️ Scene "${sceneId}" not found. Redirecting to intro.`);
+                scene = story['intro'];
+                if (!scene) {
+                    // اگه intro هم نبود، خطا بده
+                    DOM.container.innerHTML = `
+                        <div class="scene-box">
+                            <p style="color:red;font-size:20px;">❌ صحنه‌ی "${sceneId}" و همچنین "intro" پیدا نشد.</p>
+                            <button class="choice-btn restart-btn" id="error-restart-btn2" style="margin-top:20px;">🔄 شروع مجدد</button>
+                        </div>
+                    `;
+                    document.getElementById('error-restart-btn2')?.addEventListener('click', () => {
+                        localStorage.removeItem('fallen_angels_v7');
+                        location.reload();
+                    });
+                    return;
+                }
+                // اصلاح sceneId برای ذخیره‌سازی
+                sceneId = 'intro';
+                STATE.currentScene = 'intro';
+            }
+
+            // (B4) تاریخچه کامل با تایم‌استمپ
+            STATE.historyFull.push({
+                scene: sceneId,
+                time: new Date().toISOString(),
+                lang: STATE.lang
+            });
+            if (!STATE.history.includes(sceneId)) STATE.history.push(sceneId);
+
+            STATE.currentScene = sceneId;
+            saveGame();
+
+            if (scene.isEnding) {
+                renderEnding(scene);
+                return;
+            }
+
+            const narrative = scene.text.join('\n');
+            // (B5) استفاده از safeHtml به جای escapeHtml
+            const narrativeHtml = safeHtml(narrative);
+
+            const choicesHtml = (scene.choices && scene.choices.length > 0) ?
+                scene.choices.map((c, i) =>
+                    `<button class="choice-btn" data-scene="${sceneId}" data-choice="${i}">${safeHtml(c.label)}</button>`
+                ).join('') :
+                '<p class="no-choices">[ پایان صحنه ]</p>';
+
+            DOM.container.innerHTML = `
+                <div class="scene-box">
+                    <pre class="narrative">${narrativeHtml}</pre>
+                    <div class="choices">${choicesHtml}</div>
+                </div>
+            `;
+
+            document.querySelectorAll('.choice-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const idx = parseInt(this.dataset.choice, 10);
+                    makeChoice(sceneId, idx);
+                });
+            });
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function makeChoice(sceneId, choiceIndex) {
+            const story = getStory();
+            if (!story) return;
+            const scene = story[sceneId];
+            if (!scene) return;
+            const choice = scene.choices[choiceIndex];
+            if (!choice) return;
+
+            STATE.choicesMade[sceneId] = choiceIndex;
+            if (choice.params) {
+                for (const [key, val] of Object.entries(choice.params)) {
+                    if (STATE.params.hasOwnProperty(key)) STATE.params[key] += val;
+                }
+            }
+            saveGame();
+            renderScene(choice.next);
+        }
+
+        function renderEnding(scene) {
+            const profile = getProfile(STATE.params);
+            const sceneText = scene.text.join('\n');
+            const isEn = STATE.lang === 'en';
+
+            DOM.container.innerHTML = `
+                <div class="scene-box ending">
+                    <pre class="narrative">${safeHtml(sceneText)}</pre>
+                    <div class="profile-card">
+                        <div class="profile-title">━━━━━━━━━━━━━━━━━━━━━</div>
+                        <div class="profile-title">${isEn ? "William's Profile" : 'پروفایل ویلیام'}</div>
+                        <div class="profile-title">━━━━━━━━━━━━━━━━━━━━━</div>
+                        <div class="profile-label">${profile.label}</div>
+                        <div class="profile-text">${profile.text}</div>
+                    </div>
+                    <div class="choices">
+                        <button class="choice-btn restart-btn" id="btn-restart">${isEn ? 'Start Over' : 'شروع دوباره'}</button>
+                    </div>
+                </div>
+            `;
+
+            document.getElementById('btn-restart')?.addEventListener('click', fullReset);
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // ===== (B6) FULL RESET =====
+        function fullReset() {
+            console.log('🔄 Full reset');
+            localStorage.removeItem('fallen_angels_v7');
+            STATE.gameStarted = false;
+            STATE.currentScene = 'intro';
+            STATE.params = { justice: 0, empathy: 0, pragmatism: 0, doubt: 0, resolve: 0 };
+            STATE.history = [];
+            STATE.historyFull = [];
+            STATE.choicesMade = {};
+            // نمایش صفحه‌ی معرفی
+            DOM.intro.classList.remove('hidden');
+            DOM.header.style.display = 'none';
+            DOM.container.style.display = 'none';
+            DOM.footer.style.display = 'none';
+            // ریست امن
+            saveGame();
+        }
+
+        // ===== GAME ACTIONS =====
+        function startGame() {
+            console.log('🚀 startGame()');
+            STATE.gameStarted = true;
+            STATE.currentScene = 'intro';
+            STATE.params = { justice: 0, empathy: 0, pragmatism: 0, doubt: 0, resolve: 0 };
+            STATE.history = [];
+            STATE.historyFull = [];
+            STATE.choicesMade = {};
+
+            DOM.intro.classList.add('hidden');
+            DOM.header.style.display = 'flex';
+            DOM.container.style.display = 'block';
+            DOM.footer.style.display = 'flex';
+
+            renderScene('intro');
+            saveGame();
+        }
+
+        function continueGame() {
+            if (STATE.gameStarted) {
+                DOM.intro.classList.add('hidden');
+                DOM.header.style.display = 'flex';
+                DOM.container.style.display = 'block';
+                DOM.footer.style.display = 'flex';
+                renderScene(STATE.currentScene);
+            } else {
+                startGame();
+            }
+        }
+
+        // ===== INIT =====
+        function init() {
+            const hasSave = loadGame();
+
+            // اگر خطای لود استوری داشتیم، بازی رو متوقف نکن، صفحه‌ی خطا نشون بده
+            if (storyLoadError) {
+                DOM.intro.classList.add('hidden');
+                DOM.header.style.display = 'flex';
+                DOM.container.style.display = 'block';
+                DOM.footer.style.display = 'flex';
+                DOM.container.innerHTML = `
+                    <div class="scene-box">
+                        <p style="color:red;font-size:20px;">❌ خطا در بارگذاری فایل‌های داستان</p>
+                        <p style="color:#888;">فایل‌های story_fa.js و story_en.js را بررسی کنید.</p>
+                        <button class="choice-btn restart-btn" id="init-error-btn" style="margin-top:20px;">🔄 بارگذاری مجدد</button>
+                    </div>
+                `;
+                document.getElementById('init-error-btn')?.addEventListener('click', () => location.reload());
+                return;
+            }
+
+            applyTheme(STATE.theme);
+            applyLanguage(STATE.lang);
+
+            if (hasSave && STATE.gameStarted) {
+                continueGame();
+            } else {
+                DOM.intro.classList.remove('hidden');
+                DOM.header.style.display = 'none';
+                DOM.container.style.display = 'none';
+                DOM.footer.style.display = 'none';
+            }
+
+            // ===== رویدادها =====
+            DOM.btnStart?.addEventListener('click', startGame);
+
+            DOM.btnLang?.addEventListener('click', function() {
+                const newLang = STATE.lang === 'fa' ? 'en' : 'fa';
+                applyLanguage(newLang);
+                if (STATE.gameStarted) renderScene(STATE.currentScene);
+            });
+
+            DOM.btnTheme?.addEventListener('click', function() {
+                const themes = ['noir', 'blood', 'retro', 'ice', 'silver', 'royal'];
+                const currentIndex = themes.indexOf(STATE.theme);
+                const nextIndex = (currentIndex + 1) % themes.length;
+                applyTheme(themes[nextIndex]);
+            });
+
+            console.log('✅ Game v7 initialized');
+            console.log('📚 STORY_FA:', typeof STORY_FA !== 'undefined');
+            console.log('📚 STORY_EN:', typeof STORY_EN !== 'undefined');
+            console.log('📚 PROFILES:', typeof PROFILES !== 'undefined');
+        }
+
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
 </body>
 </html>
