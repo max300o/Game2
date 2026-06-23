@@ -50,7 +50,7 @@ const STORY = {
       'The Forest Near Town',
       '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━',
       '',
-      'Blake: You\'re late. I\'ve been waiting for hours. Where were you?',
+      'Blake: You\'re late. I\'ve been waiting for hours. Where are you?',
     ],
     choices: [
       {
