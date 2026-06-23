@@ -1,7 +1,7 @@
 /* =============================================================
-   FONTS
+   FONTS & RESET
    ============================================================= */
-@import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Special+Elite&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Special+Elite&family=Cinzel:wght@400;700&family=Uncial+Antiqua&family=MedievalSharp&family=Orbitron:wght@400;700&display=swap');
 
 * {
     margin: 0;
@@ -14,96 +14,498 @@ body {
     min-height: 100vh;
     display: flex;
     flex-direction: column;
-    transition: background 0.6s ease, color 0.6s ease;
-    background: #0a0a0a;
-    color: #d4c5a0;
+    transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
     overflow-x: hidden;
 }
 
 /* =============================================================
-   THEMES (6 تم جدا)
+   THEME: NOIR – سینمای سیاه‌وسفید جنایی
    ============================================================= */
-/* 1. Noir */
 body.theme-noir {
     background: radial-gradient(ellipse at 30% 40%, #1a0a0a 0%, #0a0a0a 100%);
     color: #d4c5a0;
+    font-family: 'Special Elite', 'Courier New', monospace;
 }
-body.theme-noir .game-header { background: rgba(10, 10, 10, 0.92); border-bottom: 2px solid #8b0000; }
-body.theme-noir .scene-box { background: rgba(10, 10, 10, 0.88); border: 1px solid #8b0000; box-shadow: 0 0 50px rgba(139, 0, 0, 0.15); }
-body.theme-noir .choice-btn { background: rgba(26, 26, 26, 0.85); border: 1px solid #3a3a3a; color: #d4c5a0; }
-body.theme-noir .choice-btn:hover { background: rgba(139, 0, 0, 0.15); border-color: #8b0000; }
-body.theme-noir .profile-card { background: rgba(20, 10, 10, 0.9); border: 2px solid #8b0000; }
-body.theme-noir .menu-panel { background: rgba(10, 10, 10, 0.9); border: 1px solid rgba(139, 0, 0, 0.3); }
-body.theme-noir .settings-content { background: rgba(20, 10, 10, 0.95); border: 1px solid #333; }
+body.theme-noir .game-header {
+    background: rgba(10, 10, 10, 0.95);
+    border-bottom: 3px solid #8b0000;
+    box-shadow: 0 4px 40px rgba(139, 0, 0, 0.3);
+}
+body.theme-noir .scene-box {
+    background: rgba(10, 10, 10, 0.92);
+    border: 2px solid #8b0000;
+    box-shadow: 0 0 80px rgba(139, 0, 0, 0.15), inset 0 0 60px rgba(139, 0, 0, 0.05);
+    border-radius: 0;
+}
+body.theme-noir .scene-box::before {
+    content: '';
+    position: absolute;
+    top: -8px; left: 20px;
+    width: 60px;
+    height: 8px;
+    background: #8b0000;
+    opacity: 0.5;
+}
+body.theme-noir .choice-btn {
+    background: rgba(20, 20, 20, 0.9);
+    border: 1px solid #3a3a3a;
+    color: #d4c5a0;
+    font-family: 'Special Elite', cursive;
+    font-size: 16px;
+    padding: 16px 24px;
+    transition: all 0.4s ease;
+}
+body.theme-noir .choice-btn:hover {
+    background: rgba(139, 0, 0, 0.15);
+    border-color: #8b0000;
+    transform: translateX(-8px);
+    box-shadow: 0 0 40px rgba(139, 0, 0, 0.2);
+}
+body.theme-noir .choice-btn::before {
+    background: #8b0000;
+    width: 4px;
+}
+body.theme-noir .choice-btn:hover::before {
+    width: 100%;
+    opacity: 0.08;
+}
+body.theme-noir .profile-card {
+    background: rgba(20, 10, 10, 0.95);
+    border: 2px solid #8b0000;
+    box-shadow: 0 0 60px rgba(139, 0, 0, 0.2);
+}
+body.theme-noir .menu-panel {
+    background: rgba(10, 10, 10, 0.95);
+    border: 2px solid rgba(139, 0, 0, 0.4);
+    box-shadow: 0 0 100px rgba(0, 0, 0, 0.9);
+}
+body.theme-noir .menu-btn.primary {
+    background: #8b0000;
+    border-color: #8b0000;
+    font-family: 'Special Elite', cursive;
+    letter-spacing: 4px;
+}
+body.theme-noir .menu-btn.primary:hover {
+    background: #cc0000;
+    box-shadow: 0 0 60px rgba(139, 0, 0, 0.5);
+}
+body.theme-noir .narrative {
+    font-family: 'Special Elite', cursive;
+    font-size: 18px;
+    line-height: 2.2;
+    text-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+}
+body.theme-noir .status-dot {
+    background: #8b0000;
+    box-shadow: 0 0 30px rgba(139, 0, 0, 0.6);
+}
 
-/* 2. Blood */
+/* =============================================================
+   THEME: BLOOD – خونین، وحشیانه و هشداردهنده
+   ============================================================= */
 body.theme-blood {
     background: radial-gradient(ellipse at 30% 40%, #2a0505 0%, #0a0000 100%);
     color: #e8d0d0;
+    font-family: 'Uncial Antiqua', 'Georgia', serif;
 }
-body.theme-blood .game-header { background: rgba(20, 0, 0, 0.95); border-bottom: 3px solid #cc0000; }
-body.theme-blood .scene-box { background: rgba(20, 5, 5, 0.92); border: 2px solid #cc0000; box-shadow: 0 0 60px rgba(204, 0, 0, 0.2); }
-body.theme-blood .choice-btn { background: rgba(40, 10, 10, 0.9); border: 1px solid #660000; color: #e8d0d0; }
-body.theme-blood .choice-btn:hover { background: rgba(204, 0, 0, 0.2); border-color: #cc0000; }
-body.theme-blood .profile-card { background: rgba(30, 5, 5, 0.95); border: 2px solid #cc0000; }
-body.theme-blood .menu-panel { background: rgba(20, 5, 5, 0.95); border: 1px solid rgba(204, 0, 0, 0.3); }
-body.theme-blood .settings-content { background: rgba(30, 5, 5, 0.95); border: 1px solid #660000; }
+body.theme-blood .game-header {
+    background: rgba(20, 0, 0, 0.98);
+    border-bottom: 4px solid #cc0000;
+    box-shadow: 0 4px 60px rgba(204, 0, 0, 0.3);
+}
+body.theme-blood .scene-box {
+    background: rgba(20, 5, 5, 0.95);
+    border: 3px solid #cc0000;
+    box-shadow: 0 0 100px rgba(204, 0, 0, 0.2), inset 0 0 80px rgba(204, 0, 0, 0.05);
+    border-radius: 0;
+    position: relative;
+}
+body.theme-blood .scene-box::after {
+    content: '🩸';
+    position: absolute;
+    top: -15px;
+    right: 20px;
+    font-size: 30px;
+    opacity: 0.6;
+}
+body.theme-blood .choice-btn {
+    background: rgba(40, 10, 10, 0.95);
+    border: 2px solid #660000;
+    color: #e8d0d0;
+    font-family: 'Uncial Antiqua', serif;
+    font-size: 17px;
+    padding: 16px 24px;
+    letter-spacing: 1px;
+    transition: all 0.4s ease;
+}
+body.theme-blood .choice-btn:hover {
+    background: rgba(204, 0, 0, 0.2);
+    border-color: #cc0000;
+    transform: scale(1.02) translateX(-5px);
+    box-shadow: 0 0 60px rgba(204, 0, 0, 0.3);
+}
+body.theme-blood .choice-btn::before {
+    background: #cc0000;
+    width: 6px;
+}
+body.theme-blood .profile-card {
+    background: rgba(30, 5, 5, 0.98);
+    border: 3px solid #cc0000;
+    box-shadow: 0 0 80px rgba(204, 0, 0, 0.2);
+}
+body.theme-blood .menu-panel {
+    background: rgba(20, 5, 5, 0.98);
+    border: 2px solid rgba(204, 0, 0, 0.5);
+    box-shadow: 0 0 120px rgba(204, 0, 0, 0.2);
+}
+body.theme-blood .menu-btn.primary {
+    background: #cc0000;
+    border-color: #cc0000;
+    font-family: 'Uncial Antiqua', serif;
+    font-size: 18px;
+    letter-spacing: 3px;
+}
+body.theme-blood .menu-btn.primary:hover {
+    background: #ff0000;
+    box-shadow: 0 0 80px rgba(204, 0, 0, 0.6);
+}
+body.theme-blood .narrative {
+    font-family: 'Uncial Antiqua', serif;
+    font-size: 19px;
+    line-height: 2.2;
+    text-shadow: 0 0 30px rgba(204, 0, 0, 0.1);
+}
+body.theme-blood .status-dot {
+    background: #cc0000;
+    box-shadow: 0 0 40px rgba(204, 0, 0, 0.8);
+    animation: pulse-blood 1s ease-in-out infinite;
+}
+@keyframes pulse-blood {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.2; transform: scale(1.3); }
+}
 
-/* 3. Retro */
+/* =============================================================
+   THEME: RETRO – کهنه، قدیمی، حس قرون وسطی
+   ============================================================= */
 body.theme-retro {
     background: radial-gradient(ellipse at 30% 40%, #3d2b1f 0%, #1a120e 100%);
     color: #d4c5a0;
+    font-family: 'MedievalSharp', 'Georgia', cursive;
 }
-body.theme-retro .game-header { background: rgba(30, 20, 15, 0.95); border-bottom: 3px solid #b8860b; }
-body.theme-retro .scene-box { background: rgba(40, 30, 20, 0.92); border: 2px solid #b8860b; box-shadow: 0 0 50px rgba(184, 134, 11, 0.15); }
-body.theme-retro .choice-btn { background: rgba(50, 35, 25, 0.9); border: 1px solid #8b7355; color: #d4c5a0; }
-body.theme-retro .choice-btn:hover { background: rgba(184, 134, 11, 0.15); border-color: #b8860b; }
-body.theme-retro .profile-card { background: rgba(40, 30, 20, 0.95); border: 2px solid #b8860b; }
-body.theme-retro .menu-panel { background: rgba(30, 20, 15, 0.95); border: 1px solid rgba(184, 134, 11, 0.3); }
-body.theme-retro .settings-content { background: rgba(40, 30, 20, 0.95); border: 1px solid #8b7355; }
+body.theme-retro .game-header {
+    background: rgba(30, 20, 15, 0.97);
+    border-bottom: 4px solid #b8860b;
+    box-shadow: 0 4px 40px rgba(184, 134, 11, 0.2);
+}
+body.theme-retro .scene-box {
+    background: rgba(40, 30, 20, 0.95);
+    border: 3px solid #b8860b;
+    box-shadow: 0 0 80px rgba(184, 134, 11, 0.1), inset 0 0 60px rgba(184, 134, 11, 0.05);
+    border-radius: 12px;
+    padding: 40px 30px;
+}
+body.theme-retro .scene-box::before {
+    content: '☙';
+    position: absolute;
+    top: -10px;
+    left: 30px;
+    font-size: 30px;
+    color: #b8860b;
+    opacity: 0.5;
+}
+body.theme-retro .scene-box::after {
+    content: '❧';
+    position: absolute;
+    bottom: -10px;
+    right: 30px;
+    font-size: 30px;
+    color: #b8860b;
+    opacity: 0.5;
+}
+body.theme-retro .choice-btn {
+    background: rgba(50, 35, 25, 0.95);
+    border: 2px solid #8b7355;
+    color: #d4c5a0;
+    font-family: 'MedievalSharp', cursive;
+    font-size: 18px;
+    padding: 14px 24px;
+    border-radius: 8px;
+    transition: all 0.4s ease;
+}
+body.theme-retro .choice-btn:hover {
+    background: rgba(184, 134, 11, 0.15);
+    border-color: #b8860b;
+    transform: translateX(-10px);
+    box-shadow: 0 0 50px rgba(184, 134, 11, 0.2);
+}
+body.theme-retro .profile-card {
+    background: rgba(40, 30, 20, 0.98);
+    border: 3px solid #b8860b;
+    border-radius: 12px;
+    box-shadow: 0 0 60px rgba(184, 134, 11, 0.1);
+}
+body.theme-retro .menu-panel {
+    background: rgba(30, 20, 15, 0.98);
+    border: 2px solid rgba(184, 134, 11, 0.4);
+    border-radius: 16px;
+    box-shadow: 0 0 100px rgba(0, 0, 0, 0.8);
+}
+body.theme-retro .menu-btn.primary {
+    background: #b8860b;
+    border-color: #b8860b;
+    font-family: 'MedievalSharp', cursive;
+    font-size: 20px;
+    letter-spacing: 4px;
+    border-radius: 8px;
+}
+body.theme-retro .menu-btn.primary:hover {
+    background: #d4a017;
+    box-shadow: 0 0 60px rgba(184, 134, 11, 0.4);
+}
+body.theme-retro .narrative {
+    font-family: 'MedievalSharp', cursive;
+    font-size: 20px;
+    line-height: 2.3;
+    text-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+}
+body.theme-retro .status-dot {
+    background: #b8860b;
+    box-shadow: 0 0 30px rgba(184, 134, 11, 0.5);
+}
 
-/* 4. Ice */
+/* =============================================================
+   THEME: ICE – سرد، مدرن، مینیمال
+   ============================================================= */
 body.theme-ice {
     background: radial-gradient(ellipse at 30% 40%, #1a2a3a 0%, #0a0f1a 100%);
     color: #c0d0e0;
+    font-family: 'Orbitron', 'Courier New', monospace;
 }
-body.theme-ice .game-header { background: rgba(10, 20, 30, 0.95); border-bottom: 2px solid #4a8cba; }
-body.theme-ice .scene-box { background: rgba(15, 25, 40, 0.92); border: 1px solid #4a8cba; box-shadow: 0 0 50px rgba(74, 140, 186, 0.15); }
-body.theme-ice .choice-btn { background: rgba(20, 40, 60, 0.9); border: 1px solid #3a6a8a; color: #c0d0e0; }
-body.theme-ice .choice-btn:hover { background: rgba(74, 140, 186, 0.15); border-color: #4a8cba; }
-body.theme-ice .profile-card { background: rgba(15, 30, 50, 0.95); border: 2px solid #4a8cba; }
-body.theme-ice .menu-panel { background: rgba(10, 20, 30, 0.95); border: 1px solid rgba(74, 140, 186, 0.3); }
-body.theme-ice .settings-content { background: rgba(15, 30, 50, 0.95); border: 1px solid #3a6a8a; }
+body.theme-ice .game-header {
+    background: rgba(10, 20, 30, 0.97);
+    border-bottom: 2px solid #4a8cba;
+    box-shadow: 0 4px 40px rgba(74, 140, 186, 0.15);
+}
+body.theme-ice .scene-box {
+    background: rgba(15, 25, 40, 0.95);
+    border: 1px solid #4a8cba;
+    box-shadow: 0 0 80px rgba(74, 140, 186, 0.08), inset 0 0 60px rgba(74, 140, 186, 0.03);
+    border-radius: 20px;
+    backdrop-filter: blur(20px);
+}
+body.theme-ice .choice-btn {
+    background: rgba(20, 40, 60, 0.9);
+    border: 1px solid #3a6a8a;
+    color: #c0d0e0;
+    font-family: 'Orbitron', monospace;
+    font-size: 14px;
+    padding: 14px 22px;
+    border-radius: 12px;
+    letter-spacing: 1px;
+    transition: all 0.4s ease;
+}
+body.theme-ice .choice-btn:hover {
+    background: rgba(74, 140, 186, 0.15);
+    border-color: #4a8cba;
+    transform: scale(1.02) translateX(-6px);
+    box-shadow: 0 0 60px rgba(74, 140, 186, 0.15);
+}
+body.theme-ice .profile-card {
+    background: rgba(15, 30, 50, 0.97);
+    border: 2px solid #4a8cba;
+    border-radius: 16px;
+    box-shadow: 0 0 60px rgba(74, 140, 186, 0.08);
+}
+body.theme-ice .menu-panel {
+    background: rgba(10, 20, 30, 0.97);
+    border: 1px solid rgba(74, 140, 186, 0.3);
+    border-radius: 20px;
+    box-shadow: 0 0 100px rgba(0, 0, 0, 0.8);
+}
+body.theme-ice .menu-btn.primary {
+    background: #4a8cba;
+    border-color: #4a8cba;
+    font-family: 'Orbitron', monospace;
+    letter-spacing: 3px;
+    border-radius: 12px;
+}
+body.theme-ice .menu-btn.primary:hover {
+    background: #5a9cca;
+    box-shadow: 0 0 60px rgba(74, 140, 186, 0.3);
+}
+body.theme-ice .narrative {
+    font-family: 'Orbitron', monospace;
+    font-size: 16px;
+    line-height: 2;
+    text-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+}
+body.theme-ice .status-dot {
+    background: #4a8cba;
+    box-shadow: 0 0 40px rgba(74, 140, 186, 0.5);
+}
 
-/* 5. Silver */
+/* =============================================================
+   THEME: SILVER – نقره‌ای، مدرن، مینیمال لوکس
+   ============================================================= */
 body.theme-silver {
     background: radial-gradient(ellipse at 30% 40%, #2a2a2a 0%, #1a1a1a 100%);
     color: #d0d0d0;
+    font-family: 'Orbitron', 'Arial', sans-serif;
 }
-body.theme-silver .game-header { background: rgba(20, 20, 20, 0.95); border-bottom: 2px solid #a0a0a0; }
-body.theme-silver .scene-box { background: rgba(25, 25, 25, 0.92); border: 1px solid #888; box-shadow: 0 0 50px rgba(160, 160, 160, 0.1); }
-body.theme-silver .choice-btn { background: rgba(35, 35, 35, 0.9); border: 1px solid #666; color: #d0d0d0; }
-body.theme-silver .choice-btn:hover { background: rgba(160, 160, 160, 0.15); border-color: #a0a0a0; }
-body.theme-silver .profile-card { background: rgba(30, 30, 30, 0.95); border: 2px solid #a0a0a0; }
-body.theme-silver .menu-panel { background: rgba(20, 20, 20, 0.95); border: 1px solid rgba(160, 160, 160, 0.3); }
-body.theme-silver .settings-content { background: rgba(30, 30, 30, 0.95); border: 1px solid #666; }
+body.theme-silver .game-header {
+    background: rgba(20, 20, 20, 0.97);
+    border-bottom: 1px solid #a0a0a0;
+    box-shadow: 0 4px 40px rgba(160, 160, 160, 0.05);
+}
+body.theme-silver .scene-box {
+    background: rgba(25, 25, 25, 0.95);
+    border: 1px solid #888;
+    box-shadow: 0 0 80px rgba(160, 160, 160, 0.05), inset 0 0 60px rgba(160, 160, 160, 0.02);
+    border-radius: 24px;
+}
+body.theme-silver .choice-btn {
+    background: rgba(35, 35, 35, 0.95);
+    border: 1px solid #666;
+    color: #d0d0d0;
+    font-family: 'Orbitron', monospace;
+    font-size: 14px;
+    padding: 14px 22px;
+    border-radius: 16px;
+    transition: all 0.4s ease;
+}
+body.theme-silver .choice-btn:hover {
+    background: rgba(160, 160, 160, 0.1);
+    border-color: #a0a0a0;
+    transform: scale(1.02) translateX(-6px);
+    box-shadow: 0 0 50px rgba(160, 160, 160, 0.05);
+}
+body.theme-silver .profile-card {
+    background: rgba(30, 30, 30, 0.97);
+    border: 1px solid #a0a0a0;
+    border-radius: 20px;
+    box-shadow: 0 0 60px rgba(160, 160, 160, 0.03);
+}
+body.theme-silver .menu-panel {
+    background: rgba(20, 20, 20, 0.97);
+    border: 1px solid rgba(160, 160, 160, 0.2);
+    border-radius: 24px;
+    box-shadow: 0 0 100px rgba(0, 0, 0, 0.8);
+}
+body.theme-silver .menu-btn.primary {
+    background: #888;
+    border-color: #888;
+    font-family: 'Orbitron', monospace;
+    letter-spacing: 3px;
+    border-radius: 16px;
+}
+body.theme-silver .menu-btn.primary:hover {
+    background: #aaa;
+    box-shadow: 0 0 60px rgba(160, 160, 160, 0.2);
+}
+body.theme-silver .narrative {
+    font-family: 'Orbitron', monospace;
+    font-size: 16px;
+    line-height: 2;
+}
+body.theme-silver .status-dot {
+    background: #a0a0a0;
+    box-shadow: 0 0 30px rgba(160, 160, 160, 0.3);
+}
 
-/* 6. Royal */
+/* =============================================================
+   THEME: ROYAL – سلطنتی، مجلل، باشکوه
+   ============================================================= */
 body.theme-royal {
     background: radial-gradient(ellipse at 30% 40%, #1a0a2a 0%, #0a0a1a 100%);
     color: #d4b0d4;
+    font-family: 'Cinzel', 'Georgia', serif;
 }
-body.theme-royal .game-header { background: rgba(20, 10, 30, 0.95); border-bottom: 2px solid #9b4d9b; }
-body.theme-royal .scene-box { background: rgba(20, 10, 30, 0.92); border: 1px solid #9b4d9b; box-shadow: 0 0 50px rgba(155, 77, 155, 0.15); }
-body.theme-royal .choice-btn { background: rgba(35, 20, 45, 0.9); border: 1px solid #6a3a6a; color: #d4b0d4; }
-body.theme-royal .choice-btn:hover { background: rgba(155, 77, 155, 0.15); border-color: #9b4d9b; }
-body.theme-royal .profile-card { background: rgba(25, 15, 40, 0.95); border: 2px solid #9b4d9b; }
-body.theme-royal .menu-panel { background: rgba(20, 10, 30, 0.95); border: 1px solid rgba(155, 77, 155, 0.3); }
-body.theme-royal .settings-content { background: rgba(25, 15, 40, 0.95); border: 1px solid #6a3a6a; }
+body.theme-royal .game-header {
+    background: rgba(20, 10, 30, 0.97);
+    border-bottom: 3px solid #9b4d9b;
+    box-shadow: 0 4px 60px rgba(155, 77, 155, 0.15);
+}
+body.theme-royal .scene-box {
+    background: rgba(20, 10, 30, 0.95);
+    border: 2px solid #9b4d9b;
+    box-shadow: 0 0 100px rgba(155, 77, 155, 0.08), inset 0 0 80px rgba(155, 77, 155, 0.03);
+    border-radius: 16px;
+    position: relative;
+}
+body.theme-royal .scene-box::before {
+    content: '✦';
+    position: absolute;
+    top: -12px;
+    left: 30px;
+    font-size: 28px;
+    color: #9b4d9b;
+    opacity: 0.4;
+}
+body.theme-royal .scene-box::after {
+    content: '✦';
+    position: absolute;
+    bottom: -12px;
+    right: 30px;
+    font-size: 28px;
+    color: #9b4d9b;
+    opacity: 0.4;
+}
+body.theme-royal .choice-btn {
+    background: rgba(35, 20, 45, 0.95);
+    border: 2px solid #6a3a6a;
+    color: #d4b0d4;
+    font-family: 'Cinzel', serif;
+    font-size: 16px;
+    padding: 16px 24px;
+    border-radius: 12px;
+    transition: all 0.4s ease;
+}
+body.theme-royal .choice-btn:hover {
+    background: rgba(155, 77, 155, 0.15);
+    border-color: #9b4d9b;
+    transform: scale(1.02) translateX(-8px);
+    box-shadow: 0 0 60px rgba(155, 77, 155, 0.15);
+}
+body.theme-royal .profile-card {
+    background: rgba(25, 15, 40, 0.98);
+    border: 2px solid #9b4d9b;
+    border-radius: 16px;
+    box-shadow: 0 0 80px rgba(155, 77, 155, 0.08);
+}
+body.theme-royal .menu-panel {
+    background: rgba(20, 10, 30, 0.98);
+    border: 2px solid rgba(155, 77, 155, 0.3);
+    border-radius: 20px;
+    box-shadow: 0 0 120px rgba(0, 0, 0, 0.8);
+}
+body.theme-royal .menu-btn.primary {
+    background: #9b4d9b;
+    border-color: #9b4d9b;
+    font-family: 'Cinzel', serif;
+    letter-spacing: 4px;
+    border-radius: 12px;
+}
+body.theme-royal .menu-btn.primary:hover {
+    background: #b85db8;
+    box-shadow: 0 0 80px rgba(155, 77, 155, 0.3);
+}
+body.theme-royal .narrative {
+    font-family: 'Cinzel', serif;
+    font-size: 18px;
+    line-height: 2.2;
+    text-shadow: 0 0 30px rgba(155, 77, 155, 0.05);
+}
+body.theme-royal .status-dot {
+    background: #9b4d9b;
+    box-shadow: 0 0 40px rgba(155, 77, 155, 0.5);
+}
 
 /* =============================================================
-   MENU OVERLAY
+   COMMON STYLES (مشترک بین همه تم‌ها)
    ============================================================= */
+
+/* MENU OVERLAY */
 .menu-overlay {
     position: fixed;
     top: 0;
@@ -115,7 +517,7 @@ body.theme-royal .settings-content { background: rgba(25, 15, 40, 0.95); border:
     align-items: center;
     z-index: 200;
     background: rgba(0, 0, 0, 0.6);
-    backdrop-filter: blur(12px);
+    backdrop-filter: blur(16px);
     transition: opacity 0.8s ease, visibility 0.8s ease;
 }
 .menu-overlay.hidden {
@@ -130,7 +532,7 @@ body.theme-royal .settings-content { background: rgba(25, 15, 40, 0.95); border:
     max-width: 480px;
     width: 92%;
     border-radius: 16px;
-    backdrop-filter: blur(20px);
+    backdrop-filter: blur(24px);
     box-shadow: 0 0 80px rgba(0, 0, 0, 0.8);
     animation: menuFadeIn 0.6s ease;
 }
@@ -149,11 +551,8 @@ body.theme-royal .settings-content { background: rgba(25, 15, 40, 0.95); border:
     margin-bottom: 8px;
 }
 .logo-title {
-    font-family: 'Special Elite', cursive;
     font-size: 34px;
     letter-spacing: 4px;
-    color: inherit;
-    text-shadow: 0 0 30px rgba(139, 0, 0, 0.2);
     margin: 0;
 }
 .logo-sub {
@@ -173,29 +572,18 @@ body.theme-royal .settings-content { background: rgba(25, 15, 40, 0.95); border:
 
 .menu-btn {
     padding: 15px 30px;
-    font-family: 'Share Tech Mono', monospace;
     font-size: 16px;
     letter-spacing: 2px;
     cursor: pointer;
     border-radius: 8px;
     transition: all 0.3s ease;
     border: 2px solid transparent;
-}
-
-.menu-btn.primary {
-    background: #8b0000;
-    color: #fff;
-    border-color: #8b0000;
-}
-.menu-btn.primary:hover {
-    background: #cc0000;
-    border-color: #cc0000;
-    transform: scale(1.02);
-    box-shadow: 0 0 40px rgba(139, 0, 0, 0.4);
-}
-
-.menu-btn.secondary {
     background: transparent;
+}
+.menu-btn.primary {
+    color: #fff;
+}
+.menu-btn.secondary {
     color: inherit;
     border-color: #555;
 }
@@ -203,9 +591,7 @@ body.theme-royal .settings-content { background: rgba(25, 15, 40, 0.95); border:
     border-color: #8b0000;
     background: rgba(139, 0, 0, 0.08);
 }
-
 .menu-btn.tertiary {
-    background: transparent;
     color: #888;
     border-color: #333;
     font-size: 14px;
@@ -222,9 +608,7 @@ body.theme-royal .settings-content { background: rgba(25, 15, 40, 0.95); border:
     letter-spacing: 2px;
 }
 
-/* =============================================================
-   SETTINGS PANEL
-   ============================================================= */
+/* SETTINGS PANEL */
 .settings-panel {
     position: fixed;
     top: 0;
@@ -236,7 +620,7 @@ body.theme-royal .settings-content { background: rgba(25, 15, 40, 0.95); border:
     align-items: center;
     z-index: 300;
     background: rgba(0, 0, 0, 0.75);
-    backdrop-filter: blur(8px);
+    backdrop-filter: blur(12px);
     animation: menuFadeIn 0.3s ease;
 }
 
@@ -247,9 +631,7 @@ body.theme-royal .settings-content { background: rgba(25, 15, 40, 0.95); border:
     border-radius: 14px;
     box-shadow: 0 0 60px rgba(0, 0, 0, 0.7);
 }
-
 .settings-content h2 {
-    font-family: 'Special Elite', cursive;
     text-align: center;
     font-size: 28px;
     margin-bottom: 25px;
@@ -310,9 +692,7 @@ body.theme-royal .settings-content { background: rgba(25, 15, 40, 0.95); border:
     opacity: 0.6;
 }
 
-/* =============================================================
-   HEADER
-   ============================================================= */
+/* HEADER */
 .game-header {
     display: flex;
     justify-content: space-between;
@@ -322,7 +702,7 @@ body.theme-royal .settings-content { background: rgba(25, 15, 40, 0.95); border:
     position: sticky;
     top: 0;
     z-index: 100;
-    transition: background 0.4s ease, border-color 0.4s ease;
+    transition: all 0.6s ease;
 }
 
 .header-left {
@@ -330,7 +710,6 @@ body.theme-royal .settings-content { background: rgba(25, 15, 40, 0.95); border:
     align-items: center;
     gap: 8px;
     font-size: 13px;
-    color: #8b0000;
 }
 .header-center {
     text-align: center;
@@ -338,7 +717,6 @@ body.theme-royal .settings-content { background: rgba(25, 15, 40, 0.95); border:
 .header-center h1 {
     font-size: 20px;
     letter-spacing: 4px;
-    font-family: 'Special Elite', cursive;
     margin: 0;
 }
 .header-center .header-sub {
@@ -353,11 +731,32 @@ body.theme-royal .settings-content { background: rgba(25, 15, 40, 0.95); border:
     gap: 10px;
 }
 
+/* دکمه‌های هدر برای زبان و تم */
+.header-btn {
+    padding: 4px 12px;
+    font-size: 11px;
+    font-family: inherit;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: inherit;
+    cursor: pointer;
+    border-radius: 20px;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(4px);
+}
+.header-btn:hover {
+    background: rgba(139, 0, 0, 0.15);
+    border-color: #8b0000;
+    transform: scale(1.05);
+}
+.header-btn:active {
+    transform: scale(0.95);
+}
+
 .status-dot {
     width: 10px;
     height: 10px;
     border-radius: 50%;
-    background: #8b0000;
     animation: pulse 1.5s ease-in-out infinite;
 }
 @keyframes pulse {
@@ -370,9 +769,7 @@ body.theme-royal .settings-content { background: rgba(25, 15, 40, 0.95); border:
     opacity: 0.6;
 }
 
-/* =============================================================
-   GAME CONTAINER
-   ============================================================= */
+/* GAME CONTAINER */
 .game-container {
     flex: 1;
     max-width: 820px;
@@ -383,41 +780,23 @@ body.theme-royal .settings-content { background: rgba(25, 15, 40, 0.95); border:
     z-index: 1;
 }
 
-/* =============================================================
-   SCENE BOX
-   ============================================================= */
+/* SCENE BOX */
 .scene-box {
     padding: 32px 28px;
     border-radius: 10px;
     backdrop-filter: blur(10px);
     position: relative;
-    animation: fadeSlideIn 0.5s ease forwards;
-    transition: background 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease;
+    animation: fadeSlideIn 0.6s ease forwards;
+    transition: all 0.6s ease;
 }
-
-.scene-box::before,
-.scene-box::after {
-    content: '';
-    position: absolute;
-    left: 28px;
-    right: 28px;
-    height: 1px;
-    background: linear-gradient(90deg, transparent, currentColor, transparent);
-    opacity: 0.08;
-}
-.scene-box::before { top: 14px; }
-.scene-box::after { bottom: 14px; }
 
 @keyframes fadeSlideIn {
-    0% { opacity: 0; transform: translateY(25px) scale(0.97); }
+    0% { opacity: 0; transform: translateY(30px) scale(0.97); }
     100% { opacity: 1; transform: translateY(0) scale(1); }
 }
 
-/* =============================================================
-   NARRATIVE
-   ============================================================= */
+/* NARRATIVE */
 .narrative {
-    font-family: 'Special Elite', 'Courier New', monospace;
     font-size: 18px;
     line-height: 2.1;
     white-space: pre-wrap;
@@ -426,9 +805,7 @@ body.theme-royal .settings-content { background: rgba(25, 15, 40, 0.95); border:
     text-shadow: 0 0 12px rgba(0, 0, 0, 0.3);
 }
 
-/* =============================================================
-   CHOICES
-   ============================================================= */
+/* CHOICES */
 .choices {
     display: flex;
     flex-direction: column;
@@ -439,17 +816,12 @@ body.theme-royal .settings-content { background: rgba(25, 15, 40, 0.95); border:
 .choice-btn {
     display: block;
     width: 100%;
-    padding: 14px 22px;
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 15px;
     text-align: right;
     cursor: pointer;
-    border-radius: 6px;
-    transition: all 0.3s ease;
     position: relative;
     overflow: hidden;
+    transition: all 0.3s ease;
 }
-
 .choice-btn::before {
     content: '';
     position: absolute;
@@ -457,7 +829,6 @@ body.theme-royal .settings-content { background: rgba(25, 15, 40, 0.95); border:
     top: 0;
     bottom: 0;
     width: 4px;
-    background: #8b0000;
     transition: width 0.35s ease;
 }
 .choice-btn:hover::before {
@@ -475,17 +846,14 @@ body.theme-royal .settings-content { background: rgba(25, 15, 40, 0.95); border:
     padding: 12px;
 }
 
-/* =============================================================
-   PROFILE CARD
-   ============================================================= */
+/* PROFILE CARD */
 .profile-card {
     border-radius: 10px;
     padding: 28px 30px;
     margin: 20px 0;
     text-align: center;
-    transition: background 0.4s ease, border-color 0.4s ease;
+    transition: all 0.6s ease;
 }
-
 .profile-title {
     font-size: 13px;
     letter-spacing: 4px;
@@ -493,7 +861,6 @@ body.theme-royal .settings-content { background: rgba(25, 15, 40, 0.95); border:
     opacity: 0.4;
 }
 .profile-label {
-    font-family: 'Special Elite', cursive;
     font-size: 30px;
     margin: 14px 0 10px;
     text-shadow: 0 0 20px rgba(139, 0, 0, 0.15);
@@ -505,9 +872,7 @@ body.theme-royal .settings-content { background: rgba(25, 15, 40, 0.95); border:
     padding: 10px 0;
 }
 
-/* =============================================================
-   RESTART BUTTON
-   ============================================================= */
+/* RESTART BUTTON */
 .restart-btn {
     display: inline-block;
     padding: 12px 36px;
@@ -515,7 +880,7 @@ body.theme-royal .settings-content { background: rgba(25, 15, 40, 0.95); border:
     background: transparent;
     border: 2px solid #8b0000;
     color: inherit;
-    font-family: 'Share Tech Mono', monospace;
+    font-family: inherit;
     font-size: 15px;
     cursor: pointer;
     border-radius: 6px;
@@ -528,9 +893,7 @@ body.theme-royal .settings-content { background: rgba(25, 15, 40, 0.95); border:
     box-shadow: 0 0 50px rgba(139, 0, 0, 0.3);
 }
 
-/* =============================================================
-   FOOTER
-   ============================================================= */
+/* FOOTER */
 .game-footer {
     text-align: center;
     padding: 16px;
@@ -549,7 +912,7 @@ body.theme-royal .settings-content { background: rgba(25, 15, 40, 0.95); border:
    RESPONSIVE
    ============================================================= */
 @media (max-width: 768px) {
-    .game-header { flex-wrap: wrap; gap: 4px; padding: 10px 14px; }
+    .game-header { flex-wrap: wrap; gap: 6px; padding: 10px 14px; }
     .header-center h1 { font-size: 16px; }
     .header-center .header-sub { font-size: 10px; }
     .header-left, .header-right { font-size: 11px; }
@@ -561,6 +924,7 @@ body.theme-royal .settings-content { background: rgba(25, 15, 40, 0.95); border:
     .menu-panel { padding: 30px 20px; }
     .logo-title { font-size: 26px; }
     .settings-content { padding: 25px 20px; }
+    .header-btn { font-size: 10px; padding: 3px 10px; }
 }
 
 @media (max-width: 480px) {
@@ -571,4 +935,5 @@ body.theme-royal .settings-content { background: rgba(25, 15, 40, 0.95); border:
     .choice-btn { font-size: 13px; padding: 10px 14px; }
     .logo-title { font-size: 22px; }
     .settings-content h2 { font-size: 22px; }
+    .header-btn { font-size: 9px; padding: 2px 8px; }
 }
