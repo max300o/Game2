@@ -2,29 +2,47 @@
 <html lang="fa">
 <head>
 <meta charset="UTF-8">
-<title>پرونده‌ی سقوط فرشته‌ها</title>
+<title>FREEMONT POLICE TERMINAL v1.98</title>
 <link rel="stylesheet" href="style.css">
 </head>
 
-<body class="theme-noir">
+<body>
 
-<div id="noise"></div>
-<div id="vignette"></div>
+<div class="crt-frame">
+    <div class="crt-screen">
 
-<div class="game-container">
-    <div id="title-screen" class="fade-in">
-        <h1 class="glitch" data-text="پرونده‌ی سقوط فرشته‌ها">پرونده‌ی سقوط فرشته‌ها</h1>
-        <button id="start-btn" class="start-btn pulse">شروع پرونده</button>
-    </div>
+        <div id="boot-sequence" class="boot">
+            <pre class="boot-text">
+FREEMONT POLICE DEPARTMENT
+SECURE TERMINAL SYSTEM v1.98
 
-    <div id="game-screen" class="hidden">
-        <div id="scene-text" class="typewriter"></div>
-        <div id="choices"></div>
+Booting...
+Checking memory............. OK
+Loading kernel.............. OK
+Decrypting case files....... OK
+Establishing secure link.... OK
+
+<span class="blink">PRESS ANY KEY TO CONTINUE_</span>
+            </pre>
+        </div>
+
+        <div id="terminal" class="hidden">
+            <div id="output" class="terminal-output"></div>
+            <div id="choices" class="terminal-choices"></div>
+        </div>
+
     </div>
 </div>
 
 <script src="story.js"></script>
 <script src="game.js"></script>
+
+<script>
+document.addEventListener("keydown", () => {
+    document.getElementById("boot-sequence").classList.add("hidden");
+    document.getElementById("terminal").classList.remove("hidden");
+});
+</script>
 
 </body>
 </html>
