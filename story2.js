@@ -33,7 +33,7 @@
 //                  params: object of { paramName: delta } applied on selection
 //    isEnding    – (optional) true → triggers showEnding()
 // ─────────────────────────────────────────────
-const STORY = {
+const STORY_EN = {
 
   // ══════════════════════════════════════════
   //  OPENING
