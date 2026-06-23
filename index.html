@@ -10,63 +10,9 @@
 <body>
 
   <!-- ========================================================= -->
-  <!-- MAIN MENU (صفحه‌ی شروع)                                   -->
+  <!-- GAME HEADER (فقط وضعیت)                                   -->
   <!-- ========================================================= -->
-  <div id="main-menu" class="main-menu">
-    <div class="menu-container">
-      <div class="menu-logo">
-        <span class="logo-icon">📁</span>
-        <h1 class="logo-title">The Fall of Angels</h1>
-        <span class="logo-sub">— پرونده‌ی سقوط فرشته‌ها —</span>
-      </div>
-      <div class="menu-buttons">
-        <button id="menu-new-game" class="menu-btn primary">شروع بازی جدید</button>
-        <button id="menu-continue" class="menu-btn secondary">ادامه بازی</button>
-        <button id="menu-settings" class="menu-btn tertiary">تنظیمات</button>
-      </div>
-      <div class="menu-footer">
-        <span>🕵️ Fremant P.D. — Case #011</span>
-      </div>
-    </div>
-  </div>
-
-  <!-- ========================================================= -->
-  <!-- SETTINGS OVERLAY                                          -->
-  <!-- ========================================================= -->
-  <div id="settings-overlay" class="settings-overlay" style="display:none;">
-    <div class="settings-panel">
-      <h2>تنظیمات</h2>
-      <div class="setting-group">
-        <label>زبان</label>
-        <div class="setting-buttons">
-          <button class="setting-btn active" data-lang="fa">فارسی</button>
-          <button class="setting-btn" data-lang="en">English</button>
-        </div>
-      </div>
-      <div class="setting-group">
-        <label>تم</label>
-        <div class="setting-buttons">
-          <button class="setting-btn active" data-theme="noir">🖤 Noir</button>
-          <button class="setting-btn" data-theme="blood">🩸 Blood</button>
-          <button class="setting-btn" data-theme="retro">📜 Retro</button>
-          <button class="setting-btn" data-theme="ice">❄️ Ice</button>
-          <button class="setting-btn" data-theme="silver">⚪ Silver</button>
-          <button class="setting-btn" data-theme="royal">👑 Royal</button>
-        </div>
-      </div>
-      <div class="setting-group">
-        <label>سرعت تایپ</label>
-        <input type="range" id="typing-speed" min="10" max="100" value="40" />
-        <span id="typing-speed-label">۴۰</span>
-      </div>
-      <button id="settings-close" class="menu-btn secondary">بستن</button>
-    </div>
-  </div>
-
-  <!-- ========================================================= -->
-  <!-- GAME HEADER                                               -->
-  <!-- ========================================================= -->
-  <header id="game-header" class="crime-header" style="display:none;">
+  <header id="game-header" class="crime-header">
     <div class="header-left">
       <span class="badge-icon">📁</span>
       <span class="badge-text" id="case-id">CASE FILE #011</span>
@@ -76,17 +22,6 @@
       <span class="subtitle" id="subtitle">— A Noir Detective Story —</span>
     </div>
     <div class="header-right">
-      <button id="lang-switch" class="ctrl-btn lang-btn" title="تغییر زبان">
-        <span class="icon">🌐</span>
-        <span class="label" id="lang-label">En</span>
-      </button>
-      <button id="theme-switch" class="ctrl-btn theme-btn" title="تغییر تم">
-        <span class="icon">🎨</span>
-        <span class="label">Theme</span>
-      </button>
-      <button id="menu-toggle" class="ctrl-btn menu-toggle-btn" title="منو">
-        <span class="icon">☰</span>
-      </button>
       <span class="status-dot"></span>
       <span class="status-text" id="status-text">ACTIVE</span>
     </div>
@@ -95,14 +30,14 @@
   <!-- ========================================================= -->
   <!-- GAME CONTAINER                                            -->
   <!-- ========================================================= -->
-  <main id="game-container" class="game-container" style="display:none;">
+  <main id="game-container" class="game-container">
     <!-- توسط جاوااسکریپت پر می‌شود -->
   </main>
 
   <!-- ========================================================= -->
   <!-- FOOTER                                                    -->
   <!-- ========================================================= -->
-  <footer id="game-footer" class="crime-footer" style="display:none;">
+  <footer id="game-footer" class="crime-footer">
     <span>🕵️‍♂️</span>
     <span>Fremant P.D. — Case Closed? Never.</span>
     <span>🔍</span>
