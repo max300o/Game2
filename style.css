@@ -4,7 +4,6 @@
 body {
   background: #000;
   margin: 0;
-  padding: 0;
   overflow: hidden;
   font-family: monospace;
   color: #00ff66;
@@ -33,7 +32,7 @@ body {
     0 0 40px #00ff66;
   position: relative;
   overflow: hidden;
-  transform: perspective(800px) rotateX(4deg);
+  transform: perspective(900px) rotateX(6deg);
 }
 
 /* ─────────────────────────────────────────────
@@ -45,8 +44,8 @@ body {
   inset: 0;
   background: repeating-linear-gradient(
     to bottom,
-    rgba(0, 255, 0, 0.05) 0px,
-    rgba(0, 255, 0, 0.05) 2px,
+    rgba(0,255,0,0.05) 0px,
+    rgba(0,255,0,0.05) 2px,
     transparent 3px,
     transparent 4px
   );
@@ -76,18 +75,10 @@ body {
   white-space: pre-line;
 }
 
-.boot-text {
+#boot-text {
   color: #00ff66;
-}
-
-.blink {
-  animation: blinkAnim 1s infinite;
-}
-
-@keyframes blinkAnim {
-  0% { opacity: 1; }
-  50% { opacity: 0; }
-  100% { opacity: 1; }
+  font-size: 20px;
+  text-shadow: 0 0 8px #00ff66;
 }
 
 /* ─────────────────────────────────────────────
