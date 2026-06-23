@@ -2,7 +2,7 @@
 <html lang="fa">
 <head>
 <meta charset="UTF-8">
-<title>THE FALL MACHINE – DEEP ARCHIVE TERMINAL</title>
+<title>DEEP ARCHIVE TERMINAL v1.98</title>
 <link rel="stylesheet" href="style.css">
 </head>
 
@@ -11,6 +11,7 @@
 <div class="device">
     <div class="device-frame">
         <div class="device-bezel"></div>
+
         <div class="device-screen">
             <div id="crt-glass"></div>
             <div id="crt-reflection"></div>
@@ -32,6 +33,7 @@
 </div>
 
 <script src="story.js"></script>
+<script src="game.js"></script>
 
 <script>
 // BOOT TEXT
@@ -52,43 +54,17 @@ function typeBoot() {
     if (i < bootLines.length) {
         document.getElementById("boot-text").innerText += bootLines[i] + "\n";
         i++;
-        setTimeout(typeBoot, 45);
+        setTimeout(typeBoot, 40);
     }
 }
 window.onload = typeBoot;
 
-// SWITCH TO TERMINAL
+// ENTER TERMINAL
 document.addEventListener("keydown", () => {
     document.getElementById("boot").classList.add("hidden");
     document.getElementById("terminal").classList.remove("hidden");
     startGame();
 });
-
-// GAME ENGINE
-let currentScene = STORY.intro;
-
-function startGame() {
-    renderScene(currentScene);
-}
-
-function renderScene(scene) {
-    const out = document.getElementById("output");
-    const ch = document.getElementById("choices");
-
-    out.innerText = scene.text.join("\n");
-    ch.innerHTML = "";
-
-    scene.choices.forEach(choice => {
-        const btn = document.createElement("button");
-        btn.className = "choice-btn";
-        btn.innerText = "> " + choice.label;
-        btn.onclick = () => {
-            currentScene = STORY[choice.next];
-            renderScene(currentScene);
-        };
-        ch.appendChild(btn);
-    });
-}
 </script>
 
 </body>
