@@ -5,11 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>پرونده سقوط فرشته‌ها | The Fall of Angels</title>
   <style>
-    :root {
-      --bg: #111;
-      --text: #ddd;
-      --accent: #c00;
-    }
+    :root { --bg: #111; --text: #ddd; --accent: #c00; }
     body { 
       font-family: 'Tahoma', Arial, sans-serif; 
       margin: 0; padding: 0; 
@@ -25,29 +21,29 @@
     }
     button {
       background: #222; color: white; border: 1px solid #555;
-      padding: 6px 12px; margin: 0 4px; cursor: pointer; border-radius: 4px;
-      font-size: 0.95em;
+      padding: 8px 14px; margin: 0 5px; cursor: pointer; border-radius: 4px;
     }
     button:hover { background: #444; }
     #game-container { max-width: 850px; margin: 80px auto 40px; padding: 20px; }
     .scene { 
       background: #1a1a1a; padding: 25px; border-radius: 8px; 
-      border: 1px solid #333; min-height: 280px;
+      border: 1px solid #333; min-height: 300px; margin-bottom: 20px;
     }
     .choice-btn {
-      display: block; width: 100%; margin: 10px 0;
-      padding: 12px; background: #222; border: 1px solid #555;
-      text-align: right; border-radius: 6px;
+      display: block; width: 100%; margin: 12px 0;
+      padding: 14px; background: #222; border: 1px solid #555;
+      text-align: right; border-radius: 6px; font-size: 1.05em;
     }
     .choice-btn:hover { background: #333; border-color: var(--accent); }
 
     /* تم‌ها */
     .theme-retro { --bg: #2c1e12; --text: #e8d5b8; --accent: #b85; }
-    .theme-noir { --bg: #0a0a0a; --text: #aaa; --accent: #ccc; filter: contrast(1.1); }
-    .theme-digital { --bg: #001100; --text: #00ff88; --accent: #0f0; font-family: monospace; }
+    .theme-noir { --bg: #0a0a0a; --text: #bbb; --accent: #ddd; }
+    .theme-digital { --bg: #001100; --text: #00ff99; --accent: #0f0; font-family: 'Courier New', monospace; }
 
-    h1 { text-align: center; color: var(--accent); }
+    h1 { text-align: center; color: var(--accent); margin: 20px 0; }
     #intro-screen, #end-screen { text-align: center; padding: 40px 20px; }
+    small { opacity: 0.8; }
   </style>
 </head>
 <body>
@@ -60,89 +56,117 @@
   </div>
 
   <div id="game-container">
-    <!-- صفحه معرفی -->
+    <!-- معرفی -->
     <div id="intro-screen">
       <h1>The Fall of Angels</h1>
-      <p>یک بازی تعاملی جنایی روانشناختی در شهری مذهبی و پر رمز و راز...</p>
-      <p style="margin: 20px 0; font-size: 1.1em;">
-        تو نقش یک کارآگاه جوان وارد پرونده‌ای می‌شی که ممکنه سرنوشتت رو برای همیشه تغییر بده.
+      <p>یک بازی تعاملی جنایی روانشناختی در شهری مذهبی...</p>
+      <p style="margin: 25px 0; font-size: 1.1em;">
+        تو نقش یک کارآگاه جوان وارد پرونده‌ای می‌شی که ممکن است سرنوشتت را برای همیشه تغییر دهد.
       </p>
-      <button id="start-btn" style="font-size: 1.3em; padding: 18px 40px;">شروع بازی</button>
+      <button id="start-btn" style="font-size: 1.4em; padding: 18px 50px;">شروع بازی</button>
     </div>
 
-    <!-- صفحه اصلی بازی -->
+    <!-- بازی اصلی -->
     <div id="game-screen" style="display: none;">
       <div class="scene" id="scene"></div>
       <div id="choices"></div>
-      <div style="margin-top: 20px; text-align: center;">
-        <small>عدالت: <span id="justice">0</span> | همدلی: <span id="empathy">0</span> | شک: <span id="doubt">0</span></small>
+      <div style="margin-top: 25px; text-align: center; font-size: 0.95em;">
+        عدالت: <span id="justice">0</span> | 
+        همدلی: <span id="empathy">0</span> | 
+        شک: <span id="doubt">0</span>
       </div>
     </div>
 
-    <!-- صفحه پایان -->
+    <!-- پایان -->
     <div id="end-screen" style="display: none;">
       <h2>پایان پرونده</h2>
-      <div id="ending-text"></div>
-      <button id="restart-btn">بازی دوباره</button>
+      <div id="ending-text" style="font-size: 1.1em; line-height: 1.8;"></div>
+      <button id="restart-btn" style="margin-top: 30px;">بازی دوباره</button>
     </div>
   </div>
 
   <script>
-    // ==================== داده‌های داستان (نمونه) ====================
+    // ==================== داستان کامل (نمونه) ====================
     const STORY_EN = {
       intro: {
-        id: 'intro',
-        text: ["The Fall of 2025. A small religious town. A murdered priest. You are the detective sent to investigate."],
-        choices: [
-          { text: "Start the investigation", next: 'scene1' }
-        ]
+        text: ["The Fall of 2025. A small religious town in Iran. A respected priest has been murdered in his church."],
+        choices: [{ text: "Begin the investigation", next: "scene1" }]
       },
       scene1: {
-        id: 'scene1',
-        text: ["You arrive at the crime scene. The body is still there..."],
+        text: ["You arrive at the crime scene. The body of Father Hossein lies on the altar. The air is heavy with incense and blood."],
         choices: [
-          { text: "Examine the body carefully", next: 'scene2', params: {justice: 1} },
-          { text: "Talk to the witnesses first", next: 'scene2', params: {empathy: 1} }
+          { text: "Examine the body carefully", next: "scene2", params: {justice: 1} },
+          { text: "Talk to the church staff first", next: "scene2", params: {empathy: 1} },
+          { text: "Look around for clues", next: "scene2", params: {doubt: 1} }
+        ]
+      },
+      scene2: {
+        text: ["A young seminarian seems very nervous. He avoids eye contact."],
+        choices: [
+          { text: "Press him with hard questions", next: "scene3", params: {justice: 2} },
+          { text: "Speak to him gently", next: "scene3", params: {empathy: 2} },
+          { text: "Accuse him directly", next: "scene3", params: {doubt: 2} }
+        ]
+      },
+      scene3: {
+        text: ["You find a hidden letter in the priest's desk. It mentions a big secret."],
+        choices: [
+          { text: "Continue investigating alone", next: "end", params: {resolve: 2} },
+          { text: "Share the letter with your superior", next: "end", params: {pragmatism: 2} }
         ]
       }
-      // بعداً داستان کامل رو اینجا گسترش می‌دیم
     };
 
     const STORY_FA = {
       intro: {
-        id: 'intro',
-        text: ["پاییز ۱۴۰۴. یک شهر کوچک مذهبی. قتل یک کشیش. تو کارآگاه فرستاده شده‌ای."],
-        choices: [
-          { text: "شروع تحقیقات", next: 'scene1' }
-        ]
+        text: ["پاییز ۱۴۰۴. یک شهر کوچک مذهبی در ایران. کشیش محترمی در کلیسایش به قتل رسیده است."],
+        choices: [{ text: "شروع تحقیقات", next: "scene1" }]
       },
       scene1: {
-        id: 'scene1',
-        text: ["به محل جنایت رسیدی. جسد هنوز آنجا هست..."],
+        text: ["به محل جنایت رسیدی. جسد پدر حسین روی محراب افتاده. بوی عود و خون هوا را پر کرده."],
         choices: [
-          { text: "جسد را با دقت بررسی کن", next: 'scene2', params: {justice: 1} },
-          { text: "اول با شاهدان صحبت کن", next: 'scene2', params: {empathy: 1} }
+          { text: "جسد را با دقت بررسی کن", next: "scene2", params: {justice: 1} },
+          { text: "اول با کارکنان کلیسا صحبت کن", next: "scene2", params: {empathy: 1} },
+          { text: "به دنبال سرنخ بگرد", next: "scene2", params: {doubt: 1} }
+        ]
+      },
+      scene2: {
+        text: ["یک طلبه جوان خیلی عصبی به نظر می‌رسد و از نگاه کردن به چشمانت اجتناب می‌کند."],
+        choices: [
+          { text: "با سوالات سخت به او فشار بیاور", next: "scene3", params: {justice: 2} },
+          { text: "با ملایمت با او حرف بزن", next: "scene3", params: {empathy: 2} },
+          { text: "مستقیم او را متهم کن", next: "scene3", params: {doubt: 2} }
+        ]
+      },
+      scene3: {
+        text: ["در کشوی میز کشیش یک نامه مخفی پیدا کردی که به یک راز بزرگ اشاره دارد."],
+        choices: [
+          { text: "تنها به تحقیقات ادامه بده", next: "end", params: {resolve: 2} },
+          { text: "نامه را با مافوقت به اشتراک بگذار", next: "end", params: {pragmatism: 2} }
         ]
       }
     };
 
-    // ==================== متغیرهای بازی ====================
+    // ==================== متغیرها ====================
     let currentStory = STORY_FA;
     let currentSceneId = 'intro';
     let playerParams = { justice: 0, empathy: 0, pragmatism: 0, doubt: 0, resolve: 0 };
     let currentTheme = 'default';
 
-    // ==================== توابع اصلی ====================
+    // ==================== توابع ====================
     function renderScene() {
       const scene = currentStory[currentSceneId];
-      if (!scene) return;
+      if (!scene) {
+        showEnding();
+        return;
+      }
 
-      document.getElementById('scene').innerHTML = `<p>${scene.text.join('<br><br>')}</p>`;
+      document.getElementById('scene').innerHTML = scene.text.map(p => `<p>${p}</p>`).join('');
 
       const choicesDiv = document.getElementById('choices');
       choicesDiv.innerHTML = '';
 
-      scene.choices.forEach((choice, index) => {
+      scene.choices.forEach(choice => {
         const btn = document.createElement('button');
         btn.className = 'choice-btn';
         btn.textContent = choice.text;
@@ -150,7 +174,7 @@
         choicesDiv.appendChild(btn);
       });
 
-      // بروزرسانی پارامترها
+      // بروزرسانی آمار
       document.getElementById('justice').textContent = playerParams.justice;
       document.getElementById('empathy').textContent = playerParams.empathy;
       document.getElementById('doubt').textContent = playerParams.doubt;
@@ -159,36 +183,38 @@
     function makeChoice(choice) {
       if (choice.params) {
         Object.keys(choice.params).forEach(key => {
-          playerParams[key] = (playerParams[key] || 0) + choice.params[key];
+          playerParams[key] = (playerParams[key] || 0) + (choice.params[key] || 0);
         });
       }
 
-      if (choice.next === 'end') {
-        showEnding();
-      } else {
-        currentSceneId = choice.next;
-        renderScene();
-      }
+      currentSceneId = choice.next;
+      renderScene();
     }
 
     function showEnding() {
       document.getElementById('game-screen').style.display = 'none';
-      const endScreen = document.getElementById('end-screen');
-      endScreen.style.display = 'block';
+      document.getElementById('end-screen').style.display = 'block';
 
-      let ending = "شما پرونده را حل کردید.<br><br>";
-      ending += `عدالت: ${playerParams.justice} | همدلی: ${playerParams.empathy} | شک: ${playerParams.doubt}`;
+      const total = Object.values(playerParams).reduce((a, b) => a + b, 0);
+      let endingText = `<p>شما پرونده را به پایان رساندید.</p>`;
+      endingText += `<p><strong>نتایج شخصیت شما:</strong></p>`;
+      endingText += `<p>عدالت: ${playerParams.justice}<br>`;
+      endingText += `همدلی: ${playerParams.empathy}<br>`;
+      endingText += `شک و تردید: ${playerParams.doubt}<br>`;
+      endingText += `اراده: ${playerParams.resolve || 0}</p>`;
 
-      document.getElementById('ending-text').innerHTML = ending;
+      if (playerParams.justice > 5) endingText += `<p style="color:#0f0">شما یک کارآگاه عدالت‌محور شدید.</p>`;
+      else if (playerParams.empathy > 5) endingText += `<p style="color:#0f0">شما با همدلی پرونده را حل کردید.</p>`;
+      else endingText += `<p>پرونده بسته شد...</p>`;
+
+      document.getElementById('ending-text').innerHTML = endingText;
     }
 
     function toggleTheme() {
       const themes = ['default', 'retro', 'noir', 'digital'];
-      const currentIndex = themes.indexOf(currentTheme);
-      currentTheme = themes[(currentIndex + 1) % themes.length];
-      
-      document.body.className = `theme-${currentTheme}`;
-      console.log('تم تغییر کرد به:', currentTheme);
+      const idx = themes.indexOf(currentTheme);
+      currentTheme = themes[(idx + 1) % themes.length];
+      document.body.className = currentTheme === 'default' ? '' : `theme-${currentTheme}`;
     }
 
     function toggleLanguage() {
@@ -196,10 +222,9 @@
       currentSceneId = 'intro';
       document.getElementById('game-screen').style.display = 'none';
       document.getElementById('intro-screen').style.display = 'block';
-      console.log('زبان تغییر کرد');
     }
 
-    // ==================== Event Listeners ====================
+    // ==================== شروع ====================
     document.getElementById('start-btn').addEventListener('click', () => {
       document.getElementById('intro-screen').style.display = 'none';
       document.getElementById('game-screen').style.display = 'block';
@@ -210,12 +235,12 @@
     document.getElementById('lang-btn').addEventListener('click', toggleLanguage);
     document.getElementById('restart-btn').addEventListener('click', () => location.reload());
 
-    // تشخیص خودکار زبان مرورگر
+    // تشخیص زبان مرورگر
     if (navigator.language.startsWith('en')) {
       currentStory = STORY_EN;
     }
 
-    console.log("بازی با موفقیت لود شد! 🎮");
+    console.log("✅ بازی کامل لود شد");
   </script>
 </body>
 </html>
