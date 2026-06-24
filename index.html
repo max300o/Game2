@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Fall of Angels | سقوط فرشته‌ها</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+SC:wght@700&family=Special+Elite&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Cinzel:wght@400;600&family=Share+Tech+Mono&display=swap" rel="stylesheet">
   <style>
     :root {
       --bg:      #050400;
@@ -83,13 +83,13 @@
       box-shadow: 0 0 12px rgba(201,162,39,0.2);
     }
 
-    /* ── MUSIC BELL (top fixed) ── */
+    /* ── MUSIC BELL (top right, always fixed) ── */
     #music-bell-wrap {
       position: fixed;
       top: 18px;
       right: 22px;
-      z-index: 200;
-      display: none;
+      z-index: 10000;
+      display: flex;
       flex-direction: column;
       align-items: center;
       gap: 4px;
@@ -121,7 +121,6 @@
       opacity: 0.45;
     }
 
-    /* bell swing animation when playing */
     @keyframes bell-swing {
       0%,100% { transform: rotate(0deg); }
       15%      { transform: rotate(12deg); }
@@ -155,7 +154,6 @@
       display: flex;
     }
 
-    /* scanlines */
     #main-page::before {
       content: '';
       position: fixed;
@@ -171,7 +169,6 @@
       z-index: 1;
     }
 
-    /* gold radial bg */
     #main-page::after {
       content: '';
       position: fixed;
@@ -196,7 +193,6 @@
       z-index: 2;
     }
 
-    /* double border frame */
     .lang-container::before {
       content: '';
       position: absolute;
@@ -205,7 +201,6 @@
       pointer-events: none;
     }
 
-    /* corner ornaments */
     .corner {
       position: absolute;
       width: 20px;
@@ -219,9 +214,9 @@
     .corner-bl { bottom: 4px; left: 4px; border-width: 0 0 1px 1px; }
     .corner-br { bottom: 4px; right: 4px; border-width: 0 1px 1px 0; }
 
-    /* ── LOGO SVG ── */
+    /* ── LOGO ── */
     .logo-wrap {
-      margin: 10px 0 32px;
+      margin: 10px 0 28px;
       position: relative;
       z-index: 1;
       display: flex;
@@ -236,7 +231,7 @@
       overflow: visible;
     }
 
-    /* ── TAGLINE ── */
+    /* ── TAGLINE — more readable font ── */
     .separator {
       border: none;
       border-top: 1px solid #1a1400;
@@ -256,30 +251,34 @@
     }
 
     .tagline {
-      font-family: 'Special Elite', serif;
-      font-style: italic;
-      font-size: 0.88rem;
+      font-family: 'Cinzel', serif;
+      font-size: 0.78rem;
       line-height: 2;
       color: var(--mid);
       position: relative;
       z-index: 1;
+      letter-spacing: 0.5px;
     }
 
     .tagline .en {
-      font-size: 0.82rem;
-      letter-spacing: 1px;
+      font-size: 0.76rem;
+      letter-spacing: 1.5px;
       display: block;
       margin-bottom: 6px;
+      color: rgba(201,162,39,0.75);
+      font-weight: 400;
     }
 
     .tagline .fa {
       direction: rtl;
       display: block;
-      font-size: 0.9rem;
-      color: rgba(201,162,39,0.6);
+      font-size: 0.88rem;
+      color: rgba(201,162,39,0.55);
+      font-family: 'Share Tech Mono', monospace;
+      letter-spacing: 0;
     }
 
-    /* ── BUTTONS ── */
+    /* ── BUTTONS — equal size ── */
     .lang-label {
       font-size: 0.55rem;
       letter-spacing: 4px;
@@ -302,9 +301,9 @@
       border: 1px solid #3a3000;
       color: var(--text);
       padding: 14px 0;
-      width: 160px;
+      width: 160px;        /* both fixed same width */
       font-family: 'Share Tech Mono', monospace;
-      font-size: 1rem;
+      font-size: 0.95rem;
       cursor: pointer;
       letter-spacing: 4px;
       transition: all 0.3s;
@@ -360,29 +359,21 @@
     <button id="intro-skip">SKIP ▶</button>
   </div>
 
-  <!-- ══ MUSIC BELL (top right) ══ -->
+  <!-- ══ MUSIC BELL — always visible, top right ══ -->
   <div id="music-bell-wrap">
     <button id="music-bell-btn" class="muted" title="Toggle Music">
-      <!-- Bell SVG -->
       <svg viewBox="0 0 64 72" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <!-- rope/hook -->
         <line x1="32" y1="2" x2="32" y2="10" stroke="#c9a227" stroke-width="2.5" stroke-linecap="round"/>
-        <!-- bell body -->
         <path d="M32 10 C18 10 12 22 12 36 L12 50 Q12 54 16 54 L48 54 Q52 54 52 50 L52 36 C52 22 46 10 32 10 Z"
               fill="url(#bellGrad)" stroke="#c9a227" stroke-width="1.5"/>
-        <!-- shine highlight -->
         <path d="M22 18 C20 22 18 28 18 34" stroke="rgba(255,235,120,0.35)" stroke-width="2.5" stroke-linecap="round"/>
-        <!-- rim band -->
         <rect x="11" y="50" width="42" height="6" rx="3"
               fill="url(#rimGrad)" stroke="#c9a227" stroke-width="1"/>
-        <!-- clapper -->
         <circle cx="32" cy="61" r="4.5" fill="url(#clapperGrad)" stroke="#c9a227" stroke-width="1"/>
-        <!-- mute X (shown when muted) -->
         <g id="mute-x" opacity="0">
           <line x1="44" y1="4" x2="58" y2="18" stroke="#8a2a2a" stroke-width="2.5" stroke-linecap="round"/>
           <line x1="58" y1="4" x2="44" y2="18" stroke="#8a2a2a" stroke-width="2.5" stroke-linecap="round"/>
         </g>
-        <!-- ornamental lines on bell -->
         <line x1="20" y1="42" x2="44" y2="42" stroke="rgba(201,162,39,0.3)" stroke-width="1"/>
         <line x1="17" y1="46" x2="47" y2="46" stroke="rgba(201,162,39,0.2)" stroke-width="0.8"/>
         <defs>
@@ -414,11 +405,10 @@
       <div class="corner corner-bl"></div>
       <div class="corner corner-br"></div>
 
-      <!-- Logo SVG -->
+      <!-- Logo SVG — Cinzel Decorative font, text centered & lower -->
       <div class="logo-wrap">
-        <svg class="logo-svg" viewBox="0 0 420 110" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <svg class="logo-svg" viewBox="0 0 420 120" fill="none" xmlns="http://www.w3.org/2000/svg">
           <defs>
-            <!-- Main gold gradient for text -->
             <linearGradient id="textGold" x1="0" y1="0" x2="0" y2="1">
               <stop offset="0%"   stop-color="#fff8c0"/>
               <stop offset="18%"  stop-color="#f0d060"/>
@@ -426,21 +416,10 @@
               <stop offset="82%"  stop-color="#a07820"/>
               <stop offset="100%" stop-color="#7a5c00"/>
             </linearGradient>
-            <!-- Glow filter -->
-            <filter id="goldGlow" x="-20%" y="-40%" width="140%" height="180%">
-              <feGaussianBlur stdDeviation="3" result="blur"/>
-              <feMerge>
-                <feMergeNode in="blur"/>
-                <feMergeNode in="blur"/>
-                <feMergeNode in="SourceGraphic"/>
-              </feMerge>
-            </filter>
-            <!-- Wing feather gradient -->
             <linearGradient id="wingGold" x1="0" y1="0" x2="1" y2="1">
               <stop offset="0%"   stop-color="#f0d060" stop-opacity="0.9"/>
               <stop offset="100%" stop-color="#7a5c00" stop-opacity="0.4"/>
             </linearGradient>
-            <!-- Shimmer animation gradient -->
             <linearGradient id="shimmer" x1="0" y1="0" x2="1" y2="0">
               <stop offset="0%"   stop-color="#c9a227" stop-opacity="0"/>
               <stop offset="50%"  stop-color="#fff8c0" stop-opacity="0.6"/>
@@ -450,71 +429,76 @@
             </linearGradient>
           </defs>
 
-          <!-- Left wing (falling/broken) -->
+          <!-- Left wing -->
           <g opacity="0.7">
-            <path d="M 60 55 C 40 40, 10 28, 2 10" stroke="url(#wingGold)" stroke-width="1.4" fill="none" stroke-linecap="round"/>
-            <path d="M 60 55 C 42 45, 16 38, 8 20" stroke="url(#wingGold)" stroke-width="1.1" fill="none" stroke-linecap="round"/>
-            <path d="M 60 55 C 44 50, 22 48, 14 30" stroke="url(#wingGold)" stroke-width="0.9" fill="none" stroke-linecap="round"/>
-            <path d="M 60 55 C 46 54, 28 58, 20 42" stroke="url(#wingGold)" stroke-width="0.7" fill="none" stroke-linecap="round"/>
-            <path d="M 60 55 C 48 58, 34 68, 24 56" stroke="url(#wingGold)" stroke-width="0.6" fill="none" stroke-linecap="round" opacity="0.6"/>
-            <!-- feather tips glow dots -->
-            <circle cx="2"  cy="10" r="1.5" fill="#f0d060" opacity="0.7"/>
-            <circle cx="8"  cy="20" r="1.2" fill="#f0d060" opacity="0.5"/>
-            <circle cx="14" cy="30" r="1"   fill="#f0d060" opacity="0.4"/>
+            <path d="M 60 62 C 40 47, 10 35, 2 17" stroke="url(#wingGold)" stroke-width="1.4" fill="none" stroke-linecap="round"/>
+            <path d="M 60 62 C 42 52, 16 45, 8 27" stroke="url(#wingGold)" stroke-width="1.1" fill="none" stroke-linecap="round"/>
+            <path d="M 60 62 C 44 57, 22 55, 14 37" stroke="url(#wingGold)" stroke-width="0.9" fill="none" stroke-linecap="round"/>
+            <path d="M 60 62 C 46 61, 28 65, 20 49" stroke="url(#wingGold)" stroke-width="0.7" fill="none" stroke-linecap="round"/>
+            <path d="M 60 62 C 48 65, 34 75, 24 63" stroke="url(#wingGold)" stroke-width="0.6" fill="none" stroke-linecap="round" opacity="0.6"/>
+            <circle cx="2"  cy="17" r="1.5" fill="#f0d060" opacity="0.7"/>
+            <circle cx="8"  cy="27" r="1.2" fill="#f0d060" opacity="0.5"/>
+            <circle cx="14" cy="37" r="1"   fill="#f0d060" opacity="0.4"/>
           </g>
 
-          <!-- Right wing (mirrored, slightly different angle) -->
+          <!-- Right wing (mirrored) -->
           <g opacity="0.7" transform="translate(420,0) scale(-1,1)">
-            <path d="M 60 55 C 40 40, 10 28, 2 10" stroke="url(#wingGold)" stroke-width="1.4" fill="none" stroke-linecap="round"/>
-            <path d="M 60 55 C 42 45, 16 38, 8 20" stroke="url(#wingGold)" stroke-width="1.1" fill="none" stroke-linecap="round"/>
-            <path d="M 60 55 C 44 50, 22 48, 14 30" stroke="url(#wingGold)" stroke-width="0.9" fill="none" stroke-linecap="round"/>
-            <path d="M 60 55 C 46 54, 28 58, 20 42" stroke="url(#wingGold)" stroke-width="0.7" fill="none" stroke-linecap="round"/>
-            <path d="M 60 55 C 48 58, 34 68, 24 56" stroke="url(#wingGold)" stroke-width="0.6" fill="none" stroke-linecap="round" opacity="0.6"/>
-            <circle cx="2"  cy="10" r="1.5" fill="#f0d060" opacity="0.7"/>
-            <circle cx="8"  cy="20" r="1.2" fill="#f0d060" opacity="0.5"/>
-            <circle cx="14" cy="30" r="1"   fill="#f0d060" opacity="0.4"/>
+            <path d="M 60 62 C 40 47, 10 35, 2 17" stroke="url(#wingGold)" stroke-width="1.4" fill="none" stroke-linecap="round"/>
+            <path d="M 60 62 C 42 52, 16 45, 8 27" stroke="url(#wingGold)" stroke-width="1.1" fill="none" stroke-linecap="round"/>
+            <path d="M 60 62 C 44 57, 22 55, 14 37" stroke="url(#wingGold)" stroke-width="0.9" fill="none" stroke-linecap="round"/>
+            <path d="M 60 62 C 46 61, 28 65, 20 49" stroke="url(#wingGold)" stroke-width="0.7" fill="none" stroke-linecap="round"/>
+            <path d="M 60 62 C 48 65, 34 75, 24 63" stroke="url(#wingGold)" stroke-width="0.6" fill="none" stroke-linecap="round" opacity="0.6"/>
+            <circle cx="2"  cy="17" r="1.5" fill="#f0d060" opacity="0.7"/>
+            <circle cx="8"  cy="27" r="1.2" fill="#f0d060" opacity="0.5"/>
+            <circle cx="14" cy="37" r="1"   fill="#f0d060" opacity="0.4"/>
           </g>
 
-          <!-- Thin decorative lines above & below text -->
-          <line x1="60" y1="18" x2="175" y2="18" stroke="#c9a227" stroke-width="0.5" opacity="0.5"/>
-          <line x1="245" y1="18" x2="360" y2="18" stroke="#c9a227" stroke-width="0.5" opacity="0.5"/>
-          <circle cx="210" cy="18" r="2.5" fill="none" stroke="#c9a227" stroke-width="0.7" opacity="0.6"/>
-          <circle cx="210" cy="18" r="1"   fill="#c9a227" opacity="0.7"/>
+          <!-- Decorative lines -->
+          <line x1="65" y1="24" x2="178" y2="24" stroke="#c9a227" stroke-width="0.5" opacity="0.5"/>
+          <line x1="242" y1="24" x2="355" y2="24" stroke="#c9a227" stroke-width="0.5" opacity="0.5"/>
+          <circle cx="210" cy="24" r="2.5" fill="none" stroke="#c9a227" stroke-width="0.7" opacity="0.6"/>
+          <circle cx="210" cy="24" r="1"   fill="#c9a227" opacity="0.7"/>
 
-          <!-- ── MAIN TEXT: FALL OF ANGELS ── -->
-          <!-- Using foreignObject for Cinzel Decorative font -->
-          <foreignObject x="60" y="22" width="300" height="65">
+          <!-- MAIN TEXT using Cinzel Decorative — centered, moved down -->
+          <foreignObject x="55" y="30" width="310" height="72">
             <div xmlns="http://www.w3.org/1999/xhtml" style="
-              font-family: 'Cormorant SC', serif;
-              font-weight: 700;
-              font-size: 36px;
-              letter-spacing: 4px;
+              font-family: 'Cinzel Decorative', serif;
+              font-weight: 900;
+              font-size: 30px;
+              letter-spacing: 2px;
               text-align: center;
-              line-height: 1.1;
+              line-height: 1.25;
               background: linear-gradient(180deg, #fff8c0 0%, #f0d060 18%, #c9a227 50%, #a07820 82%, #7a5c00 100%);
               -webkit-background-clip: text;
               -webkit-text-fill-color: transparent;
               background-clip: text;
-              filter: drop-shadow(0 0 8px rgba(201,162,39,0.6));
+              filter: drop-shadow(0 0 10px rgba(201,162,39,0.7));
               white-space: nowrap;
               overflow: visible;
-            ">FALL OF ANGELS</div>
+              display: flex;
+              flex-direction: column;
+              align-items: center;
+              justify-content: center;
+              height: 100%;
+            ">
+              <div>FALL OF</div>
+              <div style="font-size:26px; letter-spacing:6px;">ANGELS</div>
+            </div>
           </foreignObject>
 
-          <!-- shimmer overlay on text -->
-          <rect x="60" y="22" width="300" height="65" fill="url(#shimmer)" opacity="0.3"/>
+          <!-- shimmer overlay -->
+          <rect x="55" y="30" width="310" height="72" fill="url(#shimmer)" opacity="0.25"/>
 
-          <!-- Bottom decorative rule -->
-          <line x1="80" y1="95" x2="340" y2="95" stroke="#c9a227" stroke-width="0.6" opacity="0.4"/>
-          <line x1="105" y1="99" x2="315" y2="99" stroke="#c9a227" stroke-width="0.3" opacity="0.25"/>
-          <!-- small diamonds on rule -->
-          <path d="M210 92 L213 95 L210 98 L207 95 Z" fill="#c9a227" opacity="0.6"/>
+          <!-- Bottom rule -->
+          <line x1="80" y1="108" x2="340" y2="108" stroke="#c9a227" stroke-width="0.6" opacity="0.4"/>
+          <line x1="105" y1="112" x2="315" y2="112" stroke="#c9a227" stroke-width="0.3" opacity="0.25"/>
+          <path d="M210 105 L213 108 L210 111 L207 108 Z" fill="#c9a227" opacity="0.6"/>
         </svg>
       </div>
 
       <div class="separator"></div>
 
-      <!-- Tagline bilingual -->
+      <!-- Tagline — Cinzel for readability -->
       <div class="tagline">
         <span class="en">Angels will fall, just as humans did.</span>
         <span class="fa">فرشته‌ها سقوط خواهند کرد، همان‌گونه که انسان‌ها کردند.</span>
@@ -536,7 +520,7 @@
     </div>
   </div>
 
-  <audio id="bg-music"></audio>
+  <audio id="bg-music" loop></audio>
 
   <script>
     const images = [
@@ -550,93 +534,121 @@
       'https://raw.githubusercontent.com/max300o/Game2-images/refs/heads/main/1782304529088.png',
     ];
 
-    const randomImg = images[Math.floor(Math.random() * images.length)];
-    const imgEl = document.getElementById('intro-img');
-    const introEl = document.getElementById('intro');
-    const progressEl = document.getElementById('intro-progress');
-    const skipBtn = document.getElementById('intro-skip');
+    const imgEl       = document.getElementById('intro-img');
+    const introEl     = document.getElementById('intro');
+    const progressEl  = document.getElementById('intro-progress');
+    const skipBtn     = document.getElementById('intro-skip');
+    const mainPage    = document.getElementById('main-page');
+    const bellWrap    = document.getElementById('music-bell-wrap');
+    const bellBtn     = document.getElementById('music-bell-btn');
+    const bellLabel   = document.getElementById('bell-label');
+    const muteX       = document.getElementById('mute-x');
+    const audio       = document.getElementById('bg-music');
 
-    imgEl.src = randomImg;
-    imgEl.onload = () => { imgEl.style.opacity = '1'; };
-    setTimeout(() => { imgEl.style.opacity = '1'; }, 100);
+    // ── Music setup ──
+    // Replace with your actual music URL
+    const MUSIC_URL = 'https://raw.githubusercontent.com/max300o/Game2-images/refs/heads/main/music.mp3';
+    audio.src = MUSIC_URL;
+    audio.volume = 0.5;
 
-    progressEl.style.transition = 'width 8000ms linear';
+    let musicPlaying = false;
+
+    function startMusic() {
+      audio.play().then(() => {
+        musicPlaying = true;
+        bellBtn.classList.remove('muted');
+        bellBtn.classList.add('playing');
+        muteX.style.opacity = '0';
+        bellLabel.textContent = 'MUSIC';
+      }).catch(() => {
+        // autoplay blocked — show bell as muted, user must click
+        bellBtn.classList.add('muted');
+      });
+    }
+
+    function toggleMusic() {
+      if (musicPlaying) {
+        audio.pause();
+        musicPlaying = false;
+        bellBtn.classList.remove('playing');
+        bellBtn.classList.add('muted');
+        muteX.style.opacity = '1';
+        bellLabel.textContent = 'MUTED';
+      } else {
+        audio.play();
+        musicPlaying = true;
+        bellBtn.classList.remove('muted');
+        bellBtn.classList.add('playing');
+        muteX.style.opacity = '0';
+        bellLabel.textContent = 'MUSIC';
+      }
+    }
+
+    bellBtn.addEventListener('click', toggleMusic);
+
+    // ── Slideshow ──
+    const shuffled = [...images].sort(() => Math.random() - 0.5);
+    const PER_IMAGE = 1200;
+    const FADE_TIME = 400;
+    const TOTAL_DURATION = shuffled.length * PER_IMAGE;
+
+    let currentIdx = 0;
+    let slideshowDone = false;
+
+    progressEl.style.transition = `width ${TOTAL_DURATION}ms linear`;
     setTimeout(() => { progressEl.style.width = '100%'; }, 50);
 
-    let endTimer = setTimeout(endIntro, 8000);
+    function showImage(idx) {
+      if (slideshowDone) return;
+      imgEl.style.opacity = '0';
+      imgEl.style.transition = `opacity ${FADE_TIME}ms ease`;
+      setTimeout(() => {
+        imgEl.src = shuffled[idx];
+        imgEl.onload = () => { imgEl.style.opacity = '1'; };
+        if (imgEl.complete) imgEl.style.opacity = '1';
+      }, FADE_TIME);
+    }
 
     function endIntro() {
-      clearTimeout(endTimer);
+      if (slideshowDone) return;
+      slideshowDone = true;
+      introEl.style.transition = 'opacity 0.8s ease';
       introEl.style.opacity = '0';
-      introEl.style.transition = 'opacity 0.5s ease';
       setTimeout(() => {
         introEl.style.display = 'none';
-        document.getElementById('main-page').classList.add('visible');
-        document.getElementById('music-bell-wrap').style.display = 'flex';
-        tryAutoplay();
-      }, 500);
+        mainPage.classList.add('visible');
+        // Try to start music after slideshow (user has interacted via skip or natural end)
+        startMusic();
+      }, 800);
     }
 
-    skipBtn.addEventListener('click', endIntro);
+    showImage(0);
 
-    // ── Music ──
-    const playlist = [
-      'https://dl.just-music.ir/music//Soundtrack/Dark/Dark%20Cycle%201%20(2019)/320/02.%20Ein%20Mensch%20-%20Ein%20Schmetterling.mp3',
-      'https://dl.just-music.ir/music//Soundtrack/Dark/Dark%20Cycle%201%20(2019)/320/11.%20Gott%20Gib%20Mir%20Gelassenheit.mp3',
-      'https://dl.just-music.ir/music//Soundtrack/Dark/Dark%20Cycle%203%20(2020)/320/04%20Die%20Welt%20Geht%20Heute%20Unter.mp3',
-    ];
-    let trackIdx = 0;
-    const audio = document.getElementById('bg-music');
-    const bellBtn = document.getElementById('music-bell-btn');
-    const muteX = document.getElementById('mute-x');
-    let muted = false;
+    const slideInterval = setInterval(() => {
+      currentIdx++;
+      if (currentIdx >= shuffled.length) {
+        clearInterval(slideInterval);
+        endIntro();
+        return;
+      }
+      showImage(currentIdx);
+    }, PER_IMAGE);
 
-    function loadAndPlay(idx) {
-      audio.src = playlist[idx];
-      audio.volume = 0.45;
-      audio.play().then(() => {
-        muted = false;
-        bellBtn.classList.remove('muted');
-        bellBtn.classList.add('playing');
-        muteX.setAttribute('opacity', '0');
-      }).catch(() => {});
-    }
-
-    // When a track ends, move to next (loops back to 0 after last)
-    audio.addEventListener('ended', () => {
-      trackIdx = (trackIdx + 1) % playlist.length;
-      loadAndPlay(trackIdx);
+    skipBtn.addEventListener('click', () => {
+      clearInterval(slideInterval);
+      endIntro();
     });
 
-    function tryAutoplay() {
-      loadAndPlay(0);
-    }
-
-    // Also try to autoplay immediately on page load (before intro ends)
-    // in case user has interacted with the page already
-    document.addEventListener('click', function startOnInteraction() {
-      if (muted === false && !audio.src) {
-        loadAndPlay(trackIdx);
-      } else if (audio.paused && !muted) {
-        audio.play().catch(() => {});
-      }
-      document.removeEventListener('click', startOnInteraction);
-    }, { once: true });
-
-    bellBtn.addEventListener('click', () => {
-      muted = !muted;
-      if (muted) {
-        audio.pause();
-        bellBtn.classList.add('muted');
-        bellBtn.classList.remove('playing');
-        muteX.setAttribute('opacity', '1');
-      } else {
-        if (!audio.src) loadAndPlay(trackIdx);
-        else audio.play().catch(() => {});
+    // Try autoplay on page load (works if browser allows it)
+    window.addEventListener('load', () => {
+      audio.play().then(() => {
+        musicPlaying = true;
         bellBtn.classList.remove('muted');
         bellBtn.classList.add('playing');
-        muteX.setAttribute('opacity', '0');
-      }
+        muteX.style.opacity = '0';
+      }).catch(() => {
+        // Autoplay blocked — will try again after slideshow ends (user interaction via skip)
+      });
     });
   </script>
 </body>
