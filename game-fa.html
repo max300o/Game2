@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>پرونده‌ی سقوط فرشته‌ها</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .choice-btn { text-align: right; padding-right: 44px; padding-left: 20px; }
+    .choice-btn::before { left: auto; right: 18px; }
+    .choice-btn:hover::before { left: auto; right: 14px; }
+    .narrative { border-left: none; border-right: 2px solid var(--border); padding-left: 0; padding-right: 24px; }
+    .narrative::before { left: auto; right: -1px; }
+  </style>
+</head>
+<body class="game-page theme-noir">
+  <div class="game-header">
+    <a href="index.html">→ بازگشت</a>
+    <span class="header-title">سقوط فرشته‌ها</span>
+    <span class="header-case">CASE #11</span>
+  </div>
+  <div id="game-container">
+    <p style="color:var(--dim)">در حال بارگذاری...</p>
+  </div>
+
+  <canvas class="atmosphere-canvas"></canvas>
+  <script src="themes.js"></script>
+  <script>initAtmosphere();</script>
+  <script src="story-persian.js"></script>
+</body>
+</html>
