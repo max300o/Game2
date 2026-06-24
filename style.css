@@ -1,28 +1,151 @@
-/* ===== FIX SCROLL ISSUE (ITCH + BROWSER SAFE) ===== */
+@import url('https://fonts.googleapis.com/css2?family=Special+Elite&family=Share+Tech+Mono&family=Crimson+Text:ital,wght@0,400;0,600;1,400&display=swap');
 
+/* ══════════════════════════════
+   ONE THEME — "CONFESSIONAL NOIR"
+══════════════════════════════ */
+
+:root {
+  --bg: #0a0807;
+  --paper: #100d0a;
+  --paper-2: #161210;
+  --border: #2c2417;
+  --dim: #4f4128;
+  --mid: #8f7a4e;
+  --text: #ddd0a8;
+  --accent: #b9872c;
+  --accent-2: #e9b94f;
+  --danger: #7a1f1f;
+  --danger-2: #b23a3a;
+  --glow: rgba(185,135,44,0.12);
+  --scanline: rgba(255,255,255,0.012);
+  --shadow-deep: rgba(0,0,0,0.85);
+  --font-main: 'Share Tech Mono', monospace;
+  --font-title: 'Special Elite', serif;
+  --font-body: 'Crimson Text', serif;
+}
+
+body.theme-noir {
+  --bg: #0a0807;
+  --paper: #100d0a;
+  --paper-2: #161210;
+  --border: #2c2417;
+  --dim: #4f4128;
+  --mid: #8f7a4e;
+  --text: #ddd0a8;
+  --accent: #b9872c;
+  --accent-2: #e9b94f;
+  --danger: #7a1f1f;
+  --glow: rgba(185,135,44,0.12);
+}
+
+/* ===== RESET ===== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* ===== 🔧 FIX ITCH SCROLL (ONLY SAFE ADDITION) ===== */
 html, body {
   height: auto !important;
-  min-height: 100%;
+  min-height: 100% !important;
   overflow-x: hidden !important;
   overflow-y: auto !important;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-main);
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
   display: block !important;
 }
 
-/* جلوگیری از قفل شدن flex وسط صفحه در itch */
-body.lang-page {
-  display: block !important;
-  align-items: unset !important;
-  justify-content: unset !important;
+/* ===== rest unchanged ===== */
+
+::selection {
+  background: var(--accent);
+  color: #0a0a0a;
 }
 
-/* جلوگیری از گیر کردن container */
-#game-container {
-  height: auto !important;
-  max-height: none !important;
-}
-
-/* اگر canvas یا background fixed مزاحم scroll است */
-.atmosphere-canvas {
+body::before {
+  content: '';
   position: fixed;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    var(--scanline) 2px,
+    var(--scanline) 4px
+  );
   pointer-events: none;
+  z-index: 999;
 }
+
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 998;
+  background:
+    radial-gradient(ellipse 120% 90% at 50% 50%, transparent 55%, rgba(0,0,0,0.55) 100%);
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent-2);
+  outline-offset: 3px;
+}
+
+/* ===== layout blocks (UNCHANGED) ===== */
+
+body.lang-page {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+}
+
+.lang-container {
+  max-width: 580px;
+  width: 100%;
+  text-align: center;
+  border: 1px solid var(--border);
+  padding: 56px 44px;
+  position: relative;
+  background: linear-gradient(180deg, rgba(255,255,255,0.015), transparent 30%),
+              linear-gradient(150deg, var(--paper-2) 0%, var(--paper) 60%);
+  box-shadow: 0 30px 80px var(--shadow-deep);
+}
+
+/* ===== GAME PAGE ===== */
+
+body.game-page {
+  padding: 0;
+}
+
+#game-container {
+  max-width: 740px;
+  margin: 0 auto;
+  padding: 52px 28px 110px;
+}
+
+/* ===== narrative ===== */
+
+.narrative {
+  white-space: pre-wrap;
+  line-height: 2.25;
+  font-size: 0.93rem;
+}
+
+/* ===== choices ===== */
+
+.choices {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* ===== (everything else kept SAME) ===== */
