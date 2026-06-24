@@ -101,46 +101,20 @@
             opacity: 0.7;
         }
 
-        /* ── Logo Structure ── */
+        /* ── Title Wrap ── */
         .title-wrap {
             margin-bottom: 1.8rem;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            position: relative;
         }
 
         .title-en {
             font-family: var(--font-serif);
-            font-size: clamp(1.8rem, 4.2vw, 2.8rem);
-            font-weight: 300;
-            letter-spacing: 0.22em;
+            font-size: clamp(1.8rem, 4vw, 2.6rem);
+            font-weight: 400;
+            letter-spacing: 0.15em;
+            color: #e8e8e8;
             text-transform: uppercase;
+            text-shadow: 0 0 40px rgba(200, 170, 110, 0.25);
             line-height: 1.2;
-            color: var(--gold-bright);
-            background: linear-gradient(to bottom, #ffffff 0%, var(--gold-bright) 60%, var(--gold-dim) 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            text-shadow: 0 0 35px rgba(201, 169, 110, 0.35);
-        }
-
-        .title-divider {
-            color: var(--gold);
-            font-size: 0.75rem;
-            letter-spacing: 0.5em;
-            margin: 0.4rem 0;
-            opacity: 0.65;
-            text-shadow: 0 0 10px var(--gold-dim);
-        }
-
-        .title-fa {
-            font-family: 'Tahoma', 'Geneva', sans-serif;
-            font-size: clamp(1.1rem, 2.5vw, 1.5rem);
-            color: #d0d0d0;
-            letter-spacing: 0;
-            direction: rtl;
-            opacity: 0.85;
         }
 
         /* ── Case Meta ── */
@@ -329,12 +303,12 @@
             text-transform: uppercase;
         }
 
-        /* ── Image Overlay (Fullscreen) ── */
+        /* ── Image Overlay ── */
         .image-overlay {
             position: fixed;
             inset: 0;
             z-index: 100;
-            background: rgba(0, 0, 0, 1);
+            background: rgba(0, 0, 0, 0.96);
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -357,9 +331,13 @@
         }
 
         .image-overlay img {
-            width: 100vw;
-            height: 100vh;
-            object-fit: cover;
+            max-width: 92vw;
+            max-height: 78vh;
+            object-fit: contain;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            box-shadow:
+                0 0 60px rgba(0, 0, 0, 0.8),
+                0 0 120px rgba(0, 0, 0, 0.5);
             animation: imageFadeIn 0.6s ease forwards;
             -webkit-user-drag: none;
             user-select: none;
@@ -369,8 +347,8 @@
         @keyframes imageFadeIn {
             from {
                 opacity: 0;
-                transform: scale(1.02);
-                filter: blur(4px);
+                transform: scale(0.97);
+                filter: blur(2px);
             }
             to {
                 opacity: 1;
@@ -380,18 +358,10 @@
         }
 
         .overlay-skip-wrap {
-            position: absolute;
-            bottom: 2.5rem;
             display: flex;
             align-items: center;
             gap: 0.6rem;
-            z-index: 105;
-            background: rgba(10, 10, 10, 0.65);
-            padding: 0.5rem 1.2rem;
-            backdrop-filter: blur(5px);
-            -webkit-backdrop-filter: blur(5px);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            border-radius: 2px;
+            margin-top: 1.2rem;
         }
 
         .overlay-skip-btn {
@@ -510,9 +480,12 @@
 </head>
 <body class="lang-page theme-noir">
 
+    <!-- Atmosphere Canvas -->
     <canvas class="atmosphere-canvas" id="atmosphereCanvas"></canvas>
 
-    <button class="music-toggle muted" id="musicToggle" title="Music On/Off" aria-label="Toggle Music">
+    <!-- Music Toggle (Bell Button) -->
+    <button class="music-toggle" id="musicToggle" title="Music On/Off" aria-label="Toggle Music">
+        <!-- Bell SVG -->
         <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
             <g class="bell-body">
                 <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
@@ -522,24 +495,25 @@
         </svg>
     </button>
 
+    <!-- Image Overlay -->
     <div class="image-overlay" id="imageOverlay">
-        <img id="overlayImage" src="" />
+        <img id="overlayImage" src="" alt="Prelude" />
         <div class="overlay-skip-wrap">
             <span class="overlay-countdown" id="overlayCountdown">10</span>
             <button class="overlay-skip-btn" id="overlaySkipBtn">SKIP</button>
         </div>
     </div>
 
+    <!-- Hidden Audio Element -->
     <audio id="bgAudio" preload="auto" crossorigin="anonymous"></audio>
 
+    <!-- Main Content -->
     <div class="lang-container">
         <div class="case-stamp">CLASSIFIED</div>
         <div class="case-number">F.P.D — #11</div>
 
         <div class="title-wrap">
             <div class="title-en">FALL OF ANGELS</div>
-            <div class="title-divider">◆ ◆ ◆</div>
-            <div class="title-fa">سقوط فرشته‌ها</div>
         </div>
 
         <div class="case-meta">
@@ -593,13 +567,15 @@
             ];
 
             const MUSIC_URLS = [
-                'https://actions.google.com/sounds/v1/ambiences/ambient_hum_air_conditioner.ogg', 
-                'https://actions.google.com/sounds/v1/ambiences/dark_room.ogg',
-                'https://actions.google.com/sounds/v1/ambiences/industrial_sub_bass_loop.ogg'
+                'https://dl.just-music.ir/music//Soundtrack/Dark/Dark%20Cycle%201%20(2019)/320/02.%20Ein%20Mensch%20-%20Ein%20Schmetterling.mp3',
+                'https://dl.just-music.ir/music//Soundtrack/Dark/Dark%20Cycle%201%20(2019)/320/04.%20Tick%20Tack,%20Tick%20Tack.mp3',
+                'https://dl.just-music.ir/music//Soundtrack/Dark/Dark%20Cycle%201%20(2019)/320/06.%20Apokalypse.mp3',
+                'https://dl.just-music.ir/music//Soundtrack/Dark/Dark%20Cycle%201%20(2019)/320/07.%20Kein%20DeLorean.mp3'
             ];
 
-            const IMAGE_DISPLAY_DURATION = 10000;
+            const IMAGE_DISPLAY_DURATION = 10000; // 10 seconds
             const STORAGE_KEY_IMG = 'foa_img_idx';
+            const STORAGE_KEY_MUSIC = 'foa_music_playing';
 
             // ─────────────────────────────────────
             // DOM ELEMENTS
@@ -616,12 +592,13 @@
             // STATE
             // ─────────────────────────────────────
             let currentTrackIndex = 0;
-            let musicPlaying = false; // Strictly off by default to comply with browser engine rules
+            let musicPlaying = true; // intent to play
+            let musicActuallyPlaying = false;
             let overlayTimerId = null;
             let countdownIntervalId = null;
             let overlayRemainingSeconds = 10;
             let overlayActive = true;
-            let audioContextUnlocked = false;
+            let userInteractedForAudio = false;
 
             // ─────────────────────────────────────
             // ATMOSPHERE CANVAS
@@ -639,6 +616,7 @@
                 resizeCanvas();
                 window.addEventListener('resize', () => {
                     resizeCanvas();
+                    // Reinitialize particles on resize
                     particles = [];
                     for (let i = 0; i < PARTICLE_COUNT; i++) {
                         particles.push(createParticle());
@@ -664,25 +642,32 @@
                 }
 
                 let frame = 0;
+
                 function animate() {
                     frame++;
                     ctx.clearRect(0, 0, canvas.width, canvas.height);
+
                     for (let p of particles) {
                         p.y -= p.speedY;
                         p.x += p.speedX + Math.sin(frame * p.wobbleSpeed + p.wobbleOffset) * p.wobbleAmp;
+
+                        // Wrap around
                         if (p.y < -10) {
                             p.y = canvas.height + 10;
                             p.x = Math.random() * canvas.width;
                         }
                         if (p.x < -20) p.x = canvas.width + 20;
                         if (p.x > canvas.width + 20) p.x = -20;
+
                         ctx.beginPath();
                         ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
                         ctx.fillStyle = `rgba(190,180,160,${p.opacity})`;
                         ctx.fill();
                     }
+
                     requestAnimationFrame(animate);
                 }
+
                 animate();
             }
 
@@ -691,7 +676,9 @@
             // ─────────────────────────────────────
             function getImageIndex() {
                 let idx = parseInt(localStorage.getItem(STORAGE_KEY_IMG), 10);
-                if (isNaN(idx) || idx < 0 || idx >= IMAGE_URLS.length) idx = 0;
+                if (isNaN(idx) || idx < 0 || idx >= IMAGE_URLS.length) {
+                    idx = 0;
+                }
                 return idx;
             }
 
@@ -702,6 +689,7 @@
             function showOverlayImage(index) {
                 const url = IMAGE_URLS[index];
                 overlayImage.src = url;
+                overlayImage.alt = 'Prelude Image ' + (index + 1);
                 overlayImage.style.display = 'block';
                 imageOverlay.classList.remove('fading-out', 'hidden');
                 overlayActive = true;
@@ -714,11 +702,13 @@
                 overlayActive = false;
                 imageOverlay.classList.add('fading-out');
 
+                // Clear timers
                 if (overlayTimerId) clearTimeout(overlayTimerId);
                 if (countdownIntervalId) clearInterval(countdownIntervalId);
                 overlayTimerId = null;
                 countdownIntervalId = null;
 
+                // After fade animation, fully hide
                 setTimeout(() => {
                     imageOverlay.classList.add('hidden');
                     imageOverlay.classList.remove('fading-out');
@@ -726,110 +716,248 @@
             }
 
             function startOverlayCountdown() {
+                // Update countdown every second
                 countdownIntervalId = setInterval(() => {
                     overlayRemainingSeconds--;
                     if (overlayRemainingSeconds <= 0) {
                         overlayRemainingSeconds = 0;
                         overlayCountdown.textContent = '0';
                         clearInterval(countdownIntervalId);
+                        countdownIntervalId = null;
                         hideOverlay();
                     } else {
                         overlayCountdown.textContent = overlayRemainingSeconds;
                     }
                 }, 1000);
 
+                // Auto-hide after full duration
                 overlayTimerId = setTimeout(() => {
                     hideOverlay();
                 }, IMAGE_DISPLAY_DURATION);
             }
 
-            overlaySkipBtn.addEventListener('click', hideOverlay);
+            function handleSkipClick() {
+                if (!overlayActive) return;
+                hideOverlay();
+                // Ensure music plays on user interaction
+                attemptMusicPlay();
+            }
+
+            overlaySkipBtn.addEventListener('click', handleSkipClick);
+
+            // Also allow clicking anywhere on the overlay to skip (except the image itself)
             imageOverlay.addEventListener('click', function(e) {
-                if (overlayActive && e.target === imageOverlay) {
+                if (!overlayActive) return;
+                // Only skip if clicking the background, not the image or skip button
+                if (e.target === imageOverlay) {
                     hideOverlay();
+                    attemptMusicPlay();
                 }
             });
 
             // ─────────────────────────────────────
-            // PURE ON-CLICK MUSIC SYSTEM
+            // MUSIC SYSTEM
             // ─────────────────────────────────────
             function loadTrack(index) {
-                if (index < 0 || index >= MUSIC_URLS.length) index = 0;
+                if (index < 0 || index >= MUSIC_URLS.length) {
+                    index = 0;
+                }
                 currentTrackIndex = index;
                 bgAudio.src = MUSIC_URLS[index];
                 bgAudio.load();
             }
 
-            function toggleMusic(e) {
-                if (e) e.stopPropagation();
-                
-                // Active core hardware unlock instantly on button interaction
-                if (!audioContextUnlocked) {
-                    audioContextUnlocked = true;
-                    const AudioContext = window.AudioContext || window.webkitAudioContext;
-                    if (AudioContext) {
-                        const ctx = new AudioContext();
-                        if (ctx.state === 'suspended') ctx.resume();
-                    }
-                }
-                
-                if (musicPlaying) {
-                    musicPlaying = false;
-                    bgAudio.pause();
-                    musicToggle.classList.add('muted');
-                } else {
-                    musicPlaying = true;
-                    bgAudio.play()
+            function playCurrentTrack() {
+                const playPromise = bgAudio.play();
+                if (playPromise !== undefined) {
+                    playPromise
                         .then(() => {
-                            musicToggle.classList.remove('muted');
+                            musicActuallyPlaying = true;
+                            updateMusicToggleUI();
                         })
                         .catch(() => {
-                            musicPlaying = false;
-                            musicToggle.classList.add('muted');
+                            // Autoplay blocked - will retry on user interaction
+                            musicActuallyPlaying = false;
+                            updateMusicToggleUI();
                         });
                 }
             }
 
+            function attemptMusicPlay() {
+                userInteractedForAudio = true;
+                if (!musicActuallyPlaying && musicPlaying) {
+                    // Ensure a track is loaded
+                    if (!bgAudio.src || bgAudio.src === window.location.href) {
+                        loadTrack(currentTrackIndex);
+                    }
+                    playCurrentTrack();
+                }
+            }
+
+            function pauseMusic() {
+                bgAudio.pause();
+                musicActuallyPlaying = false;
+                updateMusicToggleUI();
+            }
+
+            function resumeMusic() {
+                if (!bgAudio.src || bgAudio.src === window.location.href) {
+                    loadTrack(currentTrackIndex);
+                }
+                playCurrentTrack();
+            }
+
+            function updateMusicToggleUI() {
+                if (musicPlaying && musicActuallyPlaying) {
+                    musicToggle.classList.remove('muted');
+                } else {
+                    musicToggle.classList.add('muted');
+                }
+            }
+
+            function toggleMusic() {
+                userInteractedForAudio = true;
+                if (musicPlaying) {
+                    // Currently "on" → turn off
+                    musicPlaying = false;
+                    pauseMusic();
+                    musicToggle.classList.add('muted');
+                } else {
+                    // Currently "off" → turn on
+                    musicPlaying = true;
+                    resumeMusic();
+                    // UI updated in playCurrentTrack promise or directly
+                    if (!musicActuallyPlaying) {
+                        // If still not playing, update UI optimistically
+                        musicToggle.classList.remove('muted');
+                    }
+                }
+                // Save intent
+                try {
+                    localStorage.setItem(STORAGE_KEY_MUSIC, musicPlaying ? '1' : '0');
+                } catch (e) { /* ignore */ }
+            }
+
             musicToggle.addEventListener('click', toggleMusic);
 
+            // Track ended → play next
             bgAudio.addEventListener('ended', function() {
                 if (!musicPlaying) return;
-                currentTrackIndex = (currentTrackIndex + 1) % MUSIC_URLS.length;
+
+                const wasLastTrack = (currentTrackIndex >= MUSIC_URLS.length - 1);
+
+                if (wasLastTrack) {
+                    // Full cycle completed → reset image index to 0
+                    setImageIndex(0);
+                    currentTrackIndex = 0;
+                } else {
+                    currentTrackIndex++;
+                }
+
                 loadTrack(currentTrackIndex);
-                bgAudio.play().then(() => musicToggle.classList.remove('muted')).catch(() => {
-                    musicPlaying = false;
-                    musicToggle.classList.add('muted');
-                });
+                playCurrentTrack();
             });
 
+            // Track error → skip to next after a short delay
             bgAudio.addEventListener('error', function() {
+                console.warn('Audio track failed to load:', bgAudio.src);
                 if (!musicPlaying) return;
-                currentTrackIndex = (currentTrackIndex + 1) % MUSIC_URLS.length;
+                const wasLastTrack = (currentTrackIndex >= MUSIC_URLS.length - 1);
+                if (wasLastTrack) {
+                    setImageIndex(0);
+                    currentTrackIndex = 0;
+                } else {
+                    currentTrackIndex++;
+                }
                 setTimeout(() => {
                     loadTrack(currentTrackIndex);
-                    if (musicPlaying) bgAudio.play().then(() => musicToggle.classList.remove('muted'));
-                }, 500);
+                    playCurrentTrack();
+                }, 800);
             });
 
             // ─────────────────────────────────────
             // INITIALIZATION
             // ─────────────────────────────────────
             function init() {
+                // 1. Atmosphere canvas
                 initAtmosphere();
 
+                // 2. Determine image index (sequential rotation via localStorage)
                 const imgIndex = getImageIndex();
-                setImageIndex((imgIndex + 1) % IMAGE_URLS.length);
+                const nextImgIndex = (imgIndex + 1) % IMAGE_URLS.length;
+                setImageIndex(nextImgIndex);
 
+                // 3. Show overlay with the selected image
                 showOverlayImage(imgIndex);
                 startOverlayCountdown();
 
-                loadTrack(0);
+                // 4. Restore music intent
+                try {
+                    const saved = localStorage.getItem(STORAGE_KEY_MUSIC);
+                    if (saved === '0') {
+                        musicPlaying = false;
+                        musicToggle.classList.add('muted');
+                    } else {
+                        musicPlaying = true;
+                        musicToggle.classList.remove('muted');
+                    }
+                } catch (e) {
+                    musicPlaying = true;
+                }
 
+                // 5. Load first track & attempt autoplay
+                loadTrack(0);
+                if (musicPlaying) {
+                    // Attempt autoplay (may be blocked)
+                    const playPromise = bgAudio.play();
+                    if (playPromise !== undefined) {
+                        playPromise
+                            .then(() => {
+                                musicActuallyPlaying = true;
+                                updateMusicToggleUI();
+                            })
+                            .catch(() => {
+                                // Blocked - will play on first user interaction
+                                musicActuallyPlaying = false;
+                                updateMusicToggleUI();
+                            });
+                    }
+                } else {
+                    updateMusicToggleUI();
+                }
+
+                // 6. Global user interaction listener to unlock audio
+                function onUserInteraction() {
+                    if (!userInteractedForAudio && musicPlaying && !musicActuallyPlaying) {
+                        attemptMusicPlay();
+                    }
+                    // Remove once triggered
+                    document.removeEventListener('click', onUserInteraction);
+                    document.removeEventListener('touchstart', onUserInteraction);
+                    document.removeEventListener('keydown', onUserInteraction);
+                }
+                document.addEventListener('click', onUserInteraction, { once: false });
+                document.addEventListener('touchstart', onUserInteraction, { once: false });
+                document.addEventListener('keydown', onUserInteraction, { once: false });
+
+                // 7. Handle image load error → skip overlay immediately
                 overlayImage.addEventListener('error', function() {
-                    if (overlayActive) hideOverlay();
+                    console.warn('Overlay image failed to load:', overlayImage.src);
+                    if (overlayActive) {
+                        hideOverlay();
+                        attemptMusicPlay();
+                    }
+                });
+
+                // 8. Handle image load success
+                overlayImage.addEventListener('load', function() {
+                    // Image loaded successfully - overlay remains visible
                 });
             }
 
+            // ─────────────────────────────────────
+            // START
+            // ─────────────────────────────────────
             if (document.readyState === 'loading') {
                 document.addEventListener('DOMContentLoaded', init);
             } else {
@@ -839,3 +967,7 @@
     </script>
 </body>
 </html>
+
+ببین قبل از اومدن عکس ها یه کلمه میاد اونو برام حذف کن مستقیم بعد از شروع بازی عکس ها بیان به سرعت عکس اپلود بشن  لوگو رو طرح دار کن زیادی سادست طلایی باشه با دو تا بالا انیمیشنی مثلا لوگو رو بزار بین دو نیم خط و دو طرف نیم خط بالارو بزار اوپن سورس استفاده کن
+اهنگ ها موقع شروع بازی پخش نمیشن دکمه زنگوله هم قطع  و وصل اهنگ رو انجام نمیده باید اهنگ پخش بشه احتمالا کد باگ داره
+بقیه چیزارو به هیچ وجههه تغییر ندی
