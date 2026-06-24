@@ -101,7 +101,7 @@
             opacity: 0.7;
         }
 
-        /* ── Designed Luxury Animated Gold Logo (Fixed Wings) ── */
+        /* ── Logo Structure ── */
         .title-wrap {
             margin-bottom: 1.8rem;
             display: flex;
@@ -111,40 +111,6 @@
             position: relative;
         }
 
-        .logo-header-line {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 20px;
-            width: 100%;
-            margin-bottom: 12px;
-        }
-
-        .logo-line {
-            flex: 1;
-            height: 1px;
-            background: linear-gradient(90deg, transparent, var(--gold) 50%, transparent);
-            opacity: 0.5;
-        }
-
-        .logo-wings {
-            width: 70px;
-            height: 35px;
-            fill: none;
-            stroke: var(--gold);
-            stroke-width: 1.5;
-            stroke-linecap: round;
-            stroke-linejoin: round;
-            filter: drop-shadow(0 0 8px rgba(201, 169, 110, 0.5));
-            animation: wingFlap 4s ease-in-out infinite alternate;
-        }
-
-        @keyframes wingFlap {
-            0% { transform: scale(0.95) translateY(2px); opacity: 0.7; }
-            100% { transform: scale(1.05) translateY(-2px); opacity: 1; filter: drop-shadow(0 0 15px var(--gold-bright)); }
-        }
-
-        /* Unique Cinematic Custom Font Style */
         .title-en {
             font-family: var(--font-serif);
             font-size: clamp(1.8rem, 4.2vw, 2.8rem);
@@ -152,12 +118,29 @@
             letter-spacing: 0.22em;
             text-transform: uppercase;
             line-height: 1.2;
-            position: relative;
             color: var(--gold-bright);
             background: linear-gradient(to bottom, #ffffff 0%, var(--gold-bright) 60%, var(--gold-dim) 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             text-shadow: 0 0 35px rgba(201, 169, 110, 0.35);
+        }
+
+        .title-divider {
+            color: var(--gold);
+            font-size: 0.75rem;
+            letter-spacing: 0.5em;
+            margin: 0.4rem 0;
+            opacity: 0.65;
+            text-shadow: 0 0 10px var(--gold-dim);
+        }
+
+        .title-fa {
+            font-family: 'Tahoma', 'Geneva', sans-serif;
+            font-size: clamp(1.1rem, 2.5vw, 1.5rem);
+            color: #d0d0d0;
+            letter-spacing: 0;
+            direction: rtl;
+            opacity: 0.85;
         }
 
         /* ── Case Meta ── */
@@ -346,12 +329,12 @@
             text-transform: uppercase;
         }
 
-        /* ── Image Overlay ── */
+        /* ── Image Overlay (Fullscreen) ── */
         .image-overlay {
             position: fixed;
             inset: 0;
             z-index: 100;
-            background: rgba(0, 0, 0, 0.96);
+            background: rgba(0, 0, 0, 1);
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -374,13 +357,9 @@
         }
 
         .image-overlay img {
-            max-width: 92vw;
-            max-height: 78vh;
-            object-fit: contain;
-            border: 1px solid rgba(255, 255, 255, 0.06);
-            box-shadow:
-                0 0 60px rgba(0, 0, 0, 0.8),
-                0 0 120px rgba(0, 0, 0, 0.5);
+            width: 100vw;
+            height: 100vh;
+            object-fit: cover;
             animation: imageFadeIn 0.6s ease forwards;
             -webkit-user-drag: none;
             user-select: none;
@@ -390,8 +369,8 @@
         @keyframes imageFadeIn {
             from {
                 opacity: 0;
-                transform: scale(0.97);
-                filter: blur(2px);
+                transform: scale(1.02);
+                filter: blur(4px);
             }
             to {
                 opacity: 1;
@@ -401,10 +380,18 @@
         }
 
         .overlay-skip-wrap {
+            position: absolute;
+            bottom: 2.5rem;
             display: flex;
             align-items: center;
             gap: 0.6rem;
-            margin-top: 1.2rem;
+            z-index: 105;
+            background: rgba(10, 10, 10, 0.65);
+            padding: 0.5rem 1.2rem;
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 2px;
         }
 
         .overlay-skip-btn {
@@ -523,12 +510,9 @@
 </head>
 <body class="lang-page theme-noir">
 
-    <!-- Atmosphere Canvas -->
     <canvas class="atmosphere-canvas" id="atmosphereCanvas"></canvas>
 
-    <!-- Music Toggle (Bell Button) -->
-    <button class="music-toggle" id="musicToggle" title="Music On/Off" aria-label="Toggle Music">
-        <!-- Bell SVG -->
+    <button class="music-toggle muted" id="musicToggle" title="Music On/Off" aria-label="Toggle Music">
         <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
             <g class="bell-body">
                 <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
@@ -538,7 +522,6 @@
         </svg>
     </button>
 
-    <!-- Image Overlay -->
     <div class="image-overlay" id="imageOverlay">
         <img id="overlayImage" src="" />
         <div class="overlay-skip-wrap">
@@ -547,27 +530,16 @@
         </div>
     </div>
 
-    <!-- Hidden Audio Element -->
     <audio id="bgAudio" preload="auto" crossorigin="anonymous"></audio>
 
-    <!-- Main Content -->
     <div class="lang-container">
         <div class="case-stamp">CLASSIFIED</div>
         <div class="case-number">F.P.D — #11</div>
 
-        <!-- Luxury Redesigned Logo: Angular Sharp Wing Outlines -->
         <div class="title-wrap">
-            <div class="logo-header-line">
-                <div class="logo-line"></div>
-                <svg class="logo-wings" viewBox="0 0 100 50" xmlns="http://www.w3.org/2000/svg">
-                    <!-- Left Wing Sharp Feathers -->
-                    <path d="M50,40 C42,28 25,12 5,15 C18,22 32,28 44,38 M50,40 C38,25 20,18 10,24 C22,28 35,32 46,39 M50,40 C43,32 30,28 20,32 C28,34 38,36 47,40" />
-                    <!-- Right Wing Sharp Feathers -->
-                    <path d="M50,40 C58,28 75,12 95,15 C82,22 68,28 56,38 M50,40 C62,25 80,18 90,24 C78,28 65,32 54,39 M50,40 C57,32 70,28 80,32 C72,34 62,36 53,40" />
-                </svg>
-                <div class="logo-line"></div>
-            </div>
             <div class="title-en">FALL OF ANGELS</div>
+            <div class="title-divider">◆ ◆ ◆</div>
+            <div class="title-fa">سقوط فرشته‌ها</div>
         </div>
 
         <div class="case-meta">
@@ -607,7 +579,7 @@
     <script>
         (function() {
             // ─────────────────────────────────────
-            // CONFIGURATION (Fixed Protocols)
+            // CONFIGURATION
             // ─────────────────────────────────────
             const IMAGE_URLS = [
                 'https://raw.githubusercontent.com/max300o/Game2-images/refs/heads/main/1782303150271.png',
@@ -620,7 +592,6 @@
                 'https://raw.githubusercontent.com/max300o/Game2-images/refs/heads/main/1782304529088.png'
             ];
 
-            // Switched to a secure global edge network provider to bypass firewall / mixed-content blocks
             const MUSIC_URLS = [
                 'https://actions.google.com/sounds/v1/ambiences/ambient_hum_air_conditioner.ogg', 
                 'https://actions.google.com/sounds/v1/ambiences/dark_room.ogg',
@@ -629,7 +600,6 @@
 
             const IMAGE_DISPLAY_DURATION = 10000;
             const STORAGE_KEY_IMG = 'foa_img_idx';
-            const STORAGE_KEY_MUSIC = 'foa_music_playing';
 
             // ─────────────────────────────────────
             // DOM ELEMENTS
@@ -646,7 +616,7 @@
             // STATE
             // ─────────────────────────────────────
             let currentTrackIndex = 0;
-            let musicPlaying = true; 
+            let musicPlaying = false; // Strictly off by default to comply with browser engine rules
             let overlayTimerId = null;
             let countdownIntervalId = null;
             let overlayRemainingSeconds = 10;
@@ -763,7 +733,6 @@
                         overlayCountdown.textContent = '0';
                         clearInterval(countdownIntervalId);
                         hideOverlay();
-                        triggerAudioUnlock();
                     } else {
                         overlayCountdown.textContent = overlayRemainingSeconds;
                     }
@@ -771,27 +740,18 @@
 
                 overlayTimerId = setTimeout(() => {
                     hideOverlay();
-                    triggerAudioUnlock();
                 }, IMAGE_DISPLAY_DURATION);
             }
 
-            function handleSkipClick() {
-                if (!overlayActive) return;
-                hideOverlay();
-                triggerAudioUnlock();
-            }
-
-            overlaySkipBtn.addEventListener('click', handleSkipClick);
+            overlaySkipBtn.addEventListener('click', hideOverlay);
             imageOverlay.addEventListener('click', function(e) {
-                if (!overlayActive) return;
-                if (e.target === imageOverlay) {
+                if (overlayActive && e.target === imageOverlay) {
                     hideOverlay();
-                    triggerAudioUnlock();
                 }
             });
 
             // ─────────────────────────────────────
-            // MUSIC SYSTEM (CORE BUG RESOLVED)
+            // PURE ON-CLICK MUSIC SYSTEM
             // ─────────────────────────────────────
             function loadTrack(index) {
                 if (index < 0 || index >= MUSIC_URLS.length) index = 0;
@@ -800,48 +760,34 @@
                 bgAudio.load();
             }
 
-            function triggerAudioUnlock() {
+            function toggleMusic(e) {
+                if (e) e.stopPropagation();
+                
+                // Active core hardware unlock instantly on button interaction
                 if (!audioContextUnlocked) {
                     audioContextUnlocked = true;
-                    // Hardware Context Wakeup call
                     const AudioContext = window.AudioContext || window.webkitAudioContext;
                     if (AudioContext) {
                         const ctx = new AudioContext();
                         if (ctx.state === 'suspended') ctx.resume();
                     }
                 }
-                if (musicPlaying) {
-                    bgAudio.play()
-                        .then(() => updateMusicToggleUI(true))
-                        .catch(() => updateMusicToggleUI(false));
-                }
-            }
-
-            function updateMusicToggleUI(isPlaying) {
-                if (musicPlaying && isPlaying) {
-                    musicToggle.classList.remove('muted');
-                } else {
-                    musicToggle.classList.add('muted');
-                }
-            }
-
-            function toggleMusic(e) {
-                if (e) e.stopPropagation();
-                triggerAudioUnlock();
                 
                 if (musicPlaying) {
                     musicPlaying = false;
                     bgAudio.pause();
-                    updateMusicToggleUI(false);
+                    musicToggle.classList.add('muted');
                 } else {
                     musicPlaying = true;
                     bgAudio.play()
-                        .then(() => updateMusicToggleUI(true))
-                        .catch(() => updateMusicToggleUI(false));
+                        .then(() => {
+                            musicToggle.classList.remove('muted');
+                        })
+                        .catch(() => {
+                            musicPlaying = false;
+                            musicToggle.classList.add('muted');
+                        });
                 }
-                try {
-                    localStorage.setItem(STORAGE_KEY_MUSIC, musicPlaying ? '1' : '0');
-                } catch (e) {}
             }
 
             musicToggle.addEventListener('click', toggleMusic);
@@ -850,7 +796,10 @@
                 if (!musicPlaying) return;
                 currentTrackIndex = (currentTrackIndex + 1) % MUSIC_URLS.length;
                 loadTrack(currentTrackIndex);
-                bgAudio.play().then(() => updateMusicToggleUI(true)).catch(() => updateMusicToggleUI(false));
+                bgAudio.play().then(() => musicToggle.classList.remove('muted')).catch(() => {
+                    musicPlaying = false;
+                    musicToggle.classList.add('muted');
+                });
             });
 
             bgAudio.addEventListener('error', function() {
@@ -858,7 +807,7 @@
                 currentTrackIndex = (currentTrackIndex + 1) % MUSIC_URLS.length;
                 setTimeout(() => {
                     loadTrack(currentTrackIndex);
-                    if (musicPlaying) bgAudio.play().then(() => updateMusicToggleUI(true)).catch(() => updateMusicToggleUI(false));
+                    if (musicPlaying) bgAudio.play().then(() => musicToggle.classList.remove('muted'));
                 }, 500);
             });
 
@@ -874,32 +823,10 @@
                 showOverlayImage(imgIndex);
                 startOverlayCountdown();
 
-                try {
-                    const saved = localStorage.getItem(STORAGE_KEY_MUSIC);
-                    musicPlaying = (saved !== '0');
-                } catch (e) {
-                    musicPlaying = true;
-                }
-
                 loadTrack(0);
-                updateMusicToggleUI(false); // Initial state clean before user interact
-
-                // Universal hardware listener to break browser autoplay policies completely
-                function globalInteract() {
-                    triggerAudioUnlock();
-                    document.removeEventListener('click', globalInteract);
-                    document.removeEventListener('touchstart', globalInteract);
-                    document.removeEventListener('keydown', globalInteract);
-                }
-                document.addEventListener('click', globalInteract);
-                document.addEventListener('touchstart', globalInteract);
-                document.addEventListener('keydown', globalInteract);
 
                 overlayImage.addEventListener('error', function() {
-                    if (overlayActive) {
-                        hideOverlay();
-                        triggerAudioUnlock();
-                    }
+                    if (overlayActive) hideOverlay();
                 });
             }
 
