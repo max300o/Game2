@@ -63,16 +63,6 @@
       box-shadow: 0 0 8px var(--gold);
     }
 
-    #intro-counter {
-      position: absolute;
-      top: 20px;
-      right: 24px;
-      font-size: 0.6rem;
-      letter-spacing: 3px;
-      color: rgba(201,162,39,0.6);
-      font-family: 'Share Tech Mono', monospace;
-    }
-
     #intro-skip {
       position: absolute;
       bottom: 24px;
@@ -91,6 +81,65 @@
       border-color: var(--gold);
       color: var(--gold);
       box-shadow: 0 0 12px rgba(201,162,39,0.2);
+    }
+
+    /* ── MUSIC BELL (top fixed) ── */
+    #music-bell-wrap {
+      position: fixed;
+      top: 18px;
+      right: 22px;
+      z-index: 200;
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+    }
+
+    #music-bell-btn {
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      padding: 0;
+      outline: none;
+      position: relative;
+    }
+
+    #music-bell-btn svg {
+      width: 36px;
+      height: 36px;
+      filter: drop-shadow(0 0 6px rgba(201,162,39,0.5));
+      transition: filter 0.2s, transform 0.2s;
+    }
+
+    #music-bell-btn:hover svg {
+      filter: drop-shadow(0 0 14px rgba(240,208,96,0.8));
+      transform: scale(1.1);
+    }
+
+    #music-bell-btn.muted svg {
+      filter: drop-shadow(0 0 3px rgba(201,162,39,0.2));
+      opacity: 0.45;
+    }
+
+    /* bell swing animation when playing */
+    @keyframes bell-swing {
+      0%,100% { transform: rotate(0deg); }
+      15%      { transform: rotate(12deg); }
+      45%      { transform: rotate(-10deg); }
+      70%      { transform: rotate(6deg); }
+      85%      { transform: rotate(-4deg); }
+    }
+
+    #music-bell-btn.playing svg {
+      animation: bell-swing 3.5s ease-in-out infinite;
+      transform-origin: top center;
+    }
+
+    #bell-label {
+      font-size: 0.45rem;
+      letter-spacing: 2px;
+      color: rgba(201,162,39,0.45);
+      font-family: 'Share Tech Mono', monospace;
     }
 
     /* ── MAIN PAGE ── */
@@ -170,44 +219,21 @@
     .corner-bl { bottom: 4px; left: 4px; border-width: 0 0 1px 1px; }
     .corner-br { bottom: 4px; right: 4px; border-width: 0 1px 1px 0; }
 
-    /* ── LOGO (English only) ── */
+    /* ── LOGO SVG ── */
     .logo-wrap {
       margin: 10px 0 32px;
       position: relative;
       z-index: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
 
-    .title-en {
-      font-family: 'Cinzel Decorative', 'Special Elite', serif;
-      font-size: 2rem;
-      letter-spacing: 6px;
-      color: var(--accent2);
-      line-height: 1.1;
-      text-shadow:
-        0 0 20px rgba(201,162,39,0.5),
-        0 0 50px rgba(201,162,39,0.2);
-      animation: gold-pulse 4s ease-in-out infinite;
-    }
-
-    @keyframes gold-pulse {
-      0%,100% { text-shadow: 0 0 20px rgba(201,162,39,0.5), 0 0 50px rgba(201,162,39,0.2); }
-      50%      { text-shadow: 0 0 30px rgba(240,208,96,0.7), 0 0 70px rgba(201,162,39,0.35), 0 0 100px rgba(201,162,39,0.1); }
-    }
-
-    .title-fa {
-      font-size: 1rem;
-      letter-spacing: 4px;
-      color: var(--mid);
-      direction: rtl;
-      margin-top: 8px;
-    }
-
-    .title-divider {
-      color: var(--gold);
-      margin: 10px 0;
-      font-size: 0.65rem;
-      letter-spacing: 10px;
-      opacity: 0.7;
+    .logo-svg {
+      width: 100%;
+      max-width: 420px;
+      height: auto;
+      overflow: visible;
     }
 
     /* ── TAGLINE ── */
@@ -275,7 +301,8 @@
       background: transparent;
       border: 1px solid #3a3000;
       color: var(--text);
-      padding: 14px 44px;
+      padding: 14px 0;
+      width: 160px;
       font-family: 'Share Tech Mono', monospace;
       font-size: 1rem;
       cursor: pointer;
@@ -283,6 +310,7 @@
       transition: all 0.3s;
       text-decoration: none;
       display: inline-block;
+      text-align: center;
       position: relative;
       overflow: hidden;
     }
@@ -314,62 +342,6 @@
     .btn:hover::before { opacity: 1; }
     .btn:hover::after  { transform: scaleX(1); }
 
-    /* ── MUSIC BAR ── */
-    #music-bar {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      height: 42px;
-      background: rgba(5,4,0,0.95);
-      border-top: 1px solid #2a2000;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 14px;
-      z-index: 50;
-      backdrop-filter: blur(4px);
-    }
-
-    #music-toggle {
-      background: transparent;
-      border: 1px solid #3a3000;
-      color: var(--mid);
-      padding: 5px 18px;
-      font-family: 'Share Tech Mono', monospace;
-      font-size: 0.6rem;
-      letter-spacing: 3px;
-      cursor: pointer;
-      transition: all 0.2s;
-    }
-    #music-toggle:hover {
-      border-color: var(--gold);
-      color: var(--gold);
-    }
-
-    #music-label {
-      font-size: 0.55rem;
-      letter-spacing: 2px;
-      color: #3a3000;
-    }
-
-    .music-dot {
-      width: 5px;
-      height: 5px;
-      border-radius: 50%;
-      background: var(--gold);
-      opacity: 0;
-      animation: beat 1.2s ease-in-out infinite;
-    }
-    .music-dot:nth-child(2) { animation-delay: 0.2s; }
-    .music-dot:nth-child(3) { animation-delay: 0.4s; }
-    #music-bar.muted .music-dot { animation: none; opacity: 0.15; }
-
-    @keyframes beat {
-      0%,100% { opacity: 0.2; transform: scaleY(0.6); }
-      50%      { opacity: 0.9; transform: scaleY(1.4); }
-    }
-
     .footer-line {
       font-size: 0.5rem;
       letter-spacing: 2px;
@@ -388,6 +360,52 @@
     <button id="intro-skip">SKIP ▶</button>
   </div>
 
+  <!-- ══ MUSIC BELL (top right) ══ -->
+  <div id="music-bell-wrap">
+    <button id="music-bell-btn" class="muted" title="Toggle Music">
+      <!-- Bell SVG -->
+      <svg viewBox="0 0 64 72" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <!-- rope/hook -->
+        <line x1="32" y1="2" x2="32" y2="10" stroke="#c9a227" stroke-width="2.5" stroke-linecap="round"/>
+        <!-- bell body -->
+        <path d="M32 10 C18 10 12 22 12 36 L12 50 Q12 54 16 54 L48 54 Q52 54 52 50 L52 36 C52 22 46 10 32 10 Z"
+              fill="url(#bellGrad)" stroke="#c9a227" stroke-width="1.5"/>
+        <!-- shine highlight -->
+        <path d="M22 18 C20 22 18 28 18 34" stroke="rgba(255,235,120,0.35)" stroke-width="2.5" stroke-linecap="round"/>
+        <!-- rim band -->
+        <rect x="11" y="50" width="42" height="6" rx="3"
+              fill="url(#rimGrad)" stroke="#c9a227" stroke-width="1"/>
+        <!-- clapper -->
+        <circle cx="32" cy="61" r="4.5" fill="url(#clapperGrad)" stroke="#c9a227" stroke-width="1"/>
+        <!-- mute X (shown when muted) -->
+        <g id="mute-x" opacity="0">
+          <line x1="44" y1="4" x2="58" y2="18" stroke="#8a2a2a" stroke-width="2.5" stroke-linecap="round"/>
+          <line x1="58" y1="4" x2="44" y2="18" stroke="#8a2a2a" stroke-width="2.5" stroke-linecap="round"/>
+        </g>
+        <!-- ornamental lines on bell -->
+        <line x1="20" y1="42" x2="44" y2="42" stroke="rgba(201,162,39,0.3)" stroke-width="1"/>
+        <line x1="17" y1="46" x2="47" y2="46" stroke="rgba(201,162,39,0.2)" stroke-width="0.8"/>
+        <defs>
+          <linearGradient id="bellGrad" x1="12" y1="10" x2="52" y2="54" gradientUnits="userSpaceOnUse">
+            <stop offset="0%" stop-color="#f0d060"/>
+            <stop offset="40%" stop-color="#c9a227"/>
+            <stop offset="100%" stop-color="#7a5c00"/>
+          </linearGradient>
+          <linearGradient id="rimGrad" x1="11" y1="50" x2="53" y2="56" gradientUnits="userSpaceOnUse">
+            <stop offset="0%" stop-color="#e8c040"/>
+            <stop offset="50%" stop-color="#c9a227"/>
+            <stop offset="100%" stop-color="#6a4e00"/>
+          </linearGradient>
+          <radialGradient id="clapperGrad" cx="50%" cy="40%" r="60%">
+            <stop offset="0%" stop-color="#e8c040"/>
+            <stop offset="100%" stop-color="#7a5c00"/>
+          </radialGradient>
+        </defs>
+      </svg>
+    </button>
+    <span id="bell-label">MUSIC</span>
+  </div>
+
   <!-- ══ MAIN MENU PAGE ══ -->
   <div id="main-page">
     <div class="lang-container">
@@ -396,10 +414,102 @@
       <div class="corner corner-bl"></div>
       <div class="corner corner-br"></div>
 
-      <!-- Logo -->
+      <!-- Logo SVG -->
       <div class="logo-wrap">
-        <div class="title-en">FALL OF ANGELS</div>
-        <div class="title-fa">سقوط فرشته‌ها</div>
+        <svg class="logo-svg" viewBox="0 0 420 110" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <!-- Main gold gradient for text -->
+            <linearGradient id="textGold" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%"   stop-color="#fff8c0"/>
+              <stop offset="18%"  stop-color="#f0d060"/>
+              <stop offset="50%"  stop-color="#c9a227"/>
+              <stop offset="82%"  stop-color="#a07820"/>
+              <stop offset="100%" stop-color="#7a5c00"/>
+            </linearGradient>
+            <!-- Glow filter -->
+            <filter id="goldGlow" x="-20%" y="-40%" width="140%" height="180%">
+              <feGaussianBlur stdDeviation="3" result="blur"/>
+              <feMerge>
+                <feMergeNode in="blur"/>
+                <feMergeNode in="blur"/>
+                <feMergeNode in="SourceGraphic"/>
+              </feMerge>
+            </filter>
+            <!-- Wing feather gradient -->
+            <linearGradient id="wingGold" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%"   stop-color="#f0d060" stop-opacity="0.9"/>
+              <stop offset="100%" stop-color="#7a5c00" stop-opacity="0.4"/>
+            </linearGradient>
+            <!-- Shimmer animation gradient -->
+            <linearGradient id="shimmer" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0%"   stop-color="#c9a227" stop-opacity="0"/>
+              <stop offset="50%"  stop-color="#fff8c0" stop-opacity="0.6"/>
+              <stop offset="100%" stop-color="#c9a227" stop-opacity="0"/>
+              <animateTransform attributeName="gradientTransform" type="translate"
+                from="-1 0" to="2 0" dur="3s" repeatCount="indefinite"/>
+            </linearGradient>
+          </defs>
+
+          <!-- Left wing (falling/broken) -->
+          <g opacity="0.7">
+            <path d="M 60 55 C 40 40, 10 28, 2 10" stroke="url(#wingGold)" stroke-width="1.4" fill="none" stroke-linecap="round"/>
+            <path d="M 60 55 C 42 45, 16 38, 8 20" stroke="url(#wingGold)" stroke-width="1.1" fill="none" stroke-linecap="round"/>
+            <path d="M 60 55 C 44 50, 22 48, 14 30" stroke="url(#wingGold)" stroke-width="0.9" fill="none" stroke-linecap="round"/>
+            <path d="M 60 55 C 46 54, 28 58, 20 42" stroke="url(#wingGold)" stroke-width="0.7" fill="none" stroke-linecap="round"/>
+            <path d="M 60 55 C 48 58, 34 68, 24 56" stroke="url(#wingGold)" stroke-width="0.6" fill="none" stroke-linecap="round" opacity="0.6"/>
+            <!-- feather tips glow dots -->
+            <circle cx="2"  cy="10" r="1.5" fill="#f0d060" opacity="0.7"/>
+            <circle cx="8"  cy="20" r="1.2" fill="#f0d060" opacity="0.5"/>
+            <circle cx="14" cy="30" r="1"   fill="#f0d060" opacity="0.4"/>
+          </g>
+
+          <!-- Right wing (mirrored, slightly different angle) -->
+          <g opacity="0.7" transform="translate(420,0) scale(-1,1)">
+            <path d="M 60 55 C 40 40, 10 28, 2 10" stroke="url(#wingGold)" stroke-width="1.4" fill="none" stroke-linecap="round"/>
+            <path d="M 60 55 C 42 45, 16 38, 8 20" stroke="url(#wingGold)" stroke-width="1.1" fill="none" stroke-linecap="round"/>
+            <path d="M 60 55 C 44 50, 22 48, 14 30" stroke="url(#wingGold)" stroke-width="0.9" fill="none" stroke-linecap="round"/>
+            <path d="M 60 55 C 46 54, 28 58, 20 42" stroke="url(#wingGold)" stroke-width="0.7" fill="none" stroke-linecap="round"/>
+            <path d="M 60 55 C 48 58, 34 68, 24 56" stroke="url(#wingGold)" stroke-width="0.6" fill="none" stroke-linecap="round" opacity="0.6"/>
+            <circle cx="2"  cy="10" r="1.5" fill="#f0d060" opacity="0.7"/>
+            <circle cx="8"  cy="20" r="1.2" fill="#f0d060" opacity="0.5"/>
+            <circle cx="14" cy="30" r="1"   fill="#f0d060" opacity="0.4"/>
+          </g>
+
+          <!-- Thin decorative lines above & below text -->
+          <line x1="60" y1="18" x2="175" y2="18" stroke="#c9a227" stroke-width="0.5" opacity="0.5"/>
+          <line x1="245" y1="18" x2="360" y2="18" stroke="#c9a227" stroke-width="0.5" opacity="0.5"/>
+          <circle cx="210" cy="18" r="2.5" fill="none" stroke="#c9a227" stroke-width="0.7" opacity="0.6"/>
+          <circle cx="210" cy="18" r="1"   fill="#c9a227" opacity="0.7"/>
+
+          <!-- ── MAIN TEXT: FALL OF ANGELS ── -->
+          <!-- Using foreignObject for Cinzel Decorative font -->
+          <foreignObject x="60" y="22" width="300" height="65">
+            <div xmlns="http://www.w3.org/1999/xhtml" style="
+              font-family: 'Cinzel Decorative', serif;
+              font-weight: 700;
+              font-size: 36px;
+              letter-spacing: 4px;
+              text-align: center;
+              line-height: 1.1;
+              background: linear-gradient(180deg, #fff8c0 0%, #f0d060 18%, #c9a227 50%, #a07820 82%, #7a5c00 100%);
+              -webkit-background-clip: text;
+              -webkit-text-fill-color: transparent;
+              background-clip: text;
+              filter: drop-shadow(0 0 8px rgba(201,162,39,0.6));
+              white-space: nowrap;
+              overflow: visible;
+            ">FALL OF ANGELS</div>
+          </foreignObject>
+
+          <!-- shimmer overlay on text -->
+          <rect x="60" y="22" width="300" height="65" fill="url(#shimmer)" opacity="0.3"/>
+
+          <!-- Bottom decorative rule -->
+          <line x1="80" y1="95" x2="340" y2="95" stroke="#c9a227" stroke-width="0.6" opacity="0.4"/>
+          <line x1="105" y1="99" x2="315" y2="99" stroke="#c9a227" stroke-width="0.3" opacity="0.25"/>
+          <!-- small diamonds on rule -->
+          <path d="M210 92 L213 95 L210 98 L207 95 Z" fill="#c9a227" opacity="0.6"/>
+        </svg>
       </div>
 
       <div class="separator"></div>
@@ -424,15 +534,6 @@
         EVIDENCE FILE — DO NOT DISTRIBUTE — CASE OPEN
       </div>
     </div>
-  </div>
-
-  <!-- ══ MUSIC BAR ══ -->
-  <div id="music-bar" class="muted" style="display:none;">
-    <div class="music-dot"></div>
-    <div class="music-dot"></div>
-    <div class="music-dot"></div>
-    <button id="music-toggle">⏸ MUTE</button>
-    <span id="music-label">AMBIENT SCORE</span>
   </div>
 
   <audio id="bg-music"></audio>
@@ -471,7 +572,7 @@
       setTimeout(() => {
         introEl.style.display = 'none';
         document.getElementById('main-page').classList.add('visible');
-        document.getElementById('music-bar').style.display = 'flex';
+        document.getElementById('music-bell-wrap').style.display = 'flex';
         tryAutoplay();
       }, 500);
     }
@@ -486,8 +587,8 @@
     ];
     let trackIdx = 0;
     const audio = document.getElementById('bg-music');
-    const bar = document.getElementById('music-bar');
-    const toggleBtn = document.getElementById('music-toggle');
+    const bellBtn = document.getElementById('music-bell-btn');
+    const muteX = document.getElementById('mute-x');
     let muted = false;
 
     function loadTrack(idx) {
@@ -503,22 +604,32 @@
 
     function tryAutoplay() {
       loadTrack(0);
-      audio.play().catch(() => { /* autoplay blocked */ });
-      bar.classList.remove('muted');
-      toggleBtn.textContent = '⏸ MUTE';
+      audio.play().then(() => {
+        muted = false;
+        bellBtn.classList.remove('muted');
+        bellBtn.classList.add('playing');
+        muteX.setAttribute('opacity', '0');
+      }).catch(() => {
+        muted = true;
+        bellBtn.classList.add('muted');
+        bellBtn.classList.remove('playing');
+        muteX.setAttribute('opacity', '1');
+      });
     }
 
-    toggleBtn.addEventListener('click', () => {
+    bellBtn.addEventListener('click', () => {
       muted = !muted;
       if (muted) {
         audio.pause();
-        bar.classList.add('muted');
-        toggleBtn.textContent = '▶ PLAY';
+        bellBtn.classList.add('muted');
+        bellBtn.classList.remove('playing');
+        muteX.setAttribute('opacity', '1');
       } else {
         if (!audio.src) loadTrack(trackIdx);
         audio.play().catch(() => {});
-        bar.classList.remove('muted');
-        toggleBtn.textContent = '⏸ MUTE';
+        bellBtn.classList.remove('muted');
+        bellBtn.classList.add('playing');
+        muteX.setAttribute('opacity', '0');
       }
     });
   </script>
